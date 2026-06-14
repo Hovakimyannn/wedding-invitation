@@ -1,0 +1,14 @@
+{
+  "name": "wedding-invitation",
+  "version": "1.0.0",
+  "description": "Video-based wedding invitation site with RSVP stored in JSON files",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
