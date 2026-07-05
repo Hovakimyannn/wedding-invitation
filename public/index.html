@@ -17,8 +17,14 @@
   <meta property="og:title" content="Հարություն & Մարինե — Հարսանեկան Հրավեր" />
   <meta property="og:description" content="Սիրով հրավիրում ենք Ձեզ կիսելու մեզ հետ մեր կյանքի կարևորագույն օրը։" />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://wedding-invitation.lol/img/hero-bg.jpg" />
+  <meta property="og:image" content="https://wedding-invitation.lol/img/og-preview.jpg" />
   <style>
+    /* Hide unwanted elements above countdown */
+    [data-elem-id='1725271378250'],
+    [data-elem-id='1768045554126000001'] {
+      display: none !important;
+    }
+
     body {
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
@@ -463,7 +469,7 @@
                 content: '';
                 position: absolute;
                 inset: 0;
-                background-color: red;
+                background-color: transparent;
                 clip-path: polygon(26% 0%, 24% 0, 74% 100%, 76% 100%);
                 opacity: 0;
                 transition: opacity .3s ease;
