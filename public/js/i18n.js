@@ -365,14 +365,14 @@
   function choose(lang) {
     try {
       localStorage.setItem(STORE_KEY, lang);
-    } catch (e) {}
+    } catch (e) { }
     apply(lang);
   }
 
   function buildToggle() {
     var style = document.createElement("style");
     style.textContent =
-      "#wi-lang{position:fixed;top:14px;right:14px;z-index:2147483000;" +
+      "#wi-lang{position:fixed;top:14px;left:14px;z-index:2147483000;" +
       "display:flex;gap:2px;padding:3px;border-radius:999px;" +
       "background:rgba(0,0,0,.45);backdrop-filter:blur(6px);" +
       "font-family:Arial,Helvetica,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.25)}" +
@@ -453,7 +453,7 @@
       .then(function (data) {
         if (data && data.lang && !stored()) apply(data.lang);
       })
-      .catch(function () {});
+      .catch(function () { });
   }
 
   if (document.readyState === "loading") {
