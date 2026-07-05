@@ -6,11 +6,11 @@
     "seats": [
       {
         "pos": 1,
-        "guestId": null
+        "guestId": "mr7n7kxa8o2u"
       },
       {
         "pos": 2,
-        "guestId": "mr7n7kxa8o2u"
+        "guestId": null
       },
       {
         "pos": 3,
@@ -50,7 +50,7 @@
       },
       {
         "pos": 12,
-        "guestId": null
+        "guestId": "mr7mvl1stk5v"
       }
     ]
   },

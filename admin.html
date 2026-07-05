@@ -476,6 +476,31 @@
       font-size: 14px;
     }
 
+    /* Enlarged table view */
+    .table-svg-wrap .table-surface-round,
+    .table-svg-wrap .table-surface-rect {
+      cursor: zoom-in;
+    }
+
+    .modal.bigview {
+      width: auto;
+      max-width: 94vw;
+      max-height: 92vh;
+      overflow: auto;
+    }
+
+    .bigview-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    #bigview-svg {
+      text-align: center;
+    }
+
     /* ── Modal ── */
     .modal-overlay {
       display: none;
@@ -705,6 +730,17 @@
     </div>
   </div>
 
+  <!-- ════ Modal: enlarged table view ════ -->
+  <div class="modal-overlay" id="bigview-overlay">
+    <div class="modal bigview">
+      <div class="bigview-head">
+        <h2 id="bigview-title"></h2>
+        <button class="icon-btn" id="bigview-close" type="button">✕</button>
+      </div>
+      <div id="bigview-svg"></div>
+    </div>
+  </div>
+
   <script>
     // ═══════════════════════════════════════
     //  Shared helpers
@@ -877,16 +913,16 @@
         txt.classList.add("seat-name");
         txt.setAttribute("x", x);
         txt.setAttribute("y", y + 1);
-        txt.setAttribute("font-size", r >= 20 ? "9.5" : "8");
-        txt.textContent = truncName(guest.name, Math.floor(r / 4.5));
+        txt.setAttribute("font-size", Math.max(8.5, Math.round(r * 0.42)));
+        txt.textContent = truncName(guest.name, Math.floor(r / 3));
         g.appendChild(txt);
 
         // × unassign button
         var xBtn = document.createElementNS(SVG_NS, "text");
         xBtn.classList.add("seat-x");
-        xBtn.setAttribute("x", x + r * 0.65);
-        xBtn.setAttribute("y", y - r * 0.65);
-        xBtn.setAttribute("font-size", "10");
+        xBtn.setAttribute("x", x + r * 0.6);
+        xBtn.setAttribute("y", y - r * 0.6);
+        xBtn.setAttribute("font-size", Math.max(10, Math.round(r * 0.45)));
         xBtn.setAttribute("data-unassign", guest.id);
         xBtn.textContent = "×";
         g.appendChild(xBtn);
@@ -895,26 +931,30 @@
         numTxt.classList.add("seat-num");
         numTxt.setAttribute("x", x);
         numTxt.setAttribute("y", y + 1);
-        numTxt.setAttribute("font-size", "9");
+        numTxt.setAttribute("font-size", Math.max(9, Math.round(r * 0.38)));
         numTxt.textContent = pos;
         g.appendChild(numTxt);
       }
       return g;
     }
 
-    // ── Draw one table as SVG
-    function drawTable(t, guestMap) {
+    // ── Draw one table as SVG. `scale` > 1 renders an enlarged version
+    //    (used by the big view popup).
+    function drawTable(t, guestMap, scale) {
+      scale = scale || 1;
       var shape = t.shape || "round";
       var n = t.seats.length;
-      var SR = Math.max(16, Math.min(24, Math.floor(220 / n / 1.2))); // seat radius
-      var PAD = SR + 4;
+      var SR = Math.max(18, Math.min(28, Math.floor(300 / n))) * scale; // seat radius
+      // full clearance for the seat ring: seats stick out 2×SR past the
+      // table edge, so the margin must cover that (the old PAD clipped them)
+      var PAD = SR * 2 + 10;
 
       var svgW, svgH, cx, cy, tableEl;
 
       if (shape === "round") {
         // Circular arrangement
-        var TR = Math.max(40, Math.ceil(n * (SR * 2 + 6) / (2 * Math.PI))); // table radius
-        svgW = (TR + PAD) * 2 + 4;
+        var TR = Math.max(50 * scale, Math.ceil(n * (SR * 2 + 8) / (2 * Math.PI))); // table radius
+        svgW = (TR + PAD) * 2;
         svgH = svgW;
         cx = svgW / 2;
         cy = svgH / 2;
@@ -936,7 +976,7 @@
         var lbl = document.createElementNS(SVG_NS, "text");
         lbl.classList.add("table-label");
         lbl.setAttribute("x", cx); lbl.setAttribute("y", cy);
-        lbl.setAttribute("font-size", "11");
+        lbl.setAttribute("font-size", Math.round(12 * scale));
         // just show seat count
         lbl.textContent = n + " տ.";
         svg.appendChild(lbl);
@@ -969,10 +1009,10 @@
 
         var GAP = SR * 2 + 6;
         var tableW = Math.max(topN, bottomN) * GAP + 16;
-        var tableH = Math.max(60, sideN > 0 ? (sideN * GAP + 16) : 56);
+        var tableH = Math.max(60 * scale, sideN > 0 ? (sideN * GAP + 16) : 56 * scale);
 
-        svgW = tableW + (PAD + SR) * 2;
-        svgH = tableH + (PAD + SR) * 2;
+        svgW = tableW + PAD * 2;
+        svgH = tableH + PAD * 2;
         cx = svgW / 2;
         cy = svgH / 2;
         var tx = cx - tableW / 2;
@@ -993,7 +1033,7 @@
         var lbl2 = document.createElementNS(SVG_NS, "text");
         lbl2.classList.add("table-label");
         lbl2.setAttribute("x", cx); lbl2.setAttribute("y", cy);
-        lbl2.setAttribute("font-size", "11");
+        lbl2.setAttribute("font-size", Math.round(12 * scale));
         lbl2.textContent = n + " տ.";
         svg.appendChild(lbl2);
 
@@ -1090,6 +1130,12 @@
         svgWrap.appendChild(svg);
         block.appendChild(svgWrap);
 
+        // clicking the table surface (not a seat) opens the enlarged view
+        svgWrap.addEventListener("click", function (e) {
+          if (e.target.closest(".seat-node") || e.target.closest(".seat-x")) return;
+          openBigView(t.id);
+        });
+
         grid.appendChild(block);
       });
 
@@ -1167,6 +1213,33 @@
     // ═══════════════════════════════════════
     var modalEditId = null;
     var selectedShape = "round";
+
+    // ── Enlarged table view ──
+    function openBigView(tid) {
+      var t = seatingData.tables.find(function (x) { return x.id === tid; });
+      if (!t) return;
+      var guestMap = {};
+      seatingData.rsvps.forEach(function (r) { guestMap[r.id] = r; });
+
+      var seated = t.seats.filter(function (s) { return s.guestId; }).length;
+      document.getElementById("bigview-title").textContent =
+        t.name + " — " + seated + "/" + t.capacity + " տեղ";
+
+      var box = document.getElementById("bigview-svg");
+      box.innerHTML = "";
+      var svg = drawTable(t, guestMap, 2);
+      svg.style.pointerEvents = "none"; // view only, no drag targets here
+      box.appendChild(svg);
+
+      document.getElementById("bigview-overlay").classList.add("open");
+    }
+
+    document.getElementById("bigview-close").addEventListener("click", function () {
+      document.getElementById("bigview-overlay").classList.remove("open");
+    });
+    document.getElementById("bigview-overlay").addEventListener("click", function (e) {
+      if (e.target === this) this.classList.remove("open");
+    });
 
     function openModal(tbl) {
       modalEditId = tbl ? tbl.id : null;
