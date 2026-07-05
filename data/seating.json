@@ -1,0 +1,80 @@
+[
+  {
+    "id": "mr7o4trmd3ft",
+    "name": "Ընտանիք",
+    "capacity": 12,
+    "seats": [
+      {
+        "pos": 1,
+        "guestId": null
+      },
+      {
+        "pos": 2,
+        "guestId": "mr7n7kxa8o2u"
+      },
+      {
+        "pos": 3,
+        "guestId": null
+      },
+      {
+        "pos": 4,
+        "guestId": null
+      },
+      {
+        "pos": 5,
+        "guestId": null
+      },
+      {
+        "pos": 6,
+        "guestId": null
+      },
+      {
+        "pos": 7,
+        "guestId": null
+      },
+      {
+        "pos": 8,
+        "guestId": null
+      },
+      {
+        "pos": 9,
+        "guestId": null
+      },
+      {
+        "pos": 10,
+        "guestId": null
+      },
+      {
+        "pos": 11,
+        "guestId": null
+      },
+      {
+        "pos": 12,
+        "guestId": null
+      }
+    ]
+  },
+  {
+    "id": "mr7o4u70yzd2",
+    "name": "Ընտանիք",
+    "capacity": 4,
+    "seats": [
+      {
+        "pos": 1,
+        "guestId": null
+      },
+      {
+        "pos": 2,
+        "guestId": null
+      },
+      {
+        "pos": 3,
+        "guestId": null
+      },
+      {
+        "pos": 4,
+        "guestId": null
+      }
+    ]
+  }
+]

@@ -9,10 +9,12 @@ const PORT = process.env.PORT || 3000;
 
 const DATA_DIR = path.join(__dirname, "data");
 const RSVP_FILE = path.join(DATA_DIR, "rsvps.json");
+const SEATING_FILE = path.join(DATA_DIR, "seating.json");
 
 // Make sure the data store exists before we start serving requests.
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(RSVP_FILE)) fs.writeFileSync(RSVP_FILE, "[]", "utf8");
+if (!fs.existsSync(SEATING_FILE)) fs.writeFileSync(SEATING_FILE, "[]", "utf8");
 
 app.set("trust proxy", true);
 app.use(express.json());
@@ -96,7 +98,7 @@ function mutateRsvps(fn) {
     await fsp.writeFile(RSVP_FILE, JSON.stringify(next, null, 2), "utf8");
     return next;
   });
-  writeQueue = run.catch(() => {}); // keep the queue alive after a failure
+  writeQueue = run.catch(() => { }); // keep the queue alive after a failure
   return run;
 }
 
@@ -213,6 +215,136 @@ app.delete("/admin/api/rsvps/:id", basicAuth, async (req, res) => {
   }
 });
 
+// --- Seating chart --------------------------------------------------
+
+async function readSeating() {
+  const raw = await fsp.readFile(SEATING_FILE, "utf8");
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+let seatingWriteQueue = Promise.resolve();
+function mutateSeating(fn) {
+  const run = seatingWriteQueue.then(async () => {
+    const list = await readSeating();
+    const next = fn(list);
+    await fsp.writeFile(SEATING_FILE, JSON.stringify(next, null, 2), "utf8");
+    return next;
+  });
+  seatingWriteQueue = run.catch(() => { });
+  return run;
+}
+
+function makeId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+
+// GET /admin/api/seating — return tables + rsvp entries merged
+app.get("/admin/api/seating", basicAuth, async (req, res) => {
+  try {
+    const [tables, rsvps] = await Promise.all([readSeating(), readRsvps()]);
+    res.json({ ok: true, tables, rsvps });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// POST /admin/api/tables — create a table
+app.post("/admin/api/tables", basicAuth, async (req, res) => {
+  const { name, capacity } = req.body || {};
+  if (!name || typeof name !== "string" || !name.trim()) {
+    return res.status(400).json({ ok: false, error: "Անունը պարտադիր է" });
+  }
+  const cap = Math.min(Math.max(Number.parseInt(capacity, 10) || 8, 1), 50);
+  const table = {
+    id: makeId(),
+    name: name.trim().slice(0, 60),
+    capacity: cap,
+    seats: Array.from({ length: cap }, (_, i) => ({ pos: i + 1, guestId: null })),
+  };
+  try {
+    await mutateSeating((list) => { list.push(table); return list; });
+    res.json({ ok: true, table });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// PUT /admin/api/tables/:id — rename / resize a table
+app.put("/admin/api/tables/:id", basicAuth, async (req, res) => {
+  const { name, capacity } = req.body || {};
+  const cap = capacity != null ? Math.min(Math.max(Number.parseInt(capacity, 10) || 1, 1), 50) : null;
+  try {
+    let found = false;
+    await mutateSeating((list) =>
+      list.map((t) => {
+        if (t.id !== req.params.id) return t;
+        found = true;
+        const newCap = cap ?? t.capacity;
+        // trim or expand seats array
+        let seats = t.seats.slice(0, newCap);
+        while (seats.length < newCap) seats.push({ pos: seats.length + 1, guestId: null });
+        // re-number positions
+        seats = seats.map((s, i) => ({ ...s, pos: i + 1 }));
+        return { ...t, name: name ? name.trim().slice(0, 60) : t.name, capacity: newCap, seats };
+      })
+    );
+    if (!found) return res.status(404).json({ ok: false, error: "Չի գտնվել" });
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// DELETE /admin/api/tables/:id
+app.delete("/admin/api/tables/:id", basicAuth, async (req, res) => {
+  try {
+    let found = false;
+    await mutateSeating((list) => {
+      const next = list.filter((t) => t.id !== req.params.id);
+      found = next.length !== list.length;
+      return next;
+    });
+    if (!found) return res.status(404).json({ ok: false, error: "Չի գտնվել" });
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// PUT /admin/api/seating/assign — {guestId, tableId, pos} or {guestId:null} to clear
+app.put("/admin/api/seating/assign", basicAuth, async (req, res) => {
+  const { guestId, tableId, pos } = req.body || {};
+  try {
+    await mutateSeating((list) => {
+      // First clear this guest from any existing seat
+      list.forEach((t) => {
+        t.seats.forEach((s) => {
+          if (s.guestId === guestId) s.guestId = null;
+        });
+      });
+      // Then assign (if tableId given)
+      if (tableId && pos != null) {
+        const table = list.find((t) => t.id === tableId);
+        if (table) {
+          const seat = table.seats.find((s) => s.pos === pos);
+          if (seat) seat.guestId = guestId || null;
+        }
+      }
+      return list;
+    });
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// --- Admin HTML page ------------------------------------------------
+
 app.get("/admin", basicAuth, async (req, res) => {
   try {
     const [html, list] = await Promise.all([
@@ -231,3 +363,4 @@ app.get("/admin", basicAuth, async (req, res) => {
 app.listen(PORT, () => {
   console.log(`💍  Wedding invitation running at http://localhost:${PORT}`);
 });
+

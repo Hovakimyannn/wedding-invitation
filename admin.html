@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html lang="hy">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Հյուրերի պատասխաններ — Ադմին</title>
+  <title>Հյուրերի կառավարում — Ադմին</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: Georgia, "Noto Serif Armenian", serif;
       background: #faf7f2;
       color: #2b2b2b;
       padding: 32px 16px 64px;
     }
-    .wrap { max-width: 960px; margin: 0 auto; }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
     h1 {
       font-size: 26px;
       font-weight: 400;
@@ -21,24 +32,85 @@
       letter-spacing: .04em;
       margin-bottom: 6px;
     }
-    .sub { text-align: center; color: #8a8378; font-size: 14px; margin-bottom: 28px; }
+
+    .sub {
+      text-align: center;
+      color: #8a8378;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid #e7e0d4;
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      font: inherit;
+      font-size: 14px;
+      padding: 10px 24px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: #8a8378;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: color .15s, border-color .15s;
+    }
+
+    .tab-btn.active {
+      color: #2b2b2b;
+      border-bottom-color: #2b2b2b;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* ── Stat cards ── */
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 12px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
+
     .card {
       background: #fff;
       border: 1px solid #e7e0d4;
       border-radius: 10px;
-      padding: 16px 14px;
+      padding: 14px;
       text-align: center;
     }
-    .card .num { font-size: 30px; line-height: 1.1; }
-    .card .lbl { font-size: 13px; color: #8a8378; margin-top: 4px; }
-    .toolbar { display: flex; justify-content: flex-end; margin-bottom: 10px; }
-    button.refresh {
+
+    .card .num {
+      font-size: 28px;
+      line-height: 1.1;
+    }
+
+    .card .lbl {
+      font-size: 12px;
+      color: #8a8378;
+      margin-top: 4px;
+    }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    button.refresh,
+    button.add-table {
       font: inherit;
       font-size: 14px;
       padding: 8px 18px;
@@ -46,18 +118,59 @@
       border-radius: 999px;
       background: transparent;
       cursor: pointer;
+      transition: background .15s, color .15s;
     }
-    button.refresh:hover { background: #2b2b2b; color: #fff; }
+
+    button.add-table {
+      background: #2b2b2b;
+      color: #fff;
+      border-color: #2b2b2b;
+    }
+
+    button.refresh:hover {
+      background: #2b2b2b;
+      color: #fff;
+    }
+
+    button.add-table:hover {
+      background: #444;
+    }
+
+    /* ── RSVP table ── */
     .tablebox {
       background: #fff;
       border: 1px solid #e7e0d4;
       border-radius: 10px;
       overflow-x: auto;
     }
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #f0ebe1; vertical-align: top; }
-    th { font-weight: 400; color: #8a8378; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
-    tr:last-child td { border-bottom: 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid #f0ebe1;
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 400;
+      color: #8a8378;
+      font-size: 12px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
     .badge {
       display: inline-block;
       padding: 3px 10px;
@@ -65,14 +178,44 @@
       font-size: 12px;
       white-space: nowrap;
     }
-    .b-yes   { background: #e6f2e6; color: #2e6b2e; }
-    .b-pair  { background: #e6ecf7; color: #2f4f8f; }
-    .b-no    { background: #f9e6e6; color: #a03434; }
-    .b-later { background: #f3efe6; color: #8a7434; }
-    .drinks { color: #5a544a; }
-    .date { color: #8a8378; white-space: nowrap; font-size: 13px; }
-    .empty { text-align: center; padding: 40px 16px; color: #8a8378; }
-    .acts { white-space: nowrap; text-align: right; }
+
+    .b-yes {
+      background: #e6f2e6;
+      color: #2e6b2e;
+    }
+
+    .b-pair {
+      background: #e6ecf7;
+      color: #2f4f8f;
+    }
+
+    .b-no {
+      background: #f9e6e6;
+      color: #a03434;
+    }
+
+    .b-later {
+      background: #f3efe6;
+      color: #8a7434;
+    }
+
+    .date {
+      color: #8a8378;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px 16px;
+      color: #8a8378;
+    }
+
+    .acts {
+      white-space: nowrap;
+      text-align: right;
+    }
+
     button.act {
       font: inherit;
       font-size: 13px;
@@ -84,9 +227,19 @@
       color: #5a544a;
       cursor: pointer;
     }
-    button.act:hover { border-color: #2b2b2b; color: #2b2b2b; }
-    button.act.danger:hover { border-color: #a03434; color: #a03434; }
-    td input[type="text"], td select {
+
+    button.act:hover {
+      border-color: #2b2b2b;
+      color: #2b2b2b;
+    }
+
+    button.act.danger:hover {
+      border-color: #a03434;
+      color: #a03434;
+    }
+
+    td input[type="text"],
+    td select {
       font: inherit;
       font-size: 14px;
       padding: 6px 8px;
@@ -96,47 +249,339 @@
       color: #2b2b2b;
       max-width: 100%;
     }
+
+    /* ── Seating chart ── */
+    .seating-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 680px) {
+      .seating-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Unassigned panel */
+    .unassigned-panel {
+      background: #fff;
+      border: 1px solid #e7e0d4;
+      border-radius: 10px;
+      padding: 14px;
+      position: sticky;
+      top: 16px;
+    }
+
+    .unassigned-panel h3 {
+      font-size: 13px;
+      font-weight: 400;
+      color: #8a8378;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .guest-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      margin-bottom: 6px;
+      background: #faf7f2;
+      border: 1px solid #e7e0d4;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: grab;
+      user-select: none;
+      transition: background .12s, border-color .12s, opacity .12s;
+    }
+
+    .guest-chip:hover {
+      background: #f0ebe1;
+      border-color: #c9c0b0;
+    }
+
+    .guest-chip.dragging {
+      opacity: .45;
+    }
+
+    .guest-chip .att-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-yes {
+      background: #5aad5a;
+    }
+
+    .dot-pair {
+      background: #5a7fd4;
+    }
+
+    .dot-no {
+      background: #d45a5a;
+    }
+
+    .dot-later {
+      background: #c4a84a;
+    }
+
+    /* Tables grid */
+    .tables-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .table-card {
+      background: #fff;
+      border: 1px solid #e7e0d4;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .table-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .table-name-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .table-name {
+      font-size: 15px;
+      font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .table-cap-badge {
+      font-size: 11px;
+      color: #8a8378;
+      background: #f0ebe1;
+      border-radius: 999px;
+      padding: 2px 7px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    button.icon-btn {
+      font: inherit;
+      font-size: 12px;
+      padding: 3px 8px;
+      border: 1px solid #d9d2c4;
+      border-radius: 999px;
+      background: transparent;
+      color: #8a8378;
+      cursor: pointer;
+      transition: all .12s;
+    }
+
+    button.icon-btn:hover {
+      color: #2b2b2b;
+      border-color: #2b2b2b;
+    }
+
+    button.icon-btn.danger:hover {
+      color: #a03434;
+      border-color: #a03434;
+    }
+
+    /* Seats */
+    .seats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 6px;
+    }
+
+    .seat-slot {
+      border: 1.5px dashed #d9d2c4;
+      border-radius: 8px;
+      padding: 6px 8px;
+      min-height: 50px;
+      font-size: 12px;
+      color: #b0a898;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: border-color .12s, background .12s;
+      position: relative;
+    }
+
+    .seat-slot .seat-num {
+      font-size: 10px;
+      color: #c9c0b0;
+      margin-bottom: 2px;
+      line-height: 1;
+    }
+
+    .seat-slot.drag-over {
+      border-color: #8a7434;
+      background: #fdf8ea;
+    }
+
+    .seat-slot.occupied {
+      border-style: solid;
+      border-color: #c9c0b0;
+      background: #f8f5ee;
+      color: #2b2b2b;
+    }
+
+    .seat-slot .seat-guest-name {
+      font-size: 12px;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    .seat-slot .unassign-btn {
+      position: absolute;
+      top: 2px;
+      right: 4px;
+      font-size: 11px;
+      color: #b0a898;
+      cursor: pointer;
+      line-height: 1;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .seat-slot .unassign-btn:hover {
+      color: #a03434;
+    }
+
+    .seating-empty {
+      text-align: center;
+      padding: 40px 16px;
+      color: #8a8378;
+      font-size: 14px;
+    }
+
+    /* Edit table inline */
+    .table-name-input,
+    .table-cap-input {
+      font: inherit;
+      font-size: 13px;
+      padding: 3px 6px;
+      border: 1px solid #d9d2c4;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .table-name-input {
+      width: 110px;
+    }
+
+    .table-cap-input {
+      width: 52px;
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <h1>Հարություն և Մարինե — 26.08.2026</h1>
-    <p class="sub">Հյուրերի պատասխանները (RSVP)</p>
+    <h1>Հարություն &amp; Մարինե — 26.08.2026</h1>
+    <p class="sub">Ադմին կառավարում</p>
 
-    <div class="cards">
-      <div class="card"><div class="num" id="c-total">–</div><div class="lbl">Ընդամենը պատասխան</div></div>
-      <div class="card"><div class="num" id="c-guests">–</div><div class="lbl">Սպասվող հյուր</div></div>
-      <div class="card"><div class="num" id="c-yes">–</div><div class="lbl">Կգան</div></div>
-      <div class="card"><div class="num" id="c-no">–</div><div class="lbl">Չեն գա</div></div>
-      <div class="card"><div class="num" id="c-later">–</div><div class="lbl">Կտեղեկացնեն ավելի ուշ</div></div>
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="rsvp">Հյուրեր (RSVP)</button>
+      <button class="tab-btn" data-tab="seating">Նստատեղեր</button>
     </div>
 
-    <div class="toolbar">
-      <button class="refresh" id="refresh" type="button">Թարմացնել</button>
+    <!-- ════════════ RSVP TAB ════════════ -->
+    <div class="tab-panel active" id="tab-rsvp">
+      <div class="cards">
+        <div class="card">
+          <div class="num" id="c-total">–</div>
+          <div class="lbl">Ընդամենը</div>
+        </div>
+        <div class="card">
+          <div class="num" id="c-guests">–</div>
+          <div class="lbl">Սպասվող հյուր</div>
+        </div>
+        <div class="card">
+          <div class="num" id="c-yes">–</div>
+          <div class="lbl">Կգան</div>
+        </div>
+        <div class="card">
+          <div class="num" id="c-no">–</div>
+          <div class="lbl">Չեն գա</div>
+        </div>
+        <div class="card">
+          <div class="num" id="c-later">–</div>
+          <div class="lbl">Կտեղեկացնեն</div>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="refresh" id="refresh" type="button">Թարմացնել</button>
+      </div>
+      <div class="tablebox">
+        <table>
+          <thead>
+            <tr>
+              <th>Անուն</th>
+              <th>Ներկայություն</th>
+              <th>Ամսաթիվ</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div class="empty" id="empty" hidden>Դեռ պատասխաններ չկան</div>
+      </div>
     </div>
 
-    <div class="tablebox">
-      <table>
-        <thead>
-          <tr>
-            <th>Անուն</th>
-            <th>Ներկայություն</th>
-            <th>Ամսաթիվ</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="rows"></tbody>
-      </table>
-      <div class="empty" id="empty" hidden>Դեռ պատասխաններ չկան</div>
+    <!-- ════════════ SEATING TAB ════════════ -->
+    <div class="tab-panel" id="tab-seating">
+      <div class="toolbar">
+        <button class="add-table" id="add-table-btn" type="button">+ Ավելացնել սեղան</button>
+      </div>
+      <div class="seating-layout">
+        <!-- Left: unassigned guests -->
+        <div class="unassigned-panel">
+          <h3>Չնշանակված հյուրեր</h3>
+          <div id="unassigned-list">
+            <div class="seating-empty" style="padding:20px 0">Բեռնվում է…</div>
+          </div>
+        </div>
+        <!-- Right: tables -->
+        <div id="tables-grid" class="tables-grid">
+          <div class="seating-empty">Բեռնվում է…</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
+    // ═══════════════════════════════════════
+    //  Shared helpers
+    // ═══════════════════════════════════════
     var ATT = {
-      yes:   { label: "Կգա",                  cls: "b-yes",   seats: 1 },
-      pair:  { label: "Կգա զույգով",          cls: "b-pair",  seats: 2 },
-      no:    { label: "Չի գա",                cls: "b-no",    seats: 0 },
-      later: { label: "Կտեղեկացնի ավելի ուշ", cls: "b-later", seats: 0 }
+      yes: { label: "Կգա", cls: "b-yes", seats: 1, dot: "dot-yes" },
+      pair: { label: "Կգա զույգով", cls: "b-pair", seats: 2, dot: "dot-pair" },
+      no: { label: "Չի գա", cls: "b-no", seats: 0, dot: "dot-no" },
+      later: { label: "Կտեղեկացնի ավելի ուշ", cls: "b-later", seats: 0, dot: "dot-later" }
     };
 
     function esc(s) {
@@ -144,21 +589,39 @@
         return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
       });
     }
-
     function fmtDate(iso) {
       var d = new Date(iso);
       if (isNaN(d)) return "";
       var p = function (n) { return n < 10 ? "0" + n : n; };
       return p(d.getDate()) + "." + p(d.getMonth() + 1) + "." + d.getFullYear() +
-             " " + p(d.getHours()) + ":" + p(d.getMinutes());
+        " " + p(d.getHours()) + ":" + p(d.getMinutes());
     }
 
-    function render(list) {
-      // newest first
+    // ═══════════════════════════════════════
+    //  Tab switching
+    // ═══════════════════════════════════════
+    var tabBtns = document.querySelectorAll(".tab-btn");
+    var tabPanels = document.querySelectorAll(".tab-panel");
+    tabBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        tabBtns.forEach(function (b) { b.classList.remove("active"); });
+        tabPanels.forEach(function (p) { p.classList.remove("active"); });
+        btn.classList.add("active");
+        document.getElementById("tab-" + btn.getAttribute("data-tab")).classList.add("active");
+        if (btn.getAttribute("data-tab") === "seating") loadSeating();
+      });
+    });
+
+    // ═══════════════════════════════════════
+    //  RSVP TAB
+    // ═══════════════════════════════════════
+    // Filled in by the server when it serves this page.
+    var DATA = /*__RSVPS__*/[];
+
+    function renderRsvp(list) {
       list = list.slice().sort(function (a, b) {
         return (b.createdAt || "").localeCompare(a.createdAt || "");
       });
-
       var guests = 0, yes = 0, no = 0, later = 0;
       var html = "";
       list.forEach(function (r) {
@@ -167,7 +630,6 @@
         if (r.attending === "yes" || r.attending === "pair") yes++;
         else if (r.attending === "no") no++;
         else later++;
-
         html +=
           '<tr data-id="' + esc(r.id || "") + '">' +
           '<td class="c-name">' + esc(r.name || "") + "</td>" +
@@ -179,7 +641,6 @@
           '<button class="act danger" data-do="del" type="button">Ջնջել</button>' +
           "</td></tr>";
       });
-
       document.getElementById("rows").innerHTML = html;
       document.getElementById("empty").hidden = list.length > 0;
       document.getElementById("c-total").textContent = list.length;
@@ -189,10 +650,7 @@
       document.getElementById("c-later").textContent = later;
     }
 
-    // Filled in by the server when it serves this page.
-    var DATA = /*__RSVPS__*/[];
-
-    function api(method, id, body) {
+    function apiRsvp(method, id, body) {
       return fetch("/admin/api/rsvps/" + encodeURIComponent(id), {
         method: method,
         headers: body ? { "Content-Type": "application/json" } : undefined,
@@ -212,24 +670,19 @@
       var actsTd = tr.querySelector(".acts");
       var oldName = nameTd.textContent;
       var oldAtt = attTd.getAttribute("data-att");
-
       nameTd.innerHTML = "";
       var inp = document.createElement("input");
-      inp.type = "text";
-      inp.value = oldName;
+      inp.type = "text"; inp.value = oldName;
       nameTd.appendChild(inp);
-
       attTd.innerHTML = "";
       var sel = document.createElement("select");
       Object.keys(ATT).forEach(function (k) {
         var o = document.createElement("option");
-        o.value = k;
-        o.textContent = ATT[k].label;
+        o.value = k; o.textContent = ATT[k].label;
         if (k === oldAtt) o.selected = true;
         sel.appendChild(o);
       });
       attTd.appendChild(sel);
-
       actsTd.innerHTML =
         '<button class="act" data-do="save" type="button">Պահպանել</button>' +
         '<button class="act" data-do="cancel" type="button">Չեղարկել</button>';
@@ -242,30 +695,259 @@
       var tr = btn.closest("tr");
       var id = tr.getAttribute("data-id");
       var act = btn.getAttribute("data-do");
-
       if (act === "del") {
         var who = tr.querySelector(".c-name").textContent;
         if (!confirm("Ջնջե՞լ «" + who + "» պատասխանը։")) return;
-        api("DELETE", id).then(function () { location.reload(); })
+        apiRsvp("DELETE", id).then(function () { location.reload(); })
           .catch(function (err) { alert("Չհաջողվեց ջնջել։ " + err.message); });
       } else if (act === "edit") {
         startEdit(tr);
       } else if (act === "cancel") {
-        render(DATA);
+        renderRsvp(DATA);
       } else if (act === "save") {
         var name = tr.querySelector(".c-name input").value.trim();
         var attending = tr.querySelector(".c-att select").value;
         if (!name) { alert("Անունը պարտադիր է"); return; }
-        api("PUT", id, { name: name, attending: attending })
+        apiRsvp("PUT", id, { name: name, attending: attending })
           .then(function () { location.reload(); })
           .catch(function (err) { alert("Չհաջողվեց պահպանել։ " + err.message); });
       }
     });
 
-    document.getElementById("refresh").addEventListener("click", function () {
-      location.reload();
+    document.getElementById("refresh").addEventListener("click", function () { location.reload(); });
+    renderRsvp(DATA);
+
+    // ═══════════════════════════════════════
+    //  SEATING TAB
+    // ═══════════════════════════════════════
+    var seatingData = { tables: [], rsvps: [] };
+    var seatingLoaded = false;
+    var dragGuestId = null;
+
+    function apiSeating(method, url, body) {
+      return fetch(url, {
+        method: method,
+        headers: body ? { "Content-Type": "application/json" } : undefined,
+        body: body ? JSON.stringify(body) : undefined,
+      }).then(function (r) {
+        if (r.status === 401) { location.reload(); throw new Error("auth"); }
+        return r.json().then(function (d) {
+          if (!r.ok || !d.ok) throw new Error(d.error || r.status);
+          return d;
+        });
+      });
+    }
+
+    function loadSeating() {
+      return apiSeating("GET", "/admin/api/seating").then(function (d) {
+        seatingData = d;
+        seatingLoaded = true;
+        renderSeating();
+      }).catch(function (err) {
+        document.getElementById("tables-grid").innerHTML =
+          '<div class="seating-empty">Չհաջողվեց բեռնել: ' + esc(err.message) + "</div>";
+      });
+    }
+
+    function assignedGuestIds() {
+      var ids = {};
+      seatingData.tables.forEach(function (t) {
+        t.seats.forEach(function (s) { if (s.guestId) ids[s.guestId] = true; });
+      });
+      return ids;
+    }
+
+    function renderSeating() {
+      var assigned = assignedGuestIds();
+
+      // ── Unassigned panel ──
+      var coming = seatingData.rsvps.filter(function (r) {
+        return r.attending === "yes" || r.attending === "pair";
+      });
+      var unassigned = coming.filter(function (r) { return !assigned[r.id]; });
+
+      var ulEl = document.getElementById("unassigned-list");
+      if (unassigned.length === 0) {
+        ulEl.innerHTML = '<div style="font-size:13px;color:#8a8378;padding:8px 0">Բոլոր հյուրերը նստեցված են</div>';
+      } else {
+        ulEl.innerHTML = unassigned.map(function (r) {
+          var att = ATT[r.attending] || ATT.later;
+          return '<div class="guest-chip" draggable="true" data-guest-id="' + esc(r.id) + '">' +
+            '<span class="att-dot ' + att.dot + '"></span>' +
+            '<span>' + esc(r.name) + '</span>' +
+            '</div>';
+        }).join("");
+        // Drag events on chips
+        ulEl.querySelectorAll(".guest-chip").forEach(function (chip) {
+          chip.addEventListener("dragstart", function (e) {
+            dragGuestId = chip.getAttribute("data-guest-id");
+            chip.classList.add("dragging");
+            e.dataTransfer.effectAllowed = "move";
+          });
+          chip.addEventListener("dragend", function () {
+            chip.classList.remove("dragging");
+          });
+        });
+      }
+
+      // Also make assigned chips (inside seat slots) draggable from their slots
+      // (handled below in renderSeating tables section)
+
+      // ── Tables grid ──
+      var grid = document.getElementById("tables-grid");
+      if (seatingData.tables.length === 0) {
+        grid.innerHTML = '<div class="seating-empty">Սեղաններ դեռ չկան։<br>Սեղմեք «+ Ավելացնել սեղան»</div>';
+        return;
+      }
+
+      grid.innerHTML = seatingData.tables.map(function (t) {
+        var seatsHtml = t.seats.map(function (s) {
+          if (s.guestId) {
+            var guest = seatingData.rsvps.find(function (r) { return r.id === s.guestId; });
+            var gname = guest ? esc(guest.name) : "???";
+            return '<div class="seat-slot occupied" data-table-id="' + esc(t.id) + '" data-pos="' + s.pos + '">' +
+              '<button class="unassign-btn" data-guest-id="' + esc(s.guestId) + '" title="Հանել">×</button>' +
+              '<span class="seat-num">' + s.pos + '</span>' +
+              '<span class="seat-guest-name">' + gname + '</span>' +
+              '</div>';
+          } else {
+            return '<div class="seat-slot" data-table-id="' + esc(t.id) + '" data-pos="' + s.pos + '">' +
+              '<span class="seat-num">' + s.pos + '</span>' +
+              '</div>';
+          }
+        }).join("");
+
+        return '<div class="table-card" data-table-id="' + esc(t.id) + '">' +
+          '<div class="table-card-header">' +
+          '<div class="table-name-wrap">' +
+          '<span class="table-name">' + esc(t.name) + '</span>' +
+          '<span class="table-cap-badge">' + t.capacity + ' տեղ</span>' +
+          '</div>' +
+          '<div class="table-actions">' +
+          '<button class="icon-btn" data-do="edit-table">✎</button>' +
+          '<button class="icon-btn danger" data-do="del-table">✕</button>' +
+          '</div>' +
+          '</div>' +
+          '<div class="seats-grid">' + seatsHtml + '</div>' +
+          '</div>';
+      }).join("");
+
+      // ── Bind drag-and-drop on seat slots ──
+      grid.querySelectorAll(".seat-slot").forEach(function (slot) {
+        if (slot.classList.contains("occupied")) {
+          // Occupied slot: make the name draggable to re-assign
+          slot.setAttribute("draggable", "true");
+          slot.addEventListener("dragstart", function (e) {
+            var gid = slot.querySelector(".unassign-btn")
+              ? slot.querySelector(".unassign-btn").getAttribute("data-guest-id")
+              : null;
+            if (!gid) return e.preventDefault();
+            dragGuestId = gid;
+            e.dataTransfer.effectAllowed = "move";
+          });
+        }
+        slot.addEventListener("dragover", function (e) {
+          if (!slot.classList.contains("occupied")) {
+            e.preventDefault();
+            slot.classList.add("drag-over");
+          }
+        });
+        slot.addEventListener("dragleave", function () {
+          slot.classList.remove("drag-over");
+        });
+        slot.addEventListener("drop", function (e) {
+          e.preventDefault();
+          slot.classList.remove("drag-over");
+          if (slot.classList.contains("occupied")) return;
+          if (!dragGuestId) return;
+          var tableId = slot.getAttribute("data-table-id");
+          var pos = Number(slot.getAttribute("data-pos"));
+          apiSeating("PUT", "/admin/api/seating/assign", {
+            guestId: dragGuestId, tableId: tableId, pos: pos
+          }).then(function () {
+            dragGuestId = null;
+            return loadSeating();
+          }).catch(function (err) { alert("Չհաջողվեց նշանակել: " + err.message); });
+        });
+      });
+
+      // ── Bind unassign (×) buttons ──
+      grid.querySelectorAll(".unassign-btn").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          var gid = btn.getAttribute("data-guest-id");
+          apiSeating("PUT", "/admin/api/seating/assign", { guestId: gid })
+            .then(function () { return loadSeating(); })
+            .catch(function (err) { alert("Չհաջողվեց հանել: " + err.message); });
+        });
+      });
+
+      // ── Bind table edit/delete buttons ──
+      grid.querySelectorAll(".icon-btn[data-do='del-table']").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var card = btn.closest(".table-card");
+          var tableId = card.getAttribute("data-table-id");
+          var tbl = seatingData.tables.find(function (t) { return t.id === tableId; });
+          if (!confirm("Ջնջե՞լ «" + (tbl ? tbl.name : "") + "» սեղանը։")) return;
+          apiSeating("DELETE", "/admin/api/tables/" + encodeURIComponent(tableId))
+            .then(function () { return loadSeating(); })
+            .catch(function (err) { alert("Չհաջողվեց ջնջել: " + err.message); });
+        });
+      });
+
+      grid.querySelectorAll(".icon-btn[data-do='edit-table']").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var card = btn.closest(".table-card");
+          var tableId = card.getAttribute("data-table-id");
+          var tbl = seatingData.tables.find(function (t) { return t.id === tableId; });
+          if (!tbl) return;
+
+          var header = card.querySelector(".table-card-header");
+          // Replace with inline edit form
+          header.innerHTML =
+            '<input class="table-name-input" id="edit-name-' + esc(tableId) + '" value="' + esc(tbl.name) + '" maxlength="60" />' +
+            '<input class="table-cap-input" id="edit-cap-' + esc(tableId) + '" type="number" value="' + tbl.capacity + '" min="1" max="50" />' +
+            '<div class="table-actions">' +
+            '<button class="icon-btn" data-do="save-table">✓</button>' +
+            '<button class="icon-btn" data-do="cancel-edit">✕</button>' +
+            '</div>';
+
+          header.querySelector("[data-do='cancel-edit']").addEventListener("click", function () {
+            renderSeating();
+          });
+          header.querySelector("[data-do='save-table']").addEventListener("click", function () {
+            var newName = document.getElementById("edit-name-" + tableId).value.trim();
+            var newCap = Number(document.getElementById("edit-cap-" + tableId).value);
+            if (!newName) { alert("Անունը պարտադիր է"); return; }
+            apiSeating("PUT", "/admin/api/tables/" + encodeURIComponent(tableId),
+              { name: newName, capacity: newCap })
+              .then(function () { return loadSeating(); })
+              .catch(function (err) { alert("Չհաջողվեց պահպանել: " + err.message); });
+          });
+        });
+      });
+    }
+
+    // ── Add table button ──
+    document.getElementById("add-table-btn").addEventListener("click", function () {
+      var name = prompt("Սեղանի անուն (օրինակ՝ «Ընտանիք»):");
+      if (!name || !name.trim()) return;
+      var capStr = prompt("Քանի՞ տեղ (1-50):", "8");
+      var cap = parseInt(capStr, 10);
+      if (!cap || cap < 1 || cap > 50) { alert("Տեղերի քանակը պետք է լինի 1-50"); return; }
+      if (!seatingLoaded) {
+        loadSeating().then(function () { createTable(name, cap); });
+      } else {
+        createTable(name, cap);
+      }
     });
-    render(DATA);
+
+    function createTable(name, capacity) {
+      apiSeating("POST", "/admin/api/tables", { name: name.trim(), capacity: capacity })
+        .then(function () { return loadSeating(); })
+        .catch(function (err) { alert("Չհաջողվեց ստեղծել: " + err.message); });
+    }
   </script>
 </body>
+
 </html>
