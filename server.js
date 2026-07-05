@@ -13,8 +13,66 @@ const RSVP_FILE = path.join(DATA_DIR, "rsvps.json");
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(RSVP_FILE)) fs.writeFileSync(RSVP_FILE, "[]", "utf8");
 
+app.set("trust proxy", true);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
+
+// Guess the visitor's language from the country of their IP address.
+// Russia -> Russian, Armenia -> Armenian, everything else -> default.
+// The front-end (public/js/i18n.js) calls this once on first visit;
+// an explicit manual choice is remembered client-side and skips it.
+const DEFAULT_LANG = "hy";
+const geoCache = new Map(); // ip -> { lang, at }
+const GEO_TTL_MS = 24 * 60 * 60 * 1000;
+
+function langForCountry(code) {
+  if (code === "RU") return "ru";
+  if (code === "AM") return "hy";
+  return DEFAULT_LANG;
+}
+
+function clientIp(req) {
+  const fwd = (req.headers["x-forwarded-for"] || "").split(",")[0].trim();
+  const ip = fwd || req.socket.remoteAddress || "";
+  return ip.replace(/^::ffff:/, ""); // unwrap IPv4-mapped IPv6
+}
+
+function isPrivateIp(ip) {
+  return (
+    !ip ||
+    ip === "::1" ||
+    ip === "127.0.0.1" ||
+    /^10\./.test(ip) ||
+    /^192\.168\./.test(ip) ||
+    /^172\.(1[6-9]|2\d|3[01])\./.test(ip)
+  );
+}
+
+app.get("/api/geo", async (req, res) => {
+  const ip = clientIp(req);
+  if (isPrivateIp(ip)) return res.json({ lang: DEFAULT_LANG });
+
+  const hit = geoCache.get(ip);
+  if (hit && Date.now() - hit.at < GEO_TTL_MS) {
+    return res.json({ lang: hit.lang });
+  }
+
+  try {
+    const r = await fetch(
+      `http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,countryCode`,
+      { signal: AbortSignal.timeout(2500) }
+    );
+    const data = await r.json();
+    const lang =
+      data && data.status === "success"
+        ? langForCountry(data.countryCode)
+        : DEFAULT_LANG;
+    geoCache.set(ip, { lang, at: Date.now() });
+    res.json({ lang });
+  } catch {
+    res.json({ lang: DEFAULT_LANG }); // never block the page on geo lookup
+  }
+});
 
 // Serialize writes so two RSVPs submitted at the same time can't clobber
 // each other's data in the JSON file.

@@ -9,5 +9,16 @@
       "Wine"
     ],
     "createdAt": "2026-06-14T16:09:02.923Z"
+  },
+  {
+    "id": "mqy55l8y8p31",
+    "name": "Test",
+    "attending": "yes",
+    "guests": 0,
+    "message": "",
+    "drinks": [
+      "Կարմիր գինի"
+    ],
+    "createdAt": "2026-06-28T18:47:39.730Z"
   }
 ]

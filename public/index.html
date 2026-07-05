@@ -6,6 +6,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!--metatextblock-->
   <title>Приглашение на свадьбу "Шаг в будущее"</title>
+  <!-- The wedding-day heart is drawn over day 26 by js/i18n.js; hide the
+       original overlay that used to sit on the old date. -->
+  <style>[data-elem-id='1725271378250']{display:none !important;}</style>
   <meta property="og:url" content="https://invitelove.ru/step_future" />
   <meta property="og:title" content="Приглашение на свадьбу &quot;Шаг в будущее&quot;" />
   <meta property="og:description" content="" />
@@ -79,6 +82,22 @@
         document.addEventListener('DOMContentLoaded', t_setvisRecs);
       }
     })();</script>
+  <!-- Armenian glyph coverage: the template fonts (1/2/3) are Latin/Cyrillic
+       only, so Armenian text fell back to Arial. These faces extend the same
+       families with a matching Armenian serif, scoped to the Armenian Unicode
+       range — Russian text is unaffected. Placed last so it wins for those
+       codepoints. -->
+  <style>
+    @font-face{font-family:'1';src:url('/fonts/noto-serif-armenian-400.woff2') format('woff2');unicode-range:U+0530-058F,U+FB13-FB17;font-display:swap;}
+    @font-face{font-family:'2';src:url('/fonts/noto-serif-armenian-400.woff2') format('woff2');unicode-range:U+0530-058F,U+FB13-FB17;font-display:swap;}
+    @font-face{font-family:'3';src:url('/fonts/noto-serif-armenian-400.woff2') format('woff2');unicode-range:U+0530-058F,U+FB13-FB17;font-display:swap;}
+
+    /* Two decorative floral SVGs frame the RSVP form; their large, mostly
+       transparent boxes sat on top of the name field and the submit button
+       (same z-index:3, later in DOM) and intercepted clicks. They are purely
+       decorative, so let pointer events pass through to the controls below. */
+    [data-elem-id='1725108883884'], [data-elem-id='1725127746077'] { pointer-events: none; }
+  </style>
 </head>
 
 <body class="t-body" style="margin:0;"> <!--allrecords-->
@@ -1970,7 +1989,7 @@
             data-field-width-res-320-value="320" data-field-fontsize-res-320-value="22"
             data-field-left-res-480-value="-80" data-field-fontsize-res-480-value="30" data-field-top-res-640-value="20"
             data-field-left-res-640-value="80" data-field-top-res-960-value="0" data-field-left-res-960-value="400">
-            <div class='tn-atom' field='tn_text_1765478263076000001'>Արամ և Անի<br />28.08.26</div>
+            <div class='tn-atom' field='tn_text_1765478263076000001'>Հարություն և Մարինե<br />26.08.26</div>
           </div>
         </div>
       </div>
@@ -3003,7 +3022,7 @@
             data-field-left-res-480-value="-40" data-field-left-res-640-value="40" data-field-top-res-960-value="1105"
             data-field-left-res-960-value="200">
             <div class='tn-atom tn-atom__html'>
-              <script src="https://megatimer.ru/get/65ba153438c892d3f5c226d77dc6e8ee.js"></script>
+              <div id="wi-countdown"></div>
             </div>
           </div>
           <div class='t396__elem tn-elem tn-elem__22232059411768048688941000001 ' data-elem-id='1768048688941000001'
@@ -8531,6 +8550,8 @@
       }, 2000);
     });
   </script>
+  <script src="/js/countdown.js" defer></script>
+  <script src="/js/i18n.js" defer></script>
 </body>
 
 </html>
