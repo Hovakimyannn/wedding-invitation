@@ -603,6 +603,43 @@
                     }
                   });
                 }
+                /* PAUSE ON TAB HIDE */
+                document.addEventListener('visibilitychange', function () {
+                  if (document.hidden) {
+                    if (!myAudio.paused) myAudio.pause();
+                  } else {
+                    if (!pauseBtn || !pauseBtn.classList.contains('paused')) {
+                      myAudio.play();
+                    }
+                  }
+                });
+
+                /* FLOATING MUTE BUTTON */
+                let floatMute = document.createElement('div');
+                floatMute.style.cssText = "position:fixed;bottom:20px;left:20px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.85);box-shadow:0 2px 10px rgba(0,0,0,0.15);z-index:99999;display:flex;align-items:center;justify-content:center;cursor:pointer;";
+                floatMute.innerHTML = '<span style="font-size:22px;line-height:1;">🎵</span>';
+                document.body.appendChild(floatMute);
+                floatMute.addEventListener('click', function () {
+                  if (myAudio.paused) {
+                    myAudio.play();
+                    floatMute.innerHTML = '<span style="font-size:22px;line-height:1;">🎵</span>';
+                    if (pauseBtn) pauseBtn.classList.remove('paused');
+                    if (wave) wave.classList.add('is-playing'), wave.classList.remove('is-paused');
+                  } else {
+                    myAudio.pause();
+                    floatMute.innerHTML = '<span style="font-size:22px;line-height:1;">🔇</span>';
+                    if (pauseBtn) pauseBtn.classList.add('paused');
+                    if (wave) wave.classList.remove('is-playing'), wave.classList.add('is-paused');
+                  }
+                });
+
+                // Sync floating button state with main pause button state
+                if (pauseBtn) {
+                  pauseBtn.addEventListener('click', function () {
+                    if (pauseBtn.classList.contains('paused')) floatMute.innerHTML = '<span style="font-size:22px;line-height:1;">🔇</span>';
+                    else floatMute.innerHTML = '<span style="font-size:22px;line-height:1;">🎵</span>';
+                  });
+                }
 
               });
             </script> <!-- nominify end -->
@@ -8529,6 +8566,11 @@
       </div>
       <script>t_onReady(function () { t_onFuncLoad('t396_init', function () { t396_init('1681034491'); }); });</script>
       <!-- /T396 -->
+      <!-- Footer credits -->
+      <div
+        style="position:fixed;bottom:20px;right:20px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;color:rgba(0,0,0,0.35);z-index:99998;pointer-events:none;">
+        Կայքը պատրաստեց փեսան 😉
+      </div>
     </div>
   </div> <!--/allrecords--> <!-- Stat --> <!-- Yandex.Metrika counter 97970177 -->
   <script type="text/javascript"
