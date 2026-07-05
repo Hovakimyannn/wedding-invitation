@@ -76,5 +76,116 @@
         "guestId": null
       }
     ]
+  },
+  {
+    "id": "mr7od6yol2cp",
+    "name": "hyurer",
+    "capacity": 8,
+    "seats": [
+      {
+        "pos": 1,
+        "guestId": null
+      },
+      {
+        "pos": 2,
+        "guestId": null
+      },
+      {
+        "pos": 3,
+        "guestId": null
+      },
+      {
+        "pos": 4,
+        "guestId": null
+      },
+      {
+        "pos": 5,
+        "guestId": null
+      },
+      {
+        "pos": 6,
+        "guestId": null
+      },
+      {
+        "pos": 7,
+        "guestId": null
+      },
+      {
+        "pos": 8,
+        "guestId": null
+      }
+    ]
+  },
+  {
+    "id": "mr7ojtmxoayh",
+    "name": "Intaniq",
+    "capacity": 6,
+    "shape": "round",
+    "seats": [
+      {
+        "pos": 1,
+        "guestId": null
+      },
+      {
+        "pos": 2,
+        "guestId": null
+      },
+      {
+        "pos": 3,
+        "guestId": null
+      },
+      {
+        "pos": 4,
+        "guestId": null
+      },
+      {
+        "pos": 5,
+        "guestId": null
+      },
+      {
+        "pos": 6,
+        "guestId": null
+      }
+    ]
+  },
+  {
+    "id": "mr7okowhx8lf",
+    "name": "Enkerner",
+    "capacity": 8,
+    "shape": "rect",
+    "seats": [
+      {
+        "pos": 1,
+        "guestId": null
+      },
+      {
+        "pos": 2,
+        "guestId": null
+      },
+      {
+        "pos": 3,
+        "guestId": null
+      },
+      {
+        "pos": 4,
+        "guestId": null
+      },
+      {
+        "pos": 5,
+        "guestId": null
+      },
+      {
+        "pos": 6,
+        "guestId": null
+      },
+      {
+        "pos": 7,
+        "guestId": null
+      },
+      {
+        "pos": 8,
+        "guestId": null
+      }
+    ]
   }
 ]

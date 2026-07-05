@@ -21,7 +21,7 @@
     }
 
     .wrap {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
@@ -43,7 +43,6 @@
     /* ── Tabs ── */
     .tabs {
       display: flex;
-      gap: 0;
       border-bottom: 2px solid #e7e0d4;
       margin-bottom: 24px;
     }
@@ -101,12 +100,12 @@
       margin-top: 4px;
     }
 
-    /* ── Toolbar ── */
+    /* ── Buttons ── */
     .toolbar {
       display: flex;
       justify-content: flex-end;
       gap: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
     }
 
     button.refresh,
@@ -124,7 +123,6 @@
     button.add-table {
       background: #2b2b2b;
       color: #fff;
-      border-color: #2b2b2b;
     }
 
     button.refresh:hover {
@@ -250,15 +248,15 @@
       max-width: 100%;
     }
 
-    /* ── Seating chart ── */
+    /* ── SEATING layout ── */
     .seating-layout {
       display: grid;
-      grid-template-columns: 220px 1fr;
+      grid-template-columns: 210px 1fr;
       gap: 20px;
       align-items: start;
     }
 
-    @media (max-width: 680px) {
+    @media (max-width: 700px) {
       .seating-layout {
         grid-template-columns: 1fr;
       }
@@ -268,17 +266,17 @@
     .unassigned-panel {
       background: #fff;
       border: 1px solid #e7e0d4;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 14px;
       position: sticky;
       top: 16px;
     }
 
     .unassigned-panel h3 {
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 400;
       color: #8a8378;
-      letter-spacing: .05em;
+      letter-spacing: .07em;
       text-transform: uppercase;
       margin-bottom: 10px;
     }
@@ -286,16 +284,16 @@
     .guest-chip {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       padding: 7px 10px;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       background: #faf7f2;
       border: 1px solid #e7e0d4;
       border-radius: 8px;
       font-size: 13px;
       cursor: grab;
       user-select: none;
-      transition: background .12s, border-color .12s, opacity .12s;
+      transition: background .12s, border-color .12s, box-shadow .12s;
     }
 
     .guest-chip:hover {
@@ -304,10 +302,11 @@
     }
 
     .guest-chip.dragging {
-      opacity: .45;
+      opacity: .4;
+      box-shadow: none;
     }
 
-    .guest-chip .att-dot {
+    .att-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
@@ -330,63 +329,52 @@
       background: #c4a84a;
     }
 
-    /* Tables grid */
-    .tables-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
-    }
-
-    .table-card {
-      background: #fff;
-      border: 1px solid #e7e0d4;
-      border-radius: 12px;
-      padding: 16px;
-    }
-
-    .table-card-header {
+    /* Tables visual grid */
+    .tables-visual-grid {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 32px;
+      align-items: flex-start;
     }
 
-    .table-name-wrap {
+    .table-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .table-block-header {
       display: flex;
       align-items: center;
       gap: 6px;
-      flex: 1;
-      min-width: 0;
+      width: 100%;
+      justify-content: center;
     }
 
-    .table-name {
-      font-size: 15px;
+    .table-block-name {
+      font-size: 14px;
       font-weight: 400;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      text-align: center;
     }
 
-    .table-cap-badge {
+    .table-block-cap {
       font-size: 11px;
       color: #8a8378;
       background: #f0ebe1;
       border-radius: 999px;
       padding: 2px 7px;
-      white-space: nowrap;
-      flex-shrink: 0;
     }
 
-    .table-actions {
+    .table-block-actions {
       display: flex;
       gap: 4px;
-      flex-shrink: 0;
     }
 
     button.icon-btn {
       font: inherit;
       font-size: 12px;
-      padding: 3px 8px;
+      padding: 2px 7px;
       border: 1px solid #d9d2c4;
       border-radius: 999px;
       background: transparent;
@@ -405,69 +393,80 @@
       border-color: #a03434;
     }
 
-    /* Seats */
-    .seats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
-      gap: 6px;
-    }
-
-    .seat-slot {
-      border: 1.5px dashed #d9d2c4;
-      border-radius: 8px;
-      padding: 6px 8px;
-      min-height: 50px;
-      font-size: 12px;
-      color: #b0a898;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      transition: border-color .12s, background .12s;
+    /* SVG table */
+    .table-svg-wrap {
       position: relative;
+      user-select: none;
     }
 
-    .seat-slot .seat-num {
-      font-size: 10px;
-      color: #c9c0b0;
-      margin-bottom: 2px;
-      line-height: 1;
-    }
-
-    .seat-slot.drag-over {
-      border-color: #8a7434;
-      background: #fdf8ea;
-    }
-
-    .seat-slot.occupied {
-      border-style: solid;
-      border-color: #c9c0b0;
-      background: #f8f5ee;
-      color: #2b2b2b;
-    }
-
-    .seat-slot .seat-guest-name {
-      font-size: 12px;
-      line-height: 1.2;
-      word-break: break-word;
-    }
-
-    .seat-slot .unassign-btn {
-      position: absolute;
-      top: 2px;
-      right: 4px;
-      font-size: 11px;
-      color: #b0a898;
+    .seat-node {
       cursor: pointer;
-      line-height: 1;
-      background: none;
-      border: none;
-      padding: 0;
+      transition: filter .1s;
     }
 
-    .seat-slot .unassign-btn:hover {
-      color: #a03434;
+    .seat-node:hover .seat-circle {
+      filter: brightness(.92);
+    }
+
+    .seat-node.drag-over .seat-circle {
+      stroke: #8a7434 !important;
+      stroke-width: 2.5 !important;
+      fill: #fdf8ea !important;
+    }
+
+    .seat-node.occupied .seat-circle {
+      fill: #e8f0e8;
+      stroke: #a0c8a0;
+    }
+
+    .seat-name {
+      font-size: 9.5px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      fill: #2b2b2b;
+      pointer-events: none;
+    }
+
+    .seat-num {
+      font-size: 9px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      fill: #b0a898;
+      pointer-events: none;
+    }
+
+    .seat-x {
+      font-size: 11px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      fill: #b0a898;
+      cursor: pointer;
+    }
+
+    .seat-x:hover {
+      fill: #a03434;
+    }
+
+    /* table surface */
+    .table-surface-round {
+      fill: #f5f0e8;
+      stroke: #d9d2c4;
+      stroke-width: 1.5;
+    }
+
+    .table-surface-rect {
+      fill: #f5f0e8;
+      stroke: #d9d2c4;
+      stroke-width: 1.5;
+      rx: 8;
+    }
+
+    .table-label {
+      font-size: 12px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      fill: #8a8378;
+      pointer-events: none;
     }
 
     .seating-empty {
@@ -477,23 +476,119 @@
       font-size: 14px;
     }
 
-    /* Edit table inline */
-    .table-name-input,
-    .table-cap-input {
-      font: inherit;
-      font-size: 13px;
-      padding: 3px 6px;
-      border: 1px solid #d9d2c4;
-      border-radius: 6px;
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .35);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
       background: #fff;
+      border-radius: 14px;
+      padding: 28px 28px 22px;
+      width: 340px;
+      max-width: 95vw;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, .18);
     }
 
-    .table-name-input {
-      width: 110px;
+    .modal h2 {
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 18px;
     }
 
-    .table-cap-input {
-      width: 52px;
+    .modal label {
+      display: block;
+      font-size: 13px;
+      color: #5a544a;
+      margin-bottom: 4px;
+      margin-top: 14px;
+    }
+
+    .modal input[type="text"],
+    .modal input[type="number"],
+    .modal select {
+      font: inherit;
+      font-size: 14px;
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #d9d2c4;
+      border-radius: 8px;
+      background: #faf7f2;
+      color: #2b2b2b;
+    }
+
+    .shape-btns {
+      display: flex;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .shape-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 6px;
+      border: 2px solid #d9d2c4;
+      border-radius: 10px;
+      background: #faf7f2;
+      cursor: pointer;
+      transition: border-color .12s, background .12s;
+      font: inherit;
+      font-size: 12px;
+      color: #5a544a;
+    }
+
+    .shape-btn.selected {
+      border-color: #2b2b2b;
+      background: #f0ebe1;
+      color: #2b2b2b;
+    }
+
+    .shape-btn svg {
+      display: block;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+      justify-content: flex-end;
+    }
+
+    .modal-actions button {
+      font: inherit;
+      font-size: 14px;
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: 1px solid #d9d2c4;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .modal-actions .btn-primary {
+      background: #2b2b2b;
+      color: #fff;
+      border-color: #2b2b2b;
+    }
+
+    .modal-actions .btn-primary:hover {
+      background: #444;
+    }
+
+    .modal-actions button:not(.btn-primary):hover {
+      border-color: #2b2b2b;
     }
   </style>
 </head>
@@ -503,13 +598,12 @@
     <h1>Հարություն &amp; Մարինե — 26.08.2026</h1>
     <p class="sub">Ադմին կառավարում</p>
 
-    <!-- Tabs -->
     <div class="tabs">
       <button class="tab-btn active" data-tab="rsvp">Հյուրեր (RSVP)</button>
       <button class="tab-btn" data-tab="seating">Նստատեղեր</button>
     </div>
 
-    <!-- ════════════ RSVP TAB ════════════ -->
+    <!-- ════ RSVP TAB ════ -->
     <div class="tab-panel active" id="tab-rsvp">
       <div class="cards">
         <div class="card">
@@ -552,23 +646,61 @@
       </div>
     </div>
 
-    <!-- ════════════ SEATING TAB ════════════ -->
+    <!-- ════ SEATING TAB ════ -->
     <div class="tab-panel" id="tab-seating">
       <div class="toolbar">
         <button class="add-table" id="add-table-btn" type="button">+ Ավելացնել սեղան</button>
       </div>
       <div class="seating-layout">
-        <!-- Left: unassigned guests -->
         <div class="unassigned-panel">
           <h3>Չնշանակված հյուրեր</h3>
           <div id="unassigned-list">
-            <div class="seating-empty" style="padding:20px 0">Բեռնվում է…</div>
+            <div class="empty" style="padding:16px 0">Բեռնվում է…</div>
           </div>
         </div>
-        <!-- Right: tables -->
-        <div id="tables-grid" class="tables-grid">
+        <div id="tables-visual-grid" class="tables-visual-grid">
           <div class="seating-empty">Բեռնվում է…</div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ Modal: add / edit table ════ -->
+  <div class="modal-overlay" id="table-modal">
+    <div class="modal">
+      <h2 id="modal-title">Ավելացնել սեղան</h2>
+      <label>Անուն</label>
+      <input type="text" id="modal-name" maxlength="60" placeholder="օր. Ընտանիք" />
+      <label>Տեղերի քանակ</label>
+      <input type="number" id="modal-cap" min="1" max="50" value="8" />
+      <label>Ձև</label>
+      <div class="shape-btns">
+        <button class="shape-btn selected" data-shape="round" id="shape-round" type="button">
+          <svg width="40" height="40" viewBox="0 0 40 40">
+            <circle cx="20" cy="20" r="16" fill="#f0ebe1" stroke="#c9c0b0" stroke-width="1.5" />
+            <circle cx="20" cy="4" r="3" fill="#a09080" />
+            <circle cx="36" cy="20" r="3" fill="#a09080" />
+            <circle cx="20" cy="36" r="3" fill="#a09080" />
+            <circle cx="4" cy="20" r="3" fill="#a09080" />
+          </svg>
+          Կլոր
+        </button>
+        <button class="shape-btn" data-shape="rect" id="shape-rect" type="button">
+          <svg width="40" height="40" viewBox="0 0 40 40">
+            <rect x="4" y="10" width="32" height="20" rx="4" fill="#f0ebe1" stroke="#c9c0b0" stroke-width="1.5" />
+            <circle cx="12" cy="5" r="3" fill="#a09080" />
+            <circle cx="28" cy="5" r="3" fill="#a09080" />
+            <circle cx="12" cy="35" r="3" fill="#a09080" />
+            <circle cx="28" cy="35" r="3" fill="#a09080" />
+            <circle cx="3" cy="20" r="3" fill="#a09080" />
+            <circle cx="37" cy="20" r="3" fill="#a09080" />
+          </svg>
+          Ուղղ.
+        </button>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="modal-cancel">Չեղարկել</button>
+        <button type="button" id="modal-save" class="btn-primary">Պահպանել</button>
       </div>
     </div>
   </div>
@@ -581,64 +713,54 @@
       yes: { label: "Կգա", cls: "b-yes", seats: 1, dot: "dot-yes" },
       pair: { label: "Կգա զույգով", cls: "b-pair", seats: 2, dot: "dot-pair" },
       no: { label: "Չի գա", cls: "b-no", seats: 0, dot: "dot-no" },
-      later: { label: "Կտեղեկացնի ավելի ուշ", cls: "b-later", seats: 0, dot: "dot-later" }
+      later: { label: "Կտեղ. ավելի ուշ", cls: "b-later", seats: 0, dot: "dot-later" }
     };
-
     function esc(s) {
       return String(s).replace(/[&<>"']/g, function (c) {
         return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
       });
     }
     function fmtDate(iso) {
-      var d = new Date(iso);
-      if (isNaN(d)) return "";
+      var d = new Date(iso); if (isNaN(d)) return "";
       var p = function (n) { return n < 10 ? "0" + n : n; };
-      return p(d.getDate()) + "." + p(d.getMonth() + 1) + "." + d.getFullYear() +
-        " " + p(d.getHours()) + ":" + p(d.getMinutes());
+      return p(d.getDate()) + "." + p(d.getMonth() + 1) + "." + d.getFullYear() + " " + p(d.getHours()) + ":" + p(d.getMinutes());
     }
+    var SVG_NS = "http://www.w3.org/2000/svg";
 
     // ═══════════════════════════════════════
-    //  Tab switching
+    //  Tabs
     // ═══════════════════════════════════════
-    var tabBtns = document.querySelectorAll(".tab-btn");
-    var tabPanels = document.querySelectorAll(".tab-panel");
-    tabBtns.forEach(function (btn) {
+    document.querySelectorAll(".tab-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        tabBtns.forEach(function (b) { b.classList.remove("active"); });
-        tabPanels.forEach(function (p) { p.classList.remove("active"); });
+        document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
+        document.querySelectorAll(".tab-panel").forEach(function (p) { p.classList.remove("active"); });
         btn.classList.add("active");
-        document.getElementById("tab-" + btn.getAttribute("data-tab")).classList.add("active");
-        if (btn.getAttribute("data-tab") === "seating") loadSeating();
+        document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+        if (btn.dataset.tab === "seating") loadSeating();
       });
     });
 
     // ═══════════════════════════════════════
     //  RSVP TAB
     // ═══════════════════════════════════════
-    // Filled in by the server when it serves this page.
     var DATA = /*__RSVPS__*/[];
 
     function renderRsvp(list) {
-      list = list.slice().sort(function (a, b) {
-        return (b.createdAt || "").localeCompare(a.createdAt || "");
-      });
-      var guests = 0, yes = 0, no = 0, later = 0;
-      var html = "";
+      list = list.slice().sort(function (a, b) { return (b.createdAt || "").localeCompare(a.createdAt || ""); });
+      var guests = 0, yes = 0, no = 0, later = 0, html = "";
       list.forEach(function (r) {
         var att = ATT[r.attending] || ATT.later;
         guests += att.seats + (r.attending === "yes" ? (r.guests || 0) : 0);
         if (r.attending === "yes" || r.attending === "pair") yes++;
         else if (r.attending === "no") no++;
         else later++;
-        html +=
-          '<tr data-id="' + esc(r.id || "") + '">' +
+        html += '<tr data-id="' + esc(r.id || "") + '">' +
           '<td class="c-name">' + esc(r.name || "") + "</td>" +
-          '<td class="c-att" data-att="' + esc(r.attending || "later") + '">' +
-          '<span class="badge ' + att.cls + '">' + att.label + "</span></td>" +
+          '<td class="c-att" data-att="' + esc(r.attending || "later") + '"><span class="badge ' + att.cls + '">' + att.label + "</span></td>" +
           '<td class="date">' + fmtDate(r.createdAt) + "</td>" +
           '<td class="acts">' +
-          '<button class="act" data-do="edit" type="button">Խմբագրել</button>' +
-          '<button class="act danger" data-do="del" type="button">Ջնջել</button>' +
+          '<button class="act" data-do="edit" type="button">Խմբ.</button>' +
+          '<button class="act danger" data-do="del" type="button">Ջնջ.</button>' +
           "</td></tr>";
       });
       document.getElementById("rows").innerHTML = html;
@@ -652,68 +774,42 @@
 
     function apiRsvp(method, id, body) {
       return fetch("/admin/api/rsvps/" + encodeURIComponent(id), {
-        method: method,
-        headers: body ? { "Content-Type": "application/json" } : undefined,
-        body: body ? JSON.stringify(body) : undefined,
+        method: method, headers: body ? { "Content-Type": "application/json" } : undefined,
+        body: body ? JSON.stringify(body) : undefined
       }).then(function (r) {
         if (r.status === 401) { location.reload(); throw new Error("auth"); }
-        return r.json().then(function (d) {
-          if (!r.ok || !d.ok) throw new Error(d.error || r.status);
-          return d;
-        });
+        return r.json().then(function (d) { if (!r.ok || !d.ok) throw new Error(d.error || r.status); return d; });
       });
     }
 
     function startEdit(tr) {
-      var nameTd = tr.querySelector(".c-name");
-      var attTd = tr.querySelector(".c-att");
-      var actsTd = tr.querySelector(".acts");
-      var oldName = nameTd.textContent;
-      var oldAtt = attTd.getAttribute("data-att");
-      nameTd.innerHTML = "";
-      var inp = document.createElement("input");
-      inp.type = "text"; inp.value = oldName;
-      nameTd.appendChild(inp);
-      attTd.innerHTML = "";
-      var sel = document.createElement("select");
-      Object.keys(ATT).forEach(function (k) {
-        var o = document.createElement("option");
-        o.value = k; o.textContent = ATT[k].label;
-        if (k === oldAtt) o.selected = true;
-        sel.appendChild(o);
-      });
+      var nameTd = tr.querySelector(".c-name"), attTd = tr.querySelector(".c-att"), actsTd = tr.querySelector(".acts");
+      var oldName = nameTd.textContent, oldAtt = attTd.getAttribute("data-att");
+      nameTd.innerHTML = ""; var inp = document.createElement("input"); inp.type = "text"; inp.value = oldName; nameTd.appendChild(inp);
+      attTd.innerHTML = ""; var sel = document.createElement("select");
+      Object.keys(ATT).forEach(function (k) { var o = document.createElement("option"); o.value = k; o.textContent = ATT[k].label; if (k === oldAtt) o.selected = true; sel.appendChild(o); });
       attTd.appendChild(sel);
-      actsTd.innerHTML =
-        '<button class="act" data-do="save" type="button">Պահպանել</button>' +
-        '<button class="act" data-do="cancel" type="button">Չեղարկել</button>';
+      actsTd.innerHTML = '<button class="act" data-do="save" type="button">Պահ.</button><button class="act" data-do="cancel" type="button">Չեղ.</button>';
       inp.focus();
     }
 
     document.getElementById("rows").addEventListener("click", function (e) {
-      var btn = e.target.closest("button.act");
-      if (!btn) return;
-      var tr = btn.closest("tr");
-      var id = tr.getAttribute("data-id");
-      var act = btn.getAttribute("data-do");
+      var btn = e.target.closest("button.act"); if (!btn) return;
+      var tr = btn.closest("tr"), id = tr.getAttribute("data-id"), act = btn.getAttribute("data-do");
       if (act === "del") {
         var who = tr.querySelector(".c-name").textContent;
         if (!confirm("Ջնջե՞լ «" + who + "» պատասխանը։")) return;
-        apiRsvp("DELETE", id).then(function () { location.reload(); })
-          .catch(function (err) { alert("Չհաջողվեց ջնջել։ " + err.message); });
+        apiRsvp("DELETE", id).then(function () { location.reload(); }).catch(function (err) { alert("Չհաջողվեց ջնջել։ " + err.message); });
       } else if (act === "edit") {
         startEdit(tr);
       } else if (act === "cancel") {
         renderRsvp(DATA);
       } else if (act === "save") {
-        var name = tr.querySelector(".c-name input").value.trim();
-        var attending = tr.querySelector(".c-att select").value;
+        var name = tr.querySelector(".c-name input").value.trim(), attending = tr.querySelector(".c-att select").value;
         if (!name) { alert("Անունը պարտադիր է"); return; }
-        apiRsvp("PUT", id, { name: name, attending: attending })
-          .then(function () { location.reload(); })
-          .catch(function (err) { alert("Չհաջողվեց պահպանել։ " + err.message); });
+        apiRsvp("PUT", id, { name, attending }).then(function () { location.reload(); }).catch(function (err) { alert("Չհաջողվեց:" + err.message); });
       }
     });
-
     document.getElementById("refresh").addEventListener("click", function () { location.reload(); });
     renderRsvp(DATA);
 
@@ -726,227 +822,408 @@
 
     function apiSeating(method, url, body) {
       return fetch(url, {
-        method: method,
-        headers: body ? { "Content-Type": "application/json" } : undefined,
-        body: body ? JSON.stringify(body) : undefined,
+        method: method, headers: body ? { "Content-Type": "application/json" } : undefined,
+        body: body ? JSON.stringify(body) : undefined
       }).then(function (r) {
         if (r.status === 401) { location.reload(); throw new Error("auth"); }
-        return r.json().then(function (d) {
-          if (!r.ok || !d.ok) throw new Error(d.error || r.status);
-          return d;
-        });
+        return r.json().then(function (d) { if (!r.ok || !d.ok) throw new Error(d.error || r.status); return d; });
       });
     }
 
     function loadSeating() {
       return apiSeating("GET", "/admin/api/seating").then(function (d) {
-        seatingData = d;
-        seatingLoaded = true;
-        renderSeating();
+        seatingData = d; seatingLoaded = true; renderSeating();
       }).catch(function (err) {
-        document.getElementById("tables-grid").innerHTML =
-          '<div class="seating-empty">Չհաջողվեց բեռնել: ' + esc(err.message) + "</div>";
+        document.getElementById("tables-visual-grid").innerHTML = '<div class="seating-empty">Չհաջողվեց: ' + esc(err.message) + "</div>";
       });
     }
 
-    function assignedGuestIds() {
-      var ids = {};
-      seatingData.tables.forEach(function (t) {
-        t.seats.forEach(function (s) { if (s.guestId) ids[s.guestId] = true; });
-      });
-      return ids;
+    function assignedMap() {
+      var m = {}; seatingData.tables.forEach(function (t) { t.seats.forEach(function (s) { if (s.guestId) m[s.guestId] = true; }); });
+      return m;
+    }
+
+    // ── Truncate name to fit in a seat circle
+    function truncName(n, maxLen) {
+      maxLen = maxLen || 11;
+      if (!n) return "";
+      // take first name only if has space
+      var parts = n.trim().split(/\s+/);
+      var s = parts[0];
+      if (s.length > maxLen) s = s.slice(0, maxLen - 1) + "…";
+      return s;
+    }
+
+    // ── Build <g> seat element for SVG
+    function makeSeatEl(x, y, r, pos, guest, tableId) {
+      var g = document.createElementNS(SVG_NS, "g");
+      g.classList.add("seat-node");
+      g.setAttribute("data-table-id", tableId);
+      g.setAttribute("data-pos", pos);
+      if (guest) g.classList.add("occupied");
+
+      var circle = document.createElementNS(SVG_NS, "circle");
+      circle.classList.add("seat-circle");
+      circle.setAttribute("cx", x);
+      circle.setAttribute("cy", y);
+      circle.setAttribute("r", r);
+      circle.setAttribute("fill", guest ? "#e8f0e8" : "#fff");
+      circle.setAttribute("stroke", guest ? "#a0c8a0" : "#d9d2c4");
+      circle.setAttribute("stroke-width", "1.5");
+      g.appendChild(circle);
+
+      if (guest) {
+        var txt = document.createElementNS(SVG_NS, "text");
+        txt.classList.add("seat-name");
+        txt.setAttribute("x", x);
+        txt.setAttribute("y", y + 1);
+        txt.setAttribute("font-size", r >= 20 ? "9.5" : "8");
+        txt.textContent = truncName(guest.name, Math.floor(r / 4.5));
+        g.appendChild(txt);
+
+        // × unassign button
+        var xBtn = document.createElementNS(SVG_NS, "text");
+        xBtn.classList.add("seat-x");
+        xBtn.setAttribute("x", x + r * 0.65);
+        xBtn.setAttribute("y", y - r * 0.65);
+        xBtn.setAttribute("font-size", "10");
+        xBtn.setAttribute("data-unassign", guest.id);
+        xBtn.textContent = "×";
+        g.appendChild(xBtn);
+      } else {
+        var numTxt = document.createElementNS(SVG_NS, "text");
+        numTxt.classList.add("seat-num");
+        numTxt.setAttribute("x", x);
+        numTxt.setAttribute("y", y + 1);
+        numTxt.setAttribute("font-size", "9");
+        numTxt.textContent = pos;
+        g.appendChild(numTxt);
+      }
+      return g;
+    }
+
+    // ── Draw one table as SVG
+    function drawTable(t, guestMap) {
+      var shape = t.shape || "round";
+      var n = t.seats.length;
+      var SR = Math.max(16, Math.min(24, Math.floor(220 / n / 1.2))); // seat radius
+      var PAD = SR + 4;
+
+      var svgW, svgH, cx, cy, tableEl;
+
+      if (shape === "round") {
+        // Circular arrangement
+        var TR = Math.max(40, Math.ceil(n * (SR * 2 + 6) / (2 * Math.PI))); // table radius
+        svgW = (TR + PAD) * 2 + 4;
+        svgH = svgW;
+        cx = svgW / 2;
+        cy = svgH / 2;
+
+        var svg = document.createElementNS(SVG_NS, "svg");
+        svg.setAttribute("width", svgW);
+        svg.setAttribute("height", svgH);
+        svg.setAttribute("viewBox", "0 0 " + svgW + " " + svgH);
+
+        // table surface
+        tableEl = document.createElementNS(SVG_NS, "circle");
+        tableEl.classList.add("table-surface-round");
+        tableEl.setAttribute("cx", cx);
+        tableEl.setAttribute("cy", cy);
+        tableEl.setAttribute("r", TR - 2);
+        svg.appendChild(tableEl);
+
+        // table name
+        var lbl = document.createElementNS(SVG_NS, "text");
+        lbl.classList.add("table-label");
+        lbl.setAttribute("x", cx); lbl.setAttribute("y", cy);
+        lbl.setAttribute("font-size", "11");
+        // just show seat count
+        lbl.textContent = n + " տ.";
+        svg.appendChild(lbl);
+
+        // seats around perimeter
+        t.seats.forEach(function (s, i) {
+          var angle = (2 * Math.PI * i / n) - Math.PI / 2;
+          var sx = cx + (TR + SR + 2) * Math.cos(angle);
+          var sy = cy + (TR + SR + 2) * Math.sin(angle);
+          var guest = s.guestId ? guestMap[s.guestId] : null;
+          svg.appendChild(makeSeatEl(sx, sy, SR, s.pos, guest, t.id));
+        });
+        return svg;
+
+      } else {
+        // Rectangular arrangement
+        // seats on top and bottom, remainder on sides
+        var topN = Math.ceil(n / 2);
+        var bottomN = Math.floor(n / 2);
+        var sideN = 0;
+        // if n > 8 use sides too
+        if (n > 8) {
+          var perSide = Math.floor((n - 8) / 2);
+          topN = 4;
+          bottomN = 4;
+          sideN = perSide;
+          // distribute remainder
+          if (n - 8 - perSide * 2 > 0) topN += 1;
+        }
+
+        var GAP = SR * 2 + 6;
+        var tableW = Math.max(topN, bottomN) * GAP + 16;
+        var tableH = Math.max(60, sideN > 0 ? (sideN * GAP + 16) : 56);
+
+        svgW = tableW + (PAD + SR) * 2;
+        svgH = tableH + (PAD + SR) * 2;
+        cx = svgW / 2;
+        cy = svgH / 2;
+        var tx = cx - tableW / 2;
+        var ty = cy - tableH / 2;
+
+        var svg = document.createElementNS(SVG_NS, "svg");
+        svg.setAttribute("width", svgW);
+        svg.setAttribute("height", svgH);
+        svg.setAttribute("viewBox", "0 0 " + svgW + " " + svgH);
+
+        var rect = document.createElementNS(SVG_NS, "rect");
+        rect.setAttribute("x", tx); rect.setAttribute("y", ty);
+        rect.setAttribute("width", tableW); rect.setAttribute("height", tableH);
+        rect.setAttribute("rx", "10");
+        rect.classList.add("table-surface-rect");
+        svg.appendChild(rect);
+
+        var lbl2 = document.createElementNS(SVG_NS, "text");
+        lbl2.classList.add("table-label");
+        lbl2.setAttribute("x", cx); lbl2.setAttribute("y", cy);
+        lbl2.setAttribute("font-size", "11");
+        lbl2.textContent = n + " տ.";
+        svg.appendChild(lbl2);
+
+        // position seats
+        var seatIdx = 0;
+        function addSeat(sx, sy) {
+          if (seatIdx >= t.seats.length) return;
+          var s = t.seats[seatIdx++];
+          var guest = s.guestId ? guestMap[s.guestId] : null;
+          svg.appendChild(makeSeatEl(sx, sy, SR, s.pos, guest, t.id));
+        }
+
+        // top row
+        var topCount = topN;
+        var topStart = cx - (topCount - 1) * GAP / 2;
+        for (var i = 0; i < topCount; i++) addSeat(topStart + i * GAP, ty - SR - 4);
+
+        // right side
+        if (sideN > 0) {
+          var sideStart = cy - (sideN - 1) * GAP / 2;
+          for (var i = 0; i < sideN; i++) addSeat(tx + tableW + SR + 4, sideStart + i * GAP);
+        }
+
+        // bottom row
+        var botCount = bottomN;
+        var botStart = cx - (botCount - 1) * GAP / 2;
+        for (var i = 0; i < botCount; i++) addSeat(botStart + i * GAP, ty + tableH + SR + 4);
+
+        // left side
+        if (sideN > 0) {
+          var sideStart = cy - (sideN - 1) * GAP / 2;
+          for (var i = 0; i < sideN; i++) addSeat(tx - SR - 4, sideStart + i * GAP);
+        }
+
+        return svg;
+      }
     }
 
     function renderSeating() {
-      var assigned = assignedGuestIds();
-
-      // ── Unassigned panel ──
-      var coming = seatingData.rsvps.filter(function (r) {
-        return r.attending === "yes" || r.attending === "pair";
-      });
+      var assigned = assignedMap();
+      var coming = seatingData.rsvps.filter(function (r) { return r.attending === "yes" || r.attending === "pair"; });
+      var guestMap = {};
+      coming.forEach(function (r) { guestMap[r.id] = r; });
       var unassigned = coming.filter(function (r) { return !assigned[r.id]; });
 
+      // ── Unassigned chips ──
       var ulEl = document.getElementById("unassigned-list");
       if (unassigned.length === 0) {
-        ulEl.innerHTML = '<div style="font-size:13px;color:#8a8378;padding:8px 0">Բոլոր հյուրերը նստեցված են</div>';
+        ulEl.innerHTML = '<div style="font-size:13px;color:#8a8378;padding:8px 0">Բոլոր հյուրերը նստեցված են ✓</div>';
       } else {
         ulEl.innerHTML = unassigned.map(function (r) {
           var att = ATT[r.attending] || ATT.later;
           return '<div class="guest-chip" draggable="true" data-guest-id="' + esc(r.id) + '">' +
-            '<span class="att-dot ' + att.dot + '"></span>' +
-            '<span>' + esc(r.name) + '</span>' +
-            '</div>';
+            '<span class="att-dot ' + att.dot + '"></span><span>' + esc(r.name) + '</span></div>';
         }).join("");
-        // Drag events on chips
         ulEl.querySelectorAll(".guest-chip").forEach(function (chip) {
           chip.addEventListener("dragstart", function (e) {
             dragGuestId = chip.getAttribute("data-guest-id");
             chip.classList.add("dragging");
             e.dataTransfer.effectAllowed = "move";
           });
-          chip.addEventListener("dragend", function () {
-            chip.classList.remove("dragging");
-          });
+          chip.addEventListener("dragend", function () { chip.classList.remove("dragging"); });
         });
       }
 
-      // Also make assigned chips (inside seat slots) draggable from their slots
-      // (handled below in renderSeating tables section)
-
-      // ── Tables grid ──
-      var grid = document.getElementById("tables-grid");
+      // ── Tables ──
+      var grid = document.getElementById("tables-visual-grid");
       if (seatingData.tables.length === 0) {
-        grid.innerHTML = '<div class="seating-empty">Սեղաններ դեռ չկան։<br>Սեղմեք «+ Ավելացնել սեղան»</div>';
+        grid.innerHTML = '<div class="seating-empty">Սեղաններ չկան։ Սեղմեք «+ Ավելացնել սեղան»</div>';
         return;
       }
 
-      grid.innerHTML = seatingData.tables.map(function (t) {
-        var seatsHtml = t.seats.map(function (s) {
-          if (s.guestId) {
-            var guest = seatingData.rsvps.find(function (r) { return r.id === s.guestId; });
-            var gname = guest ? esc(guest.name) : "???";
-            return '<div class="seat-slot occupied" data-table-id="' + esc(t.id) + '" data-pos="' + s.pos + '">' +
-              '<button class="unassign-btn" data-guest-id="' + esc(s.guestId) + '" title="Հանել">×</button>' +
-              '<span class="seat-num">' + s.pos + '</span>' +
-              '<span class="seat-guest-name">' + gname + '</span>' +
-              '</div>';
-          } else {
-            return '<div class="seat-slot" data-table-id="' + esc(t.id) + '" data-pos="' + s.pos + '">' +
-              '<span class="seat-num">' + s.pos + '</span>' +
-              '</div>';
-          }
-        }).join("");
+      grid.innerHTML = "";
+      seatingData.tables.forEach(function (t) {
+        var block = document.createElement("div");
+        block.className = "table-block";
 
-        return '<div class="table-card" data-table-id="' + esc(t.id) + '">' +
-          '<div class="table-card-header">' +
-          '<div class="table-name-wrap">' +
-          '<span class="table-name">' + esc(t.name) + '</span>' +
-          '<span class="table-cap-badge">' + t.capacity + ' տեղ</span>' +
-          '</div>' +
-          '<div class="table-actions">' +
-          '<button class="icon-btn" data-do="edit-table">✎</button>' +
-          '<button class="icon-btn danger" data-do="del-table">✕</button>' +
-          '</div>' +
-          '</div>' +
-          '<div class="seats-grid">' + seatsHtml + '</div>' +
+        // header
+        var hdr = document.createElement("div");
+        hdr.className = "table-block-header";
+        hdr.innerHTML =
+          '<span class="table-block-name">' + esc(t.name) + '</span>' +
+          '<span class="table-block-cap">' + t.capacity + ' տ.</span>' +
+          '<div class="table-block-actions">' +
+          '<button class="icon-btn" data-do="edit-table" data-id="' + esc(t.id) + '">✎</button>' +
+          '<button class="icon-btn danger" data-do="del-table" data-id="' + esc(t.id) + '">✕</button>' +
           '</div>';
-      }).join("");
+        block.appendChild(hdr);
 
-      // ── Bind drag-and-drop on seat slots ──
-      grid.querySelectorAll(".seat-slot").forEach(function (slot) {
-        if (slot.classList.contains("occupied")) {
-          // Occupied slot: make the name draggable to re-assign
-          slot.setAttribute("draggable", "true");
-          slot.addEventListener("dragstart", function (e) {
-            var gid = slot.querySelector(".unassign-btn")
-              ? slot.querySelector(".unassign-btn").getAttribute("data-guest-id")
-              : null;
-            if (!gid) return e.preventDefault();
-            dragGuestId = gid;
+        // SVG visual
+        var svgWrap = document.createElement("div");
+        svgWrap.className = "table-svg-wrap";
+        var svg = drawTable(t, guestMap);
+        svgWrap.appendChild(svg);
+        block.appendChild(svgWrap);
+
+        grid.appendChild(block);
+      });
+
+      // ── Bind seat drag-drop ──
+      grid.querySelectorAll(".seat-node").forEach(function (g) {
+        var tableId = g.getAttribute("data-table-id");
+        var pos = Number(g.getAttribute("data-pos"));
+
+        // Allow occupied seats to start a drag
+        if (g.classList.contains("occupied")) {
+          g.addEventListener("dragstart", function (e) {
+            var xBtn = g.querySelector("[data-unassign]");
+            if (!xBtn) return e.preventDefault();
+            dragGuestId = xBtn.getAttribute("data-unassign");
             e.dataTransfer.effectAllowed = "move";
           });
+          g.setAttribute("draggable", "true");
         }
-        slot.addEventListener("dragover", function (e) {
-          if (!slot.classList.contains("occupied")) {
-            e.preventDefault();
-            slot.classList.add("drag-over");
-          }
-        });
-        slot.addEventListener("dragleave", function () {
-          slot.classList.remove("drag-over");
-        });
-        slot.addEventListener("drop", function (e) {
-          e.preventDefault();
-          slot.classList.remove("drag-over");
-          if (slot.classList.contains("occupied")) return;
-          if (!dragGuestId) return;
-          var tableId = slot.getAttribute("data-table-id");
-          var pos = Number(slot.getAttribute("data-pos"));
-          apiSeating("PUT", "/admin/api/seating/assign", {
-            guestId: dragGuestId, tableId: tableId, pos: pos
-          }).then(function () {
-            dragGuestId = null;
-            return loadSeating();
-          }).catch(function (err) { alert("Չհաջողվեց նշանակել: " + err.message); });
-        });
-      });
 
-      // ── Bind unassign (×) buttons ──
-      grid.querySelectorAll(".unassign-btn").forEach(function (btn) {
-        btn.addEventListener("click", function (e) {
-          e.stopPropagation();
-          var gid = btn.getAttribute("data-guest-id");
-          apiSeating("PUT", "/admin/api/seating/assign", { guestId: gid })
-            .then(function () { return loadSeating(); })
-            .catch(function (err) { alert("Չհաջողվեց հանել: " + err.message); });
-        });
-      });
-
-      // ── Bind table edit/delete buttons ──
-      grid.querySelectorAll(".icon-btn[data-do='del-table']").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          var card = btn.closest(".table-card");
-          var tableId = card.getAttribute("data-table-id");
-          var tbl = seatingData.tables.find(function (t) { return t.id === tableId; });
-          if (!confirm("Ջնջե՞լ «" + (tbl ? tbl.name : "") + "» սեղանը։")) return;
-          apiSeating("DELETE", "/admin/api/tables/" + encodeURIComponent(tableId))
-            .then(function () { return loadSeating(); })
-            .catch(function (err) { alert("Չհաջողվեց ջնջել: " + err.message); });
-        });
-      });
-
-      grid.querySelectorAll(".icon-btn[data-do='edit-table']").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          var card = btn.closest(".table-card");
-          var tableId = card.getAttribute("data-table-id");
-          var tbl = seatingData.tables.find(function (t) { return t.id === tableId; });
-          if (!tbl) return;
-
-          var header = card.querySelector(".table-card-header");
-          // Replace with inline edit form
-          header.innerHTML =
-            '<input class="table-name-input" id="edit-name-' + esc(tableId) + '" value="' + esc(tbl.name) + '" maxlength="60" />' +
-            '<input class="table-cap-input" id="edit-cap-' + esc(tableId) + '" type="number" value="' + tbl.capacity + '" min="1" max="50" />' +
-            '<div class="table-actions">' +
-            '<button class="icon-btn" data-do="save-table">✓</button>' +
-            '<button class="icon-btn" data-do="cancel-edit">✕</button>' +
-            '</div>';
-
-          header.querySelector("[data-do='cancel-edit']").addEventListener("click", function () {
-            renderSeating();
-          });
-          header.querySelector("[data-do='save-table']").addEventListener("click", function () {
-            var newName = document.getElementById("edit-name-" + tableId).value.trim();
-            var newCap = Number(document.getElementById("edit-cap-" + tableId).value);
-            if (!newName) { alert("Անունը պարտադիր է"); return; }
-            apiSeating("PUT", "/admin/api/tables/" + encodeURIComponent(tableId),
-              { name: newName, capacity: newCap })
+        // unassign × click
+        var xBtn = g.querySelector(".seat-x");
+        if (xBtn) {
+          xBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var gid = xBtn.getAttribute("data-unassign");
+            apiSeating("PUT", "/admin/api/seating/assign", { guestId: gid })
               .then(function () { return loadSeating(); })
-              .catch(function (err) { alert("Չհաջողվեց պահպանել: " + err.message); });
+              .catch(function (err) { alert("Չհաջողվեց հանել: " + err.message); });
           });
+        }
+
+        if (!g.classList.contains("occupied")) {
+          g.addEventListener("dragover", function (e) {
+            e.preventDefault();
+            g.classList.add("drag-over");
+          });
+          g.addEventListener("dragleave", function () {
+            g.classList.remove("drag-over");
+          });
+          g.addEventListener("drop", function (e) {
+            e.preventDefault();
+            g.classList.remove("drag-over");
+            if (!dragGuestId) return;
+            apiSeating("PUT", "/admin/api/seating/assign", { guestId: dragGuestId, tableId: tableId, pos: pos })
+              .then(function () { dragGuestId = null; return loadSeating(); })
+              .catch(function (err) { alert("Չհաջողվեց նշ.: " + err.message); });
+          });
+        }
+      });
+
+      // ── Table edit / delete buttons ──
+      grid.querySelectorAll("[data-do='del-table']").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var tid = btn.getAttribute("data-id");
+          var tbl = seatingData.tables.find(function (x) { return x.id === tid; });
+          if (!confirm("Ջնջե՞լ «" + (tbl ? tbl.name : "") + "» սեղանը։")) return;
+          apiSeating("DELETE", "/admin/api/tables/" + encodeURIComponent(tid))
+            .then(function () { return loadSeating(); })
+            .catch(function (err) { alert("Չհաջողվ.: " + err.message); });
+        });
+      });
+
+      grid.querySelectorAll("[data-do='edit-table']").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var tid = btn.getAttribute("data-id");
+          var tbl = seatingData.tables.find(function (x) { return x.id === tid; });
+          if (!tbl) return;
+          openModal(tbl);
         });
       });
     }
 
-    // ── Add table button ──
-    document.getElementById("add-table-btn").addEventListener("click", function () {
-      var name = prompt("Սեղանի անուն (օրինակ՝ «Ընտանիք»):");
-      if (!name || !name.trim()) return;
-      var capStr = prompt("Քանի՞ տեղ (1-50):", "8");
-      var cap = parseInt(capStr, 10);
-      if (!cap || cap < 1 || cap > 50) { alert("Տեղերի քանակը պետք է լինի 1-50"); return; }
-      if (!seatingLoaded) {
-        loadSeating().then(function () { createTable(name, cap); });
+    // ═══════════════════════════════════════
+    //  Modal (add / edit table)
+    // ═══════════════════════════════════════
+    var modalEditId = null;
+    var selectedShape = "round";
+
+    function openModal(tbl) {
+      modalEditId = tbl ? tbl.id : null;
+      document.getElementById("modal-title").textContent = tbl ? "Խմբագրել սեղան" : "Ավելացնել սեղան";
+      document.getElementById("modal-name").value = tbl ? tbl.name : "";
+      document.getElementById("modal-cap").value = tbl ? tbl.capacity : 8;
+      selectedShape = tbl ? (tbl.shape || "round") : "round";
+      updateShapeBtns();
+      document.getElementById("table-modal").classList.add("open");
+      document.getElementById("modal-name").focus();
+    }
+
+    function closeModal() {
+      document.getElementById("table-modal").classList.remove("open");
+      modalEditId = null;
+    }
+
+    function updateShapeBtns() {
+      document.querySelectorAll(".shape-btn").forEach(function (b) {
+        b.classList.toggle("selected", b.dataset.shape === selectedShape);
+      });
+    }
+
+    document.querySelectorAll(".shape-btn").forEach(function (b) {
+      b.addEventListener("click", function () { selectedShape = b.dataset.shape; updateShapeBtns(); });
+    });
+    document.getElementById("modal-cancel").addEventListener("click", closeModal);
+    document.getElementById("table-modal").addEventListener("click", function (e) {
+      if (e.target === this) closeModal();
+    });
+
+    document.getElementById("modal-save").addEventListener("click", function () {
+      var name = document.getElementById("modal-name").value.trim();
+      var cap = parseInt(document.getElementById("modal-cap").value, 10);
+      if (!name) { alert("Անունը պարտադիր է"); return; }
+      if (!cap || cap < 1 || cap > 50) { alert("Տեղ՝ 1-50"); return; }
+
+      var payload = { name: name, capacity: cap, shape: selectedShape };
+
+      if (modalEditId) {
+        apiSeating("PUT", "/admin/api/tables/" + encodeURIComponent(modalEditId), payload)
+          .then(function () { closeModal(); return loadSeating(); })
+          .catch(function (err) { alert("Չհաջողվ.: " + err.message); });
       } else {
-        createTable(name, cap);
+        apiSeating("POST", "/admin/api/tables", payload)
+          .then(function () { closeModal(); return loadSeating(); })
+          .catch(function (err) { alert("Չհաջողվ.: " + err.message); });
       }
     });
 
-    function createTable(name, capacity) {
-      apiSeating("POST", "/admin/api/tables", { name: name.trim(), capacity: capacity })
-        .then(function () { return loadSeating(); })
-        .catch(function (err) { alert("Չհաջողվեց ստեղծել: " + err.message); });
-    }
+    document.getElementById("add-table-btn").addEventListener("click", function () {
+      if (!seatingLoaded) {
+        loadSeating().then(function () { openModal(null); });
+      } else {
+        openModal(null);
+      }
+    });
   </script>
 </body>
 

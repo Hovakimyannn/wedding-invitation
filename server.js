@@ -255,7 +255,7 @@ app.get("/admin/api/seating", basicAuth, async (req, res) => {
 
 // POST /admin/api/tables — create a table
 app.post("/admin/api/tables", basicAuth, async (req, res) => {
-  const { name, capacity } = req.body || {};
+  const { name, capacity, shape } = req.body || {};
   if (!name || typeof name !== "string" || !name.trim()) {
     return res.status(400).json({ ok: false, error: "Անունը պարտադիր է" });
   }
@@ -264,6 +264,7 @@ app.post("/admin/api/tables", basicAuth, async (req, res) => {
     id: makeId(),
     name: name.trim().slice(0, 60),
     capacity: cap,
+    shape: shape === "rect" ? "rect" : "round",
     seats: Array.from({ length: cap }, (_, i) => ({ pos: i + 1, guestId: null })),
   };
   try {
@@ -276,7 +277,7 @@ app.post("/admin/api/tables", basicAuth, async (req, res) => {
 
 // PUT /admin/api/tables/:id — rename / resize a table
 app.put("/admin/api/tables/:id", basicAuth, async (req, res) => {
-  const { name, capacity } = req.body || {};
+  const { name, capacity, shape } = req.body || {};
   const cap = capacity != null ? Math.min(Math.max(Number.parseInt(capacity, 10) || 1, 1), 50) : null;
   try {
     let found = false;
@@ -290,7 +291,8 @@ app.put("/admin/api/tables/:id", basicAuth, async (req, res) => {
         while (seats.length < newCap) seats.push({ pos: seats.length + 1, guestId: null });
         // re-number positions
         seats = seats.map((s, i) => ({ ...s, pos: i + 1 }));
-        return { ...t, name: name ? name.trim().slice(0, 60) : t.name, capacity: newCap, seats };
+        const newShape = shape === "round" || shape === "rect" ? shape : t.shape || "round";
+        return { ...t, name: name ? name.trim().slice(0, 60) : t.name, capacity: newCap, shape: newShape, seats };
       })
     );
     if (!found) return res.status(404).json({ ok: false, error: "Չի գտնվել" });

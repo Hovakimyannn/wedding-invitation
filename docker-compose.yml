@@ -1,0 +1,17 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3001:3000"   # host 3001 → container 3000  (server nginx will proxy here)
+    volumes:
+      - ./data:/app/data   # persist rsvps.json and seating.json on host
+    environment:
+      PORT: 3000
+      ADMIN_USER: ${ADMIN_USER:-harut}
+      ADMIN_PASS: ${ADMIN_PASS:-Kdyou4===}
+    networks:
+      - wedding_network
+
+networks:
+  wedding_network:
