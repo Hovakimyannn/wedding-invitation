@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Հյուրերի պատասխաններ — Ադմին</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, "Noto Serif Armenian", serif;
+      background: #faf7f2;
+      color: #2b2b2b;
+      padding: 32px 16px 64px;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    h1 {
+      font-size: 26px;
+      font-weight: 400;
+      text-align: center;
+      letter-spacing: .04em;
+      margin-bottom: 6px;
+    }
+    .sub { text-align: center; color: #8a8378; font-size: 14px; margin-bottom: 28px; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e7e0d4;
+      border-radius: 10px;
+      padding: 16px 14px;
+      text-align: center;
+    }
+    .card .num { font-size: 30px; line-height: 1.1; }
+    .card .lbl { font-size: 13px; color: #8a8378; margin-top: 4px; }
+    .toolbar { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+    button.refresh {
+      font: inherit;
+      font-size: 14px;
+      padding: 8px 18px;
+      border: 1px solid #2b2b2b;
+      border-radius: 999px;
+      background: transparent;
+      cursor: pointer;
+    }
+    button.refresh:hover { background: #2b2b2b; color: #fff; }
+    .tablebox {
+      background: #fff;
+      border: 1px solid #e7e0d4;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #f0ebe1; vertical-align: top; }
+    th { font-weight: 400; color: #8a8378; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .b-yes   { background: #e6f2e6; color: #2e6b2e; }
+    .b-pair  { background: #e6ecf7; color: #2f4f8f; }
+    .b-no    { background: #f9e6e6; color: #a03434; }
+    .b-later { background: #f3efe6; color: #8a7434; }
+    .drinks { color: #5a544a; }
+    .date { color: #8a8378; white-space: nowrap; font-size: 13px; }
+    .empty { text-align: center; padding: 40px 16px; color: #8a8378; }
+    .acts { white-space: nowrap; text-align: right; }
+    button.act {
+      font: inherit;
+      font-size: 13px;
+      padding: 4px 10px;
+      margin-left: 6px;
+      border: 1px solid #d9d2c4;
+      border-radius: 999px;
+      background: transparent;
+      color: #5a544a;
+      cursor: pointer;
+    }
+    button.act:hover { border-color: #2b2b2b; color: #2b2b2b; }
+    button.act.danger:hover { border-color: #a03434; color: #a03434; }
+    td input[type="text"], td select {
+      font: inherit;
+      font-size: 14px;
+      padding: 6px 8px;
+      border: 1px solid #d9d2c4;
+      border-radius: 6px;
+      background: #fff;
+      color: #2b2b2b;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Հարություն և Մարինե — 26.08.2026</h1>
+    <p class="sub">Հյուրերի պատասխանները (RSVP)</p>
+
+    <div class="cards">
+      <div class="card"><div class="num" id="c-total">–</div><div class="lbl">Ընդամենը պատասխան</div></div>
+      <div class="card"><div class="num" id="c-guests">–</div><div class="lbl">Սպասվող հյուր</div></div>
+      <div class="card"><div class="num" id="c-yes">–</div><div class="lbl">Կգան</div></div>
+      <div class="card"><div class="num" id="c-no">–</div><div class="lbl">Չեն գա</div></div>
+      <div class="card"><div class="num" id="c-later">–</div><div class="lbl">Կտեղեկացնեն ավելի ուշ</div></div>
+    </div>
+
+    <div class="toolbar">
+      <button class="refresh" id="refresh" type="button">Թարմացնել</button>
+    </div>
+
+    <div class="tablebox">
+      <table>
+        <thead>
+          <tr>
+            <th>Անուն</th>
+            <th>Ներկայություն</th>
+            <th>Ամսաթիվ</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" hidden>Դեռ պատասխաններ չկան</div>
+    </div>
+  </div>
+
+  <script>
+    var ATT = {
+      yes:   { label: "Կգա",                  cls: "b-yes",   seats: 1 },
+      pair:  { label: "Կգա զույգով",          cls: "b-pair",  seats: 2 },
+      no:    { label: "Չի գա",                cls: "b-no",    seats: 0 },
+      later: { label: "Կտեղեկացնի ավելի ուշ", cls: "b-later", seats: 0 }
+    };
+
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+
+    function fmtDate(iso) {
+      var d = new Date(iso);
+      if (isNaN(d)) return "";
+      var p = function (n) { return n < 10 ? "0" + n : n; };
+      return p(d.getDate()) + "." + p(d.getMonth() + 1) + "." + d.getFullYear() +
+             " " + p(d.getHours()) + ":" + p(d.getMinutes());
+    }
+
+    function render(list) {
+      // newest first
+      list = list.slice().sort(function (a, b) {
+        return (b.createdAt || "").localeCompare(a.createdAt || "");
+      });
+
+      var guests = 0, yes = 0, no = 0, later = 0;
+      var html = "";
+      list.forEach(function (r) {
+        var att = ATT[r.attending] || ATT.later;
+        guests += att.seats + (r.attending === "yes" ? (r.guests || 0) : 0);
+        if (r.attending === "yes" || r.attending === "pair") yes++;
+        else if (r.attending === "no") no++;
+        else later++;
+
+        html +=
+          '<tr data-id="' + esc(r.id || "") + '">' +
+          '<td class="c-name">' + esc(r.name || "") + "</td>" +
+          '<td class="c-att" data-att="' + esc(r.attending || "later") + '">' +
+          '<span class="badge ' + att.cls + '">' + att.label + "</span></td>" +
+          '<td class="date">' + fmtDate(r.createdAt) + "</td>" +
+          '<td class="acts">' +
+          '<button class="act" data-do="edit" type="button">Խմբագրել</button>' +
+          '<button class="act danger" data-do="del" type="button">Ջնջել</button>' +
+          "</td></tr>";
+      });
+
+      document.getElementById("rows").innerHTML = html;
+      document.getElementById("empty").hidden = list.length > 0;
+      document.getElementById("c-total").textContent = list.length;
+      document.getElementById("c-guests").textContent = guests;
+      document.getElementById("c-yes").textContent = yes;
+      document.getElementById("c-no").textContent = no;
+      document.getElementById("c-later").textContent = later;
+    }
+
+    // Filled in by the server when it serves this page.
+    var DATA = /*__RSVPS__*/[];
+
+    function api(method, id, body) {
+      return fetch("/admin/api/rsvps/" + encodeURIComponent(id), {
+        method: method,
+        headers: body ? { "Content-Type": "application/json" } : undefined,
+        body: body ? JSON.stringify(body) : undefined,
+      }).then(function (r) {
+        if (r.status === 401) { location.reload(); throw new Error("auth"); }
+        return r.json().then(function (d) {
+          if (!r.ok || !d.ok) throw new Error(d.error || r.status);
+          return d;
+        });
+      });
+    }
+
+    function startEdit(tr) {
+      var nameTd = tr.querySelector(".c-name");
+      var attTd = tr.querySelector(".c-att");
+      var actsTd = tr.querySelector(".acts");
+      var oldName = nameTd.textContent;
+      var oldAtt = attTd.getAttribute("data-att");
+
+      nameTd.innerHTML = "";
+      var inp = document.createElement("input");
+      inp.type = "text";
+      inp.value = oldName;
+      nameTd.appendChild(inp);
+
+      attTd.innerHTML = "";
+      var sel = document.createElement("select");
+      Object.keys(ATT).forEach(function (k) {
+        var o = document.createElement("option");
+        o.value = k;
+        o.textContent = ATT[k].label;
+        if (k === oldAtt) o.selected = true;
+        sel.appendChild(o);
+      });
+      attTd.appendChild(sel);
+
+      actsTd.innerHTML =
+        '<button class="act" data-do="save" type="button">Պահպանել</button>' +
+        '<button class="act" data-do="cancel" type="button">Չեղարկել</button>';
+      inp.focus();
+    }
+
+    document.getElementById("rows").addEventListener("click", function (e) {
+      var btn = e.target.closest("button.act");
+      if (!btn) return;
+      var tr = btn.closest("tr");
+      var id = tr.getAttribute("data-id");
+      var act = btn.getAttribute("data-do");
+
+      if (act === "del") {
+        var who = tr.querySelector(".c-name").textContent;
+        if (!confirm("Ջնջե՞լ «" + who + "» պատասխանը։")) return;
+        api("DELETE", id).then(function () { location.reload(); })
+          .catch(function (err) { alert("Չհաջողվեց ջնջել։ " + err.message); });
+      } else if (act === "edit") {
+        startEdit(tr);
+      } else if (act === "cancel") {
+        render(DATA);
+      } else if (act === "save") {
+        var name = tr.querySelector(".c-name input").value.trim();
+        var attending = tr.querySelector(".c-att select").value;
+        if (!name) { alert("Անունը պարտադիր է"); return; }
+        api("PUT", id, { name: name, attending: attending })
+          .then(function () { location.reload(); })
+          .catch(function (err) { alert("Չհաջողվեց պահպանել։ " + err.message); });
+      }
+    });
+
+    document.getElementById("refresh").addEventListener("click", function () {
+      location.reload();
+    });
+    render(DATA);
+  </script>
+</body>
+</html>

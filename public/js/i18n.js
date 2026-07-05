@@ -37,21 +37,23 @@
       hy: "Մի գեղեցիկ օր ինչ-որ բան տեղի կունենա։ Միանգամից և ընդմիշտ...",
     },
     tn_text_1765478263076000001: {
-      // names + date — identical in both languages
-      ru: "Հարություն և Մարինե<br />26.08.26",
-      hy: "Հարություն և Մարինե<br />26.08.26",
+      // names + date — identical in both languages. Written with a literal
+      // «ԵՎ»: the block is CSS-uppercased and text-transform would render
+      // «և» as the classical-orthography «ԵՒ».
+      ru: "Հարություն ԵՎ Մարինե<br />26.08.26",
+      hy: "Հարություն ԵՎ Մարինե<br />26.08.26",
     },
     tn_text_1684928557161: {
       ru: "В нашей жизни произойдет очень<br />важное событие – наша свадьба! <br />Мы верим и надеемся, что этот день станет красивым началом <br />долгой и счастливой жизни.",
-      hy: "Մեր կյանքում տեղի կունենա շատ<br />կարևոր իրադարձություն՝ մեր հարսանիքը։ <br />Հավատում և հուսով ենք, որ այս օրը կդառնա<br />երկար ու երջանիկ կյանքի գեղեցիկ սկիզբ։",
+      hy: "Մեր կյանքում տեղի կունենա շատ<br />կարևոր իրադարձություն՝ մեր հարսանիքը։ <br />Հավատում ենք և հույս ունենք, որ այս օրը կդառնա<br />երկար ու երջանիկ կյանքի գեղեցիկ սկիզբ։",
     },
     tn_text_1768045554126000001: {
       ru: "Мы скажем",
-      hy: "Մենք կասենք «Այո»",
+      hy: "Մենք կասենք",
     },
     tn_text_1768045567228000002: {
       ru: "через...",
-      hy: "ևս...",
+      hy: "մնացել է...",
     },
     tn_text_1769686788763000001: {
       ru: "<strong></strong><strong>Если Вас отвлекает музыка, ее можно выключить</strong><strong></strong><strong></strong>",
@@ -75,7 +77,7 @@
     },
     tn_text_1737672913661: {
       ru: "<strong>Время вкусной еды, танцев и развлечений</strong>",
-      hy: "<strong>Համեղ ուտեստի, պարերի և զվարճանքի ժամանակ</strong>",
+      hy: "<strong>Համեղ ուտելիքի, պարերի և զվարճանքի ժամանակ</strong>",
     },
     tn_text_1737672913657: {
       ru: "<strong>17:00</strong>",
@@ -94,24 +96,24 @@
       hy: "<strong>00:00</strong>",
     },
     tn_text_1684927346397: {
-      ru: '<strong style="font-weight: 700;">Банкетный зал "Заберег"</strong><br /><strong>Ленинградская область, 41К-313, 30 </strong>',
-      hy: '<strong style="font-weight: 700;">«Զաբերեգ» բանկետային սրահ</strong><br /><strong>Լենինգրադի մարզ, 41Կ-313, 30 </strong>',
+      ru: '<strong style="font-weight: 700;">Банкетный зал "Лацио Холл"</strong><br /><strong>Котайкская область, 19/18</strong>',
+      hy: '<strong style="font-weight: 700;">«Լացիո Հոլ» բանկետային սրահ</strong><br /><strong>Կոտայքի մարզ, Ջրվեժ 19/18</strong>',
     },
     tn_text_1698762045724: {
       ru: "<strong>Будем признательны, если вы поддержите цветовую гамму нашей свадьбы </strong>",
-      hy: "<strong>Շնորհակալ կլինենք, եթե աջակցեք մեր հարսանիքի գունային երանգին </strong>",
+      hy: "<strong>Շնորհակալ կլինենք, եթե հետևեք մեր հարսանիքի գունային գամմային </strong>",
     },
     tn_text_1770900060235000001: {
       ru: "<strong>Милые дамы, будем благодарны, если в этот день белый цвет останется привилегией невесты.</strong>",
-      hy: "<strong>Հարգելի տիկնայք, շնորհակալ կլինենք, եթե այս օրը սպիտակ գույնը մնա միայն հարսի արտոնությունը։</strong>",
+      hy: "<strong>Հարգելի տիկնայք, շնորհակալ կլինենք, եթե այս օրը սպիտակ գույնը մնա միայն հարսնացուի արտոնությունը։</strong>",
     },
     tn_text_1725127746074: {
-      ru: "<strong>Невеста: 8 (999)-999-99-99</strong>",
-      hy: "<strong>Հարս՝ 8 (999)-999-99-99</strong>",
+      ru: "<strong>Невеста: +374 98 27 21 71</strong>",
+      hy: "<strong>Հարսնացու՝ +374 98 27 21 71</strong>",
     },
     tn_text_1725127746069: {
-      ru: "<strong>Жених: 8 (999)-999-99-99</strong>",
-      hy: "<strong>Փեսա՝ 8 (999)-999-99-99</strong>",
+      ru: "<strong>Жених: +374 77 76 83 13</strong>",
+      hy: "<strong>Փեսա՝ +374 77 76 83 13</strong>",
     },
     // Tip bubbles — no field id, matched by order (3 of them).
     __tip_0: {
@@ -124,7 +126,7 @@
     },
     __tip_2: {
       ru: "<strong>Не стесняйтесь кричать «Горько!» — мы только за и с радостью поддержим эту традицию.</strong>",
-      hy: "<strong>Մի քաշվեք բացականչել «Դա՛ռն է». մենք միայն կողմ ենք և ուրախությամբ կաջակցենք այս ավանդույթին։</strong>",
+      hy: "<strong>Մի՛ քաշվեք բացականչել «Դառն է՜»․ մենք միայն կողմ ենք և ուրախությամբ կաջակցենք այս ավանդույթին։</strong>",
     },
     // "КАРТА" button — matched by its current text.
     __btn_map: {
@@ -146,14 +148,6 @@
     ["Буду со своей парой", "Կգամ զույգով"],
     ["К сожалению, не смогу присутствовать", "Ցավոք, չեմ կարողանա ներկա գտնվել"],
     ["Сообщу позже", "Կտեղեկացնեմ ավելի ուշ"],
-    ["Что предпочитаете из напитков?", "Ի՞նչ խմիչք եք նախընտրում"],
-    ["Красное вино", "Կարմիր գինի"],
-    ["Белое вино", "Սպիտակ գինի"],
-    ["Шампанское", "Շամպայն"],
-    ["Водка", "Օղի"],
-    ["Виски", "Վիսկի"],
-    ["Коньяк", "Կոնյակ"],
-    ["Не пью алкоголь", "Ալկոհոլ չեմ խմում"],
     ["Отправить", "Ուղարկել"],
   ];
   // text (either language) -> { ru, hy }
@@ -425,6 +419,12 @@
     [300, 900, 2000].forEach(function (t) { setTimeout(placeHeart, t); });
     window.addEventListener("resize", placeHeart);
     window.addEventListener("load", placeHeart);
+
+    // Tilda's t396 can MOVE the calendar block after load (late images shift
+    // the artboard) without changing its size, so neither the ResizeObserver
+    // nor the load hooks fire and the heart is left on the wrong day. A slow
+    // watchdog keeps it pinned to day 26.
+    setInterval(placeHeart, 800);
 
     // The calendar image settles its height after it loads; re-place the heart
     // then (and on any later size change) so it stays centred on day 26 instead

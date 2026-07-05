@@ -1,4 +1,5 @@
 const express = require("express");
+const crypto = require("crypto");
 const fs = require("fs");
 const fsp = require("fs/promises");
 const path = require("path");
@@ -88,13 +89,22 @@ async function readRsvps() {
   }
 }
 
-function appendRsvp(entry) {
-  writeQueue = writeQueue.then(async () => {
+function mutateRsvps(fn) {
+  const run = writeQueue.then(async () => {
     const list = await readRsvps();
-    list.push(entry);
-    await fsp.writeFile(RSVP_FILE, JSON.stringify(list, null, 2), "utf8");
+    const next = fn(list);
+    await fsp.writeFile(RSVP_FILE, JSON.stringify(next, null, 2), "utf8");
+    return next;
   });
-  return writeQueue;
+  writeQueue = run.catch(() => {}); // keep the queue alive after a failure
+  return run;
+}
+
+function appendRsvp(entry) {
+  return mutateRsvps((list) => {
+    list.push(entry);
+    return list;
+  });
 }
 
 // Save a guest's RSVP.
@@ -106,7 +116,7 @@ app.post("/api/rsvp", async (req, res) => {
   }
   const ATTENDING = ["yes", "pair", "no", "later"];
   if (!ATTENDING.includes(attending)) {
-    return res.status(400).json({ ok: false, error: "Նշիր՝ կգաս թե ոչ" });
+    return res.status(400).json({ ok: false, error: "Խնդրում ենք նշել՝ կգա՞ք, թե՞ ոչ" });
   }
 
   const guestCount = Number.parseInt(guests, 10);
@@ -128,24 +138,93 @@ app.post("/api/rsvp", async (req, res) => {
     res.json({ ok: true, entry });
   } catch (err) {
     console.error("Failed to save RSVP:", err);
-    res.status(500).json({ ok: false, error: "Չհաջողվեց պահպանել, փորձիր նորից" });
+    res.status(500).json({ ok: false, error: "Չհաջողվեց պահպանել, խնդրում ենք փորձել կրկին" });
   }
 });
 
-// Simple guarded list of all RSVPs (for the couple).
-// Open it as /api/rsvps?key=YOUR_KEY — set ADMIN_KEY env var to enable.
-app.get("/api/rsvps", async (req, res) => {
-  const adminKey = process.env.ADMIN_KEY;
-  if (!adminKey || req.query.key !== adminKey) {
-    return res.status(403).json({ ok: false, error: "Forbidden" });
+// --- Admin panel (for the couple) ---------------------------------
+// Everything under /admin is protected with HTTP Basic auth.
+const ADMIN_USER = process.env.ADMIN_USER || "harut";
+const ADMIN_PASS = process.env.ADMIN_PASS || "Kdyou4===";
+
+function timingSafeEq(a, b) {
+  const ab = Buffer.from(a);
+  const bb = Buffer.from(b);
+  return ab.length === bb.length && crypto.timingSafeEqual(ab, bb);
+}
+
+function basicAuth(req, res, next) {
+  const header = req.headers.authorization || "";
+  const [scheme, encoded] = header.split(" ");
+  if (scheme === "Basic" && encoded) {
+    const [user, ...rest] = Buffer.from(encoded, "base64").toString().split(":");
+    const pass = rest.join(":"); // the password itself may contain ':'... or '='
+    if (timingSafeEq(user, ADMIN_USER) && timingSafeEq(pass, ADMIN_PASS)) {
+      return next();
+    }
+  }
+  res.set("WWW-Authenticate", 'Basic realm="Wedding admin", charset="UTF-8"');
+  res.status(401).send("Authentication required");
+}
+
+// The RSVP list is embedded straight into the page, so the panel needs no
+// second authenticated request (which some browsers handle inconsistently
+// with Basic auth). "Refresh" in the UI simply reloads the page.
+// Edit a guest's answer from the panel.
+app.put("/admin/api/rsvps/:id", basicAuth, async (req, res) => {
+  const { name, attending } = req.body || {};
+  if (!name || typeof name !== "string" || !name.trim()) {
+    return res.status(400).json({ ok: false, error: "Անունը պարտադիր է" });
+  }
+  if (!["yes", "pair", "no", "later"].includes(attending)) {
+    return res.status(400).json({ ok: false, error: "Սխալ ներկայության արժեք" });
   }
   try {
-    const list = await readRsvps();
-    const going = list.filter((r) => r.attending === "yes");
-    const totalGuests = going.reduce((sum, r) => sum + 1 + (r.guests || 0), 0);
-    res.json({ ok: true, count: list.length, totalGuests, rsvps: list });
+    let found = false;
+    await mutateRsvps((list) =>
+      list.map((r) => {
+        if (r.id !== req.params.id) return r;
+        found = true;
+        return { ...r, name: name.trim().slice(0, 120), attending };
+      })
+    );
+    if (!found) return res.status(404).json({ ok: false, error: "Չի գտնվել" });
+    res.json({ ok: true });
   } catch (err) {
-    res.status(500).json({ ok: false, error: "Read failed" });
+    console.error("Failed to edit RSVP:", err);
+    res.status(500).json({ ok: false, error: "Չհաջողվեց պահպանել" });
+  }
+});
+
+// Delete a guest's answer from the panel.
+app.delete("/admin/api/rsvps/:id", basicAuth, async (req, res) => {
+  try {
+    let found = false;
+    await mutateRsvps((list) => {
+      const next = list.filter((r) => r.id !== req.params.id);
+      found = next.length !== list.length;
+      return next;
+    });
+    if (!found) return res.status(404).json({ ok: false, error: "Չի գտնվել" });
+    res.json({ ok: true });
+  } catch (err) {
+    console.error("Failed to delete RSVP:", err);
+    res.status(500).json({ ok: false, error: "Չհաջողվեց ջնջել" });
+  }
+});
+
+app.get("/admin", basicAuth, async (req, res) => {
+  try {
+    const [html, list] = await Promise.all([
+      fsp.readFile(path.join(__dirname, "admin.html"), "utf8"),
+      readRsvps(),
+    ]);
+    // <-escape so a "</script>" inside a guest's text can't break out.
+    const json = JSON.stringify(list).replace(/</g, "\\u003c");
+    res.type("html").send(html.replace("/*__RSVPS__*/[]", json));
+  } catch (err) {
+    console.error("Failed to render admin page:", err);
+    res.status(500).send("Admin page failed to load");
   }
 });
 

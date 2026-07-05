@@ -1,24 +1,20 @@
 [
   {
-    "id": "mqdzbop7oa2p",
-    "name": "Verification Test",
+    "id": "mr7mvl1stk5v",
+    "name": "test",
     "attending": "yes",
     "guests": 0,
     "message": "",
-    "drinks": [
-      "Wine"
-    ],
-    "createdAt": "2026-06-14T16:09:02.923Z"
+    "drinks": [],
+    "createdAt": "2026-07-05T10:13:41.584Z"
   },
   {
-    "id": "mqy55l8y8p31",
-    "name": "Test",
+    "id": "mr7n7kxa8o2u",
+    "name": "test1",
     "attending": "yes",
     "guests": 0,
     "message": "",
-    "drinks": [
-      "Կարմիր գինի"
-    ],
-    "createdAt": "2026-06-28T18:47:39.730Z"
+    "drinks": [],
+    "createdAt": "2026-07-05T10:23:01.294Z"
   }
 ]
