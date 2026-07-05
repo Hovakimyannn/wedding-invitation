@@ -349,6 +349,7 @@
 
     // Let other modules (e.g. js/countdown.js) re-render on language change.
     document.dispatchEvent(new CustomEvent("wi:lang", { detail: lang }));
+    document.body.classList.add("i18n-ready");
   }
 
   // --- Language toggle UI ------------------------------------------
