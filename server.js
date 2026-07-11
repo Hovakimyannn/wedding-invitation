@@ -121,8 +121,9 @@ app.post("/api/rsvp", async (req, res) => {
     return res.status(400).json({ ok: false, error: "Խնդրում ենք նշել՝ կգա՞ք, թե՞ ոչ" });
   }
 
-  const guestCount = Number.parseInt(guests, 10);
-  if (!Number.isFinite(guestCount) || guestCount < 0 || guestCount > 20) {
+  const guestCountRaw = guests == null || guests === "" ? 0 : Number.parseInt(guests, 10);
+  const guestCount = Number.isFinite(guestCountRaw) ? guestCountRaw : 0;
+  if (guestCount < 0 || guestCount > 20) {
     return res.status(400).json({ ok: false, error: "Հյուրերի քանակը պետք է լինի 0-ից 20 միջակայքում" });
   }
 

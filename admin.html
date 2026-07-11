@@ -306,6 +306,28 @@
       box-shadow: none;
     }
 
+    .guest-chip-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+    }
+
+    .guest-chip-host {
+      font-size: 11px;
+      color: #8a8378;
+      line-height: 1.2;
+    }
+
+    .c-host {
+      color: #6a6358;
+      font-size: 13px;
+    }
+
+    .c-host.muted {
+      color: #b0a89c;
+    }
+
     .att-dot {
       width: 8px;
       height: 8px;
@@ -660,7 +682,7 @@
           <thead>
             <tr>
               <th>Անուն</th>
-              <th>Լրացուցիչ հյուրեր</th>
+              <th>Ում հյուրն է</th>
               <th>Ներկայություն</th>
               <th>Ամսաթիվ</th>
               <th></th>
@@ -764,6 +786,46 @@
     }
     var SVG_NS = "http://www.w3.org/2000/svg";
 
+    function expandRsvpGuests(r, includeExtras) {
+      if (includeExtras == null) {
+        includeExtras = r.attending === "yes" || r.attending === "pair";
+      }
+      var guests = [{
+        id: r.id,
+        name: r.name || "",
+        rsvpId: r.id,
+        hostName: null,
+        isPrimary: true,
+        attending: r.attending
+      }];
+      if (!includeExtras) return guests;
+      (Array.isArray(r.guestNames) ? r.guestNames : []).forEach(function (name, i) {
+        guests.push({
+          id: r.id + ":g" + i,
+          name: name,
+          rsvpId: r.id,
+          hostName: r.name || "",
+          isPrimary: false,
+          attending: r.attending
+        });
+      });
+      return guests;
+    }
+
+    function buildGuestMap(rsvps) {
+      var map = {};
+      rsvps.forEach(function (r) {
+        expandRsvpGuests(r, true).forEach(function (g) { map[g.id] = g; });
+      });
+      return map;
+    }
+
+    function comingGuests(rsvps) {
+      return rsvps
+        .filter(function (r) { return r.attending === "yes" || r.attending === "pair"; })
+        .reduce(function (all, r) { return all.concat(expandRsvpGuests(r, true)); }, []);
+    }
+
     // ═══════════════════════════════════════
     //  Tabs
     // ═══════════════════════════════════════
@@ -787,22 +849,29 @@
       var guests = 0, yes = 0, no = 0, later = 0, html = "";
       list.forEach(function (r) {
         var att = ATT[r.attending] || ATT.later;
-        var extraGuests = Array.isArray(r.guestNames) ? r.guestNames : [];
-        guests += att.seats + (r.attending === "yes" ? (r.guests || 0) : 0);
-        if (r.attending === "yes" || r.attending === "pair") yes++;
+        var coming = r.attending === "yes" || r.attending === "pair";
+        var guestRows = expandRsvpGuests(r);
+        if (coming) guests += guestRows.length;
+        if (coming) yes++;
         else if (r.attending === "no") no++;
         else later++;
-        html += '<tr data-id="' + esc(r.id || "") + '">' +
-          '<td class="c-name">' + esc(r.name || "") + "</td>" +
-          '<td class="c-guest-names">' + (extraGuests.length
-            ? extraGuests.map(function (n) { return '<div>' + esc(n) + '</div>'; }).join("")
-            : '<span style="color:#8a8378">—</span>') + '</td>' +
-          '<td class="c-att" data-att="' + esc(r.attending || "later") + '"><span class="badge ' + att.cls + '">' + att.label + "</span></td>" +
-          '<td class="date">' + fmtDate(r.createdAt) + "</td>" +
-          '<td class="acts">' +
-          '<button class="act" data-do="edit" type="button">Խմբ.</button>' +
-          '<button class="act danger" data-do="del" type="button">Ջնջ.</button>' +
-          "</td></tr>";
+
+        guestRows.forEach(function (g) {
+          var hostCell = g.isPrimary
+            ? '<span class="c-host muted">—</span>'
+            : '<span class="c-host">' + esc(g.hostName) + "-ի հյուր</span>";
+          var actsCell = g.isPrimary
+            ? '<button class="act" data-do="edit" type="button">Խմբ.</button>' +
+              '<button class="act danger" data-do="del" type="button">Ջնջ.</button>'
+            : "";
+          var rowAttrs = g.isPrimary ? ' data-id="' + esc(r.id || "") + '"' : ' data-rsvp-id="' + esc(r.id || "") + '"';
+          html += "<tr" + rowAttrs + ">" +
+            '<td class="c-name">' + esc(g.name) + "</td>" +
+            "<td>" + hostCell + "</td>" +
+            '<td class="c-att" data-att="' + esc(r.attending || "later") + '"><span class="badge ' + att.cls + '">' + att.label + "</span></td>" +
+            '<td class="date">' + fmtDate(r.createdAt) + "</td>" +
+            '<td class="acts">' + actsCell + "</td></tr>";
+        });
       });
       document.getElementById("rows").innerHTML = html;
       document.getElementById("empty").hidden = list.length > 0;
@@ -919,6 +988,7 @@
         txt.setAttribute("x", x);
         txt.setAttribute("y", y + 1);
         txt.setAttribute("font-size", Math.max(8.5, Math.round(r * 0.42)));
+        if (guest.hostName) txt.setAttribute("title", guest.hostName + "-ի հյուր");
         txt.textContent = truncName(guest.name, Math.floor(r / 3));
         g.appendChild(txt);
 
@@ -1079,20 +1149,23 @@
 
     function renderSeating() {
       var assigned = assignedMap();
-      var coming = seatingData.rsvps.filter(function (r) { return r.attending === "yes" || r.attending === "pair"; });
-      var guestMap = {};
-      coming.forEach(function (r) { guestMap[r.id] = r; });
-      var unassigned = coming.filter(function (r) { return !assigned[r.id]; });
+      var allGuests = comingGuests(seatingData.rsvps);
+      var guestMap = buildGuestMap(seatingData.rsvps);
+      var unassigned = allGuests.filter(function (g) { return !assigned[g.id]; });
 
       // ── Unassigned chips ──
       var ulEl = document.getElementById("unassigned-list");
       if (unassigned.length === 0) {
         ulEl.innerHTML = '<div style="font-size:13px;color:#8a8378;padding:8px 0">Բոլոր հյուրերը նստեցված են ✓</div>';
       } else {
-        ulEl.innerHTML = unassigned.map(function (r) {
-          var att = ATT[r.attending] || ATT.later;
-          return '<div class="guest-chip" draggable="true" data-guest-id="' + esc(r.id) + '">' +
-            '<span class="att-dot ' + att.dot + '"></span><span>' + esc(r.name) + '</span></div>';
+        ulEl.innerHTML = unassigned.map(function (g) {
+          var att = ATT[g.attending] || ATT.later;
+          var hostHint = g.hostName
+            ? '<span class="guest-chip-host">' + esc(g.hostName) + "-ի հյուր</span>"
+            : "";
+          return '<div class="guest-chip" draggable="true" data-guest-id="' + esc(g.id) + '">' +
+            '<span class="att-dot ' + att.dot + '"></span>' +
+            '<span class="guest-chip-text"><span>' + esc(g.name) + "</span>" + hostHint + "</span></div>";
         }).join("");
         ulEl.querySelectorAll(".guest-chip").forEach(function (chip) {
           chip.addEventListener("dragstart", function (e) {
@@ -1223,8 +1296,7 @@
     function openBigView(tid) {
       var t = seatingData.tables.find(function (x) { return x.id === tid; });
       if (!t) return;
-      var guestMap = {};
-      seatingData.rsvps.forEach(function (r) { guestMap[r.id] = r; });
+      var guestMap = buildGuestMap(seatingData.rsvps);
 
       var seated = t.seats.filter(function (s) { return s.guestId; }).length;
       document.getElementById("bigview-title").textContent =

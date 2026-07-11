@@ -60,8 +60,8 @@
       hy: "<strong></strong><strong>Եթե երաժշտությունը ձեզ շեղում է, կարող եք անջատել այն</strong><strong></strong><strong></strong>",
     },
     tn_text_1737672843141: {
-      ru: "<strong>15:20</strong>",
-      hy: "<strong>15:20</strong>",
+      ru: "<strong>15:00</strong>",
+      hy: "<strong>15:00</strong>",
     },
     tn_text_1737671968327: {
       ru: "<strong>Приготовьте платочки для трогательного момента</strong>",
@@ -80,8 +80,8 @@
       hy: "<strong>Միասին կտոնենք մեր նորաստեղծ ընտանիքի առաջին օրը։</strong>",
     },
     tn_text_1737672913657: {
-      ru: "<strong>17:20</strong>",
-      hy: "<strong>17:20</strong>",
+      ru: "<strong>17:30</strong>",
+      hy: "<strong>17:30</strong>",
     },
     tn_text_1737672954011: {
       ru: "<strong>Завершение</strong>",

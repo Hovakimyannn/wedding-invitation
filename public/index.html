@@ -243,6 +243,39 @@
       background-color: transparent !important;
     }
 
+    /* Preloader silk background: scale by viewport height on small screens
+       so the fabric texture is not clipped at top and bottom. */
+    #rec1888577641 .t396__artboard,
+    #rec1888577641 .t396__filter {
+      overflow: hidden;
+    }
+
+    @media screen and (max-width: 959px) {
+      #rec1888577641 .tn-elem[data-elem-id="1719348821425"] {
+        top: 0 !important;
+        left: 50% !important;
+        transform: translateX(-50%);
+        width: auto !important;
+        height: 100vh !important;
+        display: block !important;
+      }
+
+      #rec1888577641 .tn-elem[data-elem-id="1719348821425"] .tn-atom {
+        display: block !important;
+        width: auto !important;
+        height: 100% !important;
+      }
+
+      #rec1888577641 .tn-elem[data-elem-id="1719348821425"] .tn-atom__img {
+        width: auto !important;
+        height: 100vh !important;
+        max-width: none !important;
+        min-width: 100vw;
+        object-fit: cover;
+        object-position: center center;
+      }
+    }
+
     /* rec1681119891 exists only as a hidden source for the fixed page bg image.
        Collapse it visually so it cannot create a visible separator strip. */
     #rec1681119891 {
@@ -654,10 +687,11 @@
        the month label inside the calendar section. */
     #rec2223205941 .wi-calendar-carousel-elem {
       z-index: 7;
-      top: 350px;
+      top: 370px;
       left: calc(50% - 600px + 428px);
       width: 344px;
-      height: 236px;
+      height: 236px !important;
+      overflow: hidden;
       background: transparent !important;
     }
 
@@ -759,14 +793,14 @@
 
     @media screen and (max-width:959px) {
       #rec2223205941 .wi-calendar-carousel-elem {
-        top: 355px;
+        top: 335px;
         left: calc(50% - 320px + 148px);
       }
     }
 
     @media screen and (max-width:639px) {
       #rec2223205941 .wi-calendar-carousel-elem {
-        top: 330px;
+        top: 310px;
         left: calc(50% - 240px + 68px);
       }
     }
@@ -776,7 +810,60 @@
         top: 252px;
         left: calc(50% - 160px + -12px);
       }
+    }
 
+    /* Keep carousel above the calendar on tablet/desktop (same stacking as mobile). */
+    @media screen and (min-width: 480px) {
+      #rec2223205941 .tn-elem[data-elem-id="1725107850060"] {
+        top: 700px !important;
+      }
+
+      #rec2223205941 .tn-elem[data-elem-id="1768045567228000002"] {
+        top: 1280px !important;
+      }
+
+      #rec2223205941 .tn-elem[data-elem-id="1765476539309000001"] {
+        top: 1360px !important;
+      }
+
+      #rec2223205941 .t396__artboard,
+      #rec2223205941 .t396__filter,
+      #rec2223205941 .t396__carrier {
+        height: 2050px;
+      }
+    }
+
+    @media screen and (min-width: 480px) and (max-width: 1199px) {
+      #rec2223205941 .tn-elem[data-elem-id="1768045567228000002"] {
+        top: 1240px !important;
+      }
+
+      #rec2223205941 .tn-elem[data-elem-id="1765476539309000001"] {
+        top: 1320px !important;
+      }
+
+      #rec2223205941 .t396__artboard,
+      #rec2223205941 .t396__filter,
+      #rec2223205941 .t396__carrier {
+        height: 1900px;
+      }
+    }
+
+    @media screen and (min-width: 480px) and (max-width: 959px) {
+      #rec2223205941 .tn-elem[data-elem-id="1725107850060"] {
+        top: 710px !important;
+      }
+
+      #rec2223205941 .tn-elem[data-elem-id="1768045567228000002"] {
+        top: 1260px !important;
+      }
+
+      #rec2223205941 .tn-elem[data-elem-id="1765476539309000001"] {
+        top: 1340px !important;
+      }
+    }
+
+    @media screen and (max-width: 479px) {
       /* Keep carousel and calendar separate on phones. */
       #rec2223205941 .tn-elem[data-elem-id="1725107850060"] {
         top: 600px !important;
@@ -789,6 +876,104 @@
 
       #rec2223205941 .tn-elem[data-elem-id="1765476539309000001"] {
         top: 1158px !important;
+      }
+    }
+
+    /* Contacts (rec1681034491): pair each phone line directly above its Telegram button. */
+    #rec1681034491 .tn-elem[data-elem-id="1725127746069"],
+    #rec1681034491 .tn-elem[data-elem-id="1725127746074"],
+    #rec1681034491 .tn-elem[data-elem-id="1767999260070000001"],
+    #rec1681034491 .tn-elem[data-elem-id="1767999311760000002"] {
+      display: block !important;
+      left: 0 !important;
+      right: 0 !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    #rec1681034491 .tn-elem[data-elem-id="1725127746069"],
+    #rec1681034491 .tn-elem[data-elem-id="1725127746074"] {
+      width: fit-content !important;
+      max-width: calc(100% - 32px);
+    }
+
+    #rec1681034491 .tn-elem[data-elem-id="1725127746069"] .tn-atom,
+    #rec1681034491 .tn-elem[data-elem-id="1725127746074"] .tn-atom {
+      text-align: center !important;
+      white-space: nowrap;
+    }
+
+    #rec1681034491 .tn-elem[data-elem-id="1767999260070000001"],
+    #rec1681034491 .tn-elem[data-elem-id="1767999311760000002"] {
+      width: 189px !important;
+    }
+
+    /* phone → telegram pairs: 12px inside each pair, 40px between pairs */
+    #rec1681034491 .tn-elem[data-elem-id="1767999260070000001"] {
+      top: 1097px !important;
+    }
+
+    #rec1681034491 .tn-elem[data-elem-id="1725127746074"] {
+      top: 1198px !important;
+    }
+
+    #rec1681034491 .tn-elem[data-elem-id="1767999311760000002"] {
+      top: 1241px !important;
+    }
+
+    @media screen and (max-width: 1199px) {
+      #rec1681034491 .tn-elem[data-elem-id="1767999260070000001"] {
+        top: 1055px !important;
+      }
+
+      #rec1681034491 .tn-elem[data-elem-id="1725127746074"] {
+        top: 1156px !important;
+      }
+
+      #rec1681034491 .tn-elem[data-elem-id="1767999311760000002"] {
+        top: 1199px !important;
+      }
+    }
+
+    @media screen and (max-width: 959px) {
+      #rec1681034491 .tn-elem[data-elem-id="1767999260070000001"] {
+        top: 1035px !important;
+      }
+
+      #rec1681034491 .tn-elem[data-elem-id="1725127746074"] {
+        top: 1136px !important;
+      }
+
+      #rec1681034491 .tn-elem[data-elem-id="1767999311760000002"] {
+        top: 1179px !important;
+      }
+    }
+
+    @media screen and (max-width: 639px) {
+      #rec1681034491 .tn-elem[data-elem-id="1767999260070000001"] {
+        top: 1021px !important;
+      }
+
+      #rec1681034491 .tn-elem[data-elem-id="1725127746074"] {
+        top: 1122px !important;
+      }
+
+      #rec1681034491 .tn-elem[data-elem-id="1767999311760000002"] {
+        top: 1165px !important;
+      }
+    }
+
+    @media screen and (max-width: 479px) {
+      #rec1681034491 .tn-elem[data-elem-id="1767999260070000001"] {
+        top: 1016px !important;
+      }
+
+      #rec1681034491 .tn-elem[data-elem-id="1725127746074"] {
+        top: 1117px !important;
+      }
+
+      #rec1681034491 .tn-elem[data-elem-id="1767999311760000002"] {
+        top: 1160px !important;
       }
     }
 
@@ -1249,6 +1434,11 @@
                   return window.scrollY >= (secondTop + PASSED_SECOND_PX);
                 }
 
+                function isPreloaderActive() {
+                  const pr = document.querySelector(PRELOADER_EL);
+                  return !!(pr && !pr.classList.contains('activated'));
+                }
+
                 function scrollToRec(recSel) {
                   if (aborted) return;
 
@@ -1321,6 +1511,7 @@
                 const userCancelEvents = ['wheel', 'touchmove', 'keydown'];
                 userCancelEvents.forEach(evt => {
                   window.addEventListener(evt, () => {
+                    if (isPreloaderActive()) return;
                     // если уже запущен сценарий и пользователь начал действовать — отменяем
                     if (!playedThisLoad && !aborted) abort('user interaction: ' + evt);
                   }, { passive: true });
@@ -1335,8 +1526,7 @@
                 }, { passive: true });
 
                 // ====== СТАРТ ======
-                document.addEventListener('click', async function (e) {
-                  if (!e.target.closest(START_BTN)) return;
+                async function runPostOpenFlow() {
                   if (playedThisLoad) return;
 
                   // запускаем сценарий
@@ -1359,8 +1549,14 @@
                     if (hasPassedSecond()) return;
                     scrollToRec(SECOND_REC);
                   }, FIRST_PAGE_DELAY_MS);
+                }
 
+                document.addEventListener('click', function (e) {
+                  if (!e.target.closest(START_BTN)) return;
+                  runPostOpenFlow();
                 }, { passive: true });
+
+                document.addEventListener('ndt:envelope-open', runPostOpenFlow);
 
               })();
             </script> <!-- nominify end -->
@@ -1537,27 +1733,63 @@
 
                 myAudio.volume = 0.4;
 
-                /* START */
-                if (startBtn) {
-                  startBtn.addEventListener('click', function () {
-                    myAudio.play();
+                let envelopeOpened = false;
 
-                    if (wave) {
-                      wave.classList.add('is-playing');
-                      wave.classList.remove('is-paused');
-                    }
-
-                    if (preloaderBlock) {
-                      setTimeout(() => {
-                        preloaderBlock.classList.add('activated');
-
-                        /* UNLOCK VERTICAL SCROLL */
-                        document.body.classList.remove('ndt-no-scroll-y');
-
-                      }, 350);
-                    }
-                  });
+                function isPreloaderActive() {
+                  return !!(preloaderBlock && !preloaderBlock.classList.contains('activated'));
                 }
+
+                function openEnvelope() {
+                  if (envelopeOpened) return;
+                  if (preloaderBlock && preloaderBlock.classList.contains('activated')) return;
+                  envelopeOpened = true;
+
+                  myAudio.play();
+
+                  if (wave) {
+                    wave.classList.add('is-playing');
+                    wave.classList.remove('is-paused');
+                  }
+
+                  if (preloaderBlock) {
+                    setTimeout(function () {
+                      preloaderBlock.classList.add('activated');
+                      document.body.classList.remove('ndt-no-scroll-y');
+                    }, 350);
+                  }
+
+                  document.dispatchEvent(new CustomEvent('ndt:envelope-open'));
+                }
+
+                /* START — click or scroll */
+                if (startBtn) {
+                  startBtn.addEventListener('click', openEnvelope);
+                }
+
+                window.addEventListener('wheel', function (e) {
+                  if (!isPreloaderActive()) return;
+                  if (Math.abs(e.deltaY) < 8) return;
+                  openEnvelope();
+                }, { passive: true });
+
+                var touchScrollStartY = null;
+                window.addEventListener('touchstart', function (e) {
+                  if (!e.touches || !e.touches.length) return;
+                  touchScrollStartY = e.touches[0].clientY;
+                }, { passive: true });
+
+                window.addEventListener('touchmove', function (e) {
+                  if (!isPreloaderActive() || touchScrollStartY == null) return;
+                  if (!e.touches || !e.touches.length) return;
+                  if (Math.abs(e.touches[0].clientY - touchScrollStartY) < 12) return;
+                  openEnvelope();
+                }, { passive: true });
+
+                window.addEventListener('keydown', function (e) {
+                  if (!isPreloaderActive()) return;
+                  if (['ArrowDown', 'PageDown', ' ', 'Spacebar'].indexOf(e.key) === -1) return;
+                  openEnvelope();
+                });
 
                 /* LOOP */
                 $('#ndt-bg-sound').on('ended', function () {
@@ -2716,7 +2948,6 @@
           #rec1681080071 .tn-elem[data-elem-id="1765478034777"] {
             display: table;
             top: 872px;
-            ;
             width: px;
             height: auto;
           }
@@ -5450,7 +5681,7 @@
     <div id="rec1681034421" class="r t-rec" data-animationappear="off" data-record-type="396">
       <style>
         #rec1681034421 .t396__artboard {
-          height: 430px;
+          height: 150px;
         }
 
         #rec1681034421 .t396__filter {
@@ -9208,7 +9439,7 @@
             data-field-container-value="grid" data-field-topunits-value="px" data-field-leftunits-value="px"
             data-field-heightunits-value="px" data-field-widthunits-value="px" data-animate-style="zoomin"
             data-animate-duration="2" data-animate-delay="0.8" data-animate-scale="0.9" data-animate-mobile="y"
-            data-field-textfit-value="autoheight" data-field-fontsize-value="20" data-field-top-res-320-value="873"
+            data-field-textfit-value="autoheight" data-field-fontsize-value="20" data-field-top-res-320-value="970
             data-field-left-res-320-value="-120" data-field-top-res-480-value="878" data-field-left-res-480-value="-40"
             data-field-top-res-640-value="992" data-field-left-res-640-value="40" data-field-top-res-960-value="1012"
             data-field-left-res-960-value="200">
@@ -9248,7 +9479,7 @@
 
       <div
         style="position:fixed;bottom:20px;right:20px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;color:rgba(0,0,0,0.35);z-index:99998;pointer-events:none;">
-        Կայքը պատրաստեց փեսան 😉
+        Կայքը պատրաստեցինք մենք 😉
       </div>
     </div>
   </div>
@@ -9515,28 +9746,28 @@
         var txt = guestUiText();
         var guestCountInput = root.querySelector('.wi-guest-count-input');
         var guestCountRaw = guestCountInput ? (guestCountInput.value || '').trim() : '';
-        if (!guestCountRaw) {
-          showToast(txt.countRequired, true);
-          if (guestCountInput) guestCountInput.focus();
-          return;
-        }
-        var guestCountNum = Number.parseInt(guestCountRaw, 10);
-        if (!Number.isFinite(guestCountNum) || guestCountNum < 1 || guestCountNum > 10) {
-          showToast(txt.countInvalid, true);
-          if (guestCountInput) guestCountInput.focus();
-          return;
+        var guestCountNum = 0;
+        if (guestCountRaw) {
+          guestCountNum = Number.parseInt(guestCountRaw, 10);
+          if (!Number.isFinite(guestCountNum) || guestCountNum < 1 || guestCountNum > 10) {
+            showToast(txt.countInvalid, true);
+            if (guestCountInput) guestCountInput.focus();
+            return;
+          }
         }
 
         var guestNameInputs = root.querySelectorAll('.wi-guest-name-input');
         var guestNames = [];
-        for (var gi = 0; gi < guestNameInputs.length; gi++) {
-          var guestName = (guestNameInputs[gi].value || '').trim();
-          if (!guestName) {
-            showToast(txt.guestNameRequired, true);
-            guestNameInputs[gi].focus();
-            return;
+        if (guestCountNum > 0) {
+          for (var gi = 0; gi < guestNameInputs.length; gi++) {
+            var guestName = (guestNameInputs[gi].value || '').trim();
+            if (!guestName) {
+              showToast(txt.guestNameRequired, true);
+              guestNameInputs[gi].focus();
+              return;
+            }
+            guestNames.push(guestName);
           }
-          guestNames.push(guestName);
         }
 
         var checked = root.querySelector("input[type='radio']:checked");
@@ -9632,6 +9863,19 @@
         return rect.bottom - artboardRect.top;
       }
 
+      function clearContactInlineTops(artboard) {
+        var ids = [
+          '1725127746069',
+          '1767999260070000001',
+          '1725127746074',
+          '1767999311760000002'
+        ];
+        for (var i = 0; i < ids.length; i++) {
+          var el = artboard.querySelector('[data-elem-id="' + ids[i] + '"]');
+          if (el) el.style.removeProperty('top');
+        }
+      }
+
       function apply() {
         var rec = document.getElementById('rec1681034491');
         if (!rec) return;
@@ -9644,8 +9888,10 @@
         var elems = artboard.querySelectorAll('.tn-elem');
         if (!elems.length) return;
 
-        var maxBottom = 0;
+        clearContactInlineTops(artboard);
+
         var artboardRect = artboard.getBoundingClientRect();
+        var maxBottom = 0;
         for (var i = 0; i < elems.length; i++) {
           var el = elems[i];
           if (!isShown(el)) continue;
