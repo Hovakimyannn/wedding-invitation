@@ -149,6 +149,111 @@
       opacity: 1;
     }
 
+    :root {
+      --wi-text-soft: #5d554e;
+      --wi-text-soft-muted: #948c84;
+      --wi-surface-soft: #f6f2ec;
+    }
+
+    /* Apply the softer tone to all page text (global). */
+    .t-records .tn-atom,
+    .t-records .tn-atom *,
+    .t-records .t-title,
+    .t-records .t-descr,
+    .t-records .t-text,
+    .t-records .t-name,
+    .t-records .t-input,
+    .t-records .t-form__inputsbox,
+    .t-records label,
+    .t-records legend,
+    .t-records .tn-atom__tip-text,
+    .wi-church-card__kind,
+    .wi-church-card__name,
+    .wi-church-card__address,
+    .wi-guest-count-label,
+    .wi-guest-name-label {
+      color: var(--wi-text-soft) !important;
+    }
+
+    .t-records input,
+    .t-records textarea,
+    .t-records select {
+      color: var(--wi-text-soft) !important;
+      background-color: var(--wi-surface-soft) !important;
+    }
+
+    .t-records .t-input-block textarea,
+    .t-records .t-input-group input,
+    .t-records .t-input-group select,
+    .wi-guest-count-input,
+    .wi-guest-name-input {
+      background-color: var(--wi-surface-soft) !important;
+    }
+
+    .t-records input::placeholder,
+    .t-records textarea::placeholder {
+      color: var(--wi-text-soft-muted) !important;
+    }
+
+    .wi-guest-count-input,
+    .wi-guest-name-input {
+      color: var(--wi-text-soft) !important;
+      border-color: #9e948a !important;
+    }
+
+    .wi-guest-count-input::placeholder,
+    .wi-guest-name-input::placeholder {
+      color: var(--wi-text-soft-muted) !important;
+    }
+
+    /* Warm up the "details" block palette to match page tone. */
+    #rec2223254351 .tn-elem[data-elem-id="1765994422961"] .tn-atom {
+      background-color: #f3ebe0 !important;
+    }
+
+    #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom,
+    #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom,
+    #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom,
+    #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__tip,
+    #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__tip,
+    #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__tip,
+    .t396__tooltip-portal .tn-atom__tip[data-rec-id="2223254351"] {
+      background-color: #f2ebe2 !important;
+    }
+
+    /* Slightly tone down the bright decorative drape in details block. */
+    #rec2223254351 .tn-elem[data-elem-id="1765994463573"] .tn-atom__img {
+      filter: sepia(0.15) saturate(0.72) hue-rotate(-14deg) brightness(0.96) !important;
+      opacity: 0.95 !important;
+    }
+
+    /* Keep the envelope area on the same continuous page background
+       (avoid hard top/bottom "cut" bands). */
+    #rec1681119891,
+    #rec1681080071 {
+      background: transparent !important;
+    }
+
+    #rec1681119891 .t396__artboard,
+    #rec1681119891 .t396__filter,
+    #rec1681119891 .t396__carrier,
+    #rec1681080071 .t396__artboard,
+    #rec1681080071 .t396__filter,
+    #rec1681080071 .t396__carrier {
+      background-color: transparent !important;
+    }
+
+    /* rec1681119891 exists only as a hidden source for the fixed page bg image.
+       Collapse it visually so it cannot create a visible separator strip. */
+    #rec1681119891 {
+      height: 0 !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+    }
+
     /* ── Schedule section (rec2215004051) — text wrap fix ────────────────── */
     @media screen and (max-width: 479px) {
 
@@ -241,6 +346,122 @@
         document.addEventListener('DOMContentLoaded', t_setvisRecs);
       }
     })();</script>
+  <script>
+    (function normalizeScrollAnimations() {
+      function normalizeAnimations() {
+        var animated = document.querySelectorAll('.t-animate');
+        Array.prototype.forEach.call(animated, function (el) {
+          if (el.hasAttribute('data-animate-delay') && el.getAttribute('data-animate-delay') !== '0') {
+            el.setAttribute('data-animate-delay', '0');
+          }
+          if (el.hasAttribute('data-animate-style')) {
+            el.setAttribute('data-animate-style', 'zoomin');
+          }
+          if (el.hasAttribute('data-animate-duration')) {
+            el.setAttribute('data-animate-duration', '0.8');
+          }
+          if (el.hasAttribute('data-animate-scale')) {
+            el.setAttribute('data-animate-scale', '0.95');
+          }
+        });
+      }
+
+      t_onReady(normalizeAnimations);
+      window.addEventListener('load', normalizeAnimations);
+    })();
+  </script>
+  <script>
+    (function revealBlocksOnScroll() {
+      function initReveal() {
+        var records = document.querySelectorAll('.t-records .t-rec');
+        var venueCards = document.querySelectorAll('.wi-church-card-host');
+        var carouselHosts = document.querySelectorAll('.wi-map-carousel-host, .wi-form-carousel-host, .wi-calendar-carousel-elem');
+        if (!records.length && !venueCards.length && !carouselHosts.length) return;
+
+        document.documentElement.classList.add('wi-scroll-reveal');
+        if (!('IntersectionObserver' in window)) {
+          Array.prototype.forEach.call(records, function (rec) {
+            if (rec.classList.contains('uc-ndt-preloader')) return;
+            rec.classList.add('wi-rec-visible');
+          });
+          Array.prototype.forEach.call(venueCards, function (card) {
+            card.classList.add('wi-rec-visible');
+          });
+          Array.prototype.forEach.call(carouselHosts, function (host) {
+            host.classList.add('wi-rec-visible');
+          });
+          return;
+        }
+
+        var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        function isInInitialViewport(el) {
+          var rect = el.getBoundingClientRect();
+          return rect.bottom > 0 && rect.top < viewportHeight * 0.92;
+        }
+
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting || entry.intersectionRatio > 0) {
+              entry.target.classList.add('wi-rec-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -12% 0px' });
+
+        function watchReveal(el) {
+          el.classList.add('wi-rec-reveal');
+          if (el.classList.contains('wi-rec-visible')) return;
+          if (isInInitialViewport(el)) {
+            el.classList.add('wi-rec-visible');
+            return;
+          }
+          observer.observe(el);
+        }
+
+        Array.prototype.forEach.call(records, function (rec) {
+          if (rec.classList.contains('uc-ndt-preloader')) {
+            rec.classList.remove('wi-rec-reveal', 'wi-rec-visible');
+            return;
+          }
+          watchReveal(rec);
+        });
+
+        Array.prototype.forEach.call(venueCards, function (card) {
+          watchReveal(card);
+        });
+
+        Array.prototype.forEach.call(carouselHosts, function (host) {
+          watchReveal(host);
+        });
+
+        if ('MutationObserver' in window) {
+          var lateNodeObserver = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+              Array.prototype.forEach.call(mutation.addedNodes || [], function (node) {
+                if (!node || node.nodeType !== 1) return;
+                if (node.matches && node.matches('.wi-map-carousel-host, .wi-form-carousel-host, .wi-calendar-carousel-elem')) {
+                  watchReveal(node);
+                }
+                if (node.querySelectorAll) {
+                  var nestedHosts = node.querySelectorAll('.wi-map-carousel-host, .wi-form-carousel-host, .wi-calendar-carousel-elem');
+                  Array.prototype.forEach.call(nestedHosts, function (nestedHost) {
+                    watchReveal(nestedHost);
+                  });
+                }
+              });
+            });
+          });
+          lateNodeObserver.observe(document.body, { childList: true, subtree: true });
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initReveal);
+      } else {
+        initReveal();
+      }
+    })();
+  </script>
   <!-- Armenian glyph coverage: the template fonts (1/2/3) are Latin/Cyrillic
        only, so Armenian text fell back to Arial. These faces extend the same
        families with a matching Armenian serif, scoped to the Armenian Unicode
@@ -286,6 +507,95 @@
       display: none !important;
     }
 
+    /* "Details" tooltip bubbles are clickable; add visual affordance
+       (cursor + soft pulse ring + press feedback). */
+    #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin,
+    #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin,
+    #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin {
+      position: relative;
+      cursor: pointer;
+      border-radius: 999px;
+      transition: transform .2s ease, box-shadow .25s ease, filter .25s ease;
+      animation: wiTipBreath 2.6s ease-in-out infinite;
+    }
+
+    #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin::after,
+    #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin::after,
+    #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin::after {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border-radius: 999px;
+      border: 2px solid rgba(105, 105, 105, 0.28);
+      opacity: 0;
+      transform: scale(.92);
+      pointer-events: none;
+      animation: wiTipPulse 2.6s ease-out infinite;
+    }
+
+    #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin,
+    #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin::after {
+      animation-delay: .35s;
+    }
+
+    #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin,
+    #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin::after {
+      animation-delay: .7s;
+    }
+
+    #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin:hover,
+    #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin:hover,
+    #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin:hover {
+      transform: scale(1.05);
+      filter: brightness(1.03);
+      box-shadow: 0 0 24px rgba(0, 0, 0, .24);
+    }
+
+    #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin:active,
+    #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin:active,
+    #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin:active {
+      transform: scale(.97);
+    }
+
+    @keyframes wiTipPulse {
+      0% {
+        opacity: .55;
+        transform: scale(.9);
+      }
+
+      75% {
+        opacity: 0;
+        transform: scale(1.16);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(1.16);
+      }
+    }
+
+    @keyframes wiTipBreath {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.02);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin,
+      #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin,
+      #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin,
+      #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin::after,
+      #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin::after,
+      #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin::after {
+        animation: none;
+      }
+    }
+
     /* On narrow screens the Armenian intro paragraph wraps to twice its
        Russian height and runs over the calendar title below it (t396 blocks
        are absolutely positioned and don't push each other). Shrink it there. */
@@ -307,6 +617,523 @@
     [data-elem-id='1768045567228000002'] .tn-atom {
       text-align: center !important;
     }
+
+    /* Reveal each section only when it enters viewport */
+    .wi-scroll-reveal .t-rec.wi-rec-reveal:not(.uc-ndt-preloader),
+    .wi-scroll-reveal .wi-church-card-host.wi-rec-reveal,
+    .wi-scroll-reveal .wi-map-carousel-host.wi-rec-reveal,
+    .wi-scroll-reveal .wi-form-carousel-host.wi-rec-reveal,
+    .wi-scroll-reveal .wi-calendar-carousel-elem.wi-rec-reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .55s ease, transform .55s ease;
+      will-change: opacity, transform;
+    }
+
+    .wi-scroll-reveal .t-rec.wi-rec-reveal.wi-rec-visible:not(.uc-ndt-preloader),
+    .wi-scroll-reveal .wi-church-card-host.wi-rec-reveal.wi-rec-visible,
+    .wi-scroll-reveal .wi-map-carousel-host.wi-rec-reveal.wi-rec-visible,
+    .wi-scroll-reveal .wi-form-carousel-host.wi-rec-reveal.wi-rec-visible,
+    .wi-scroll-reveal .wi-calendar-carousel-elem.wi-rec-reveal.wi-rec-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .wi-scroll-reveal .t-rec.wi-rec-reveal:not(.uc-ndt-preloader),
+      .wi-scroll-reveal .wi-church-card-host.wi-rec-reveal,
+      .wi-scroll-reveal .wi-map-carousel-host.wi-rec-reveal,
+      .wi-scroll-reveal .wi-form-carousel-host.wi-rec-reveal,
+      .wi-scroll-reveal .wi-calendar-carousel-elem.wi-rec-reveal {
+        transform: none;
+        transition: opacity .2s ease;
+      }
+    }
+
+    /* Calendar carousel (rec2223205941): show engagement photos above
+       the month label inside the calendar section. */
+    #rec2223205941 .wi-calendar-carousel-elem {
+      z-index: 7;
+      top: 350px;
+      left: calc(50% - 600px + 428px);
+      width: 344px;
+      height: 236px;
+      background: transparent !important;
+    }
+
+    #rec2223205941 .wi-calendar-carousel-elem .tn-atom {
+      background: transparent !important;
+    }
+
+    #rec2223205941 .wi-calendar-carousel-elem::before,
+    #rec2223205941 .wi-calendar-carousel-elem::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 44px;
+      z-index: 6;
+      pointer-events: none;
+      -webkit-backdrop-filter: blur(2px);
+      backdrop-filter: blur(2px);
+    }
+
+    #rec2223205941 .wi-calendar-carousel-elem::before {
+      left: 0;
+      background: linear-gradient(to right,
+          rgba(255, 255, 255, 0.20) 0%,
+          rgba(255, 255, 255, 0.10) 45%,
+          rgba(255, 255, 255, 0) 100%);
+    }
+
+    #rec2223205941 .wi-calendar-carousel-elem::after {
+      right: 0;
+      background: linear-gradient(to left,
+          rgba(255, 255, 255, 0.20) 0%,
+          rgba(255, 255, 255, 0.10) 45%,
+          rgba(255, 255, 255, 0) 100%);
+    }
+
+    #rec2223205941 .wi-calendar-carousel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      box-shadow: none;
+      background: transparent !important;
+      touch-action: pan-y;
+    }
+
+    #rec2223205941 .wi-calendar-track {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      height: 100%;
+      will-change: transform;
+      transition: transform .55s cubic-bezier(.22, .61, .36, 1);
+      background: transparent !important;
+    }
+
+    #rec2223205941 .wi-calendar-track.is-no-anim {
+      transition: none !important;
+    }
+
+    #rec2223205941 .wi-calendar-track.is-no-anim .wi-calendar-slide {
+      transition: none !important;
+    }
+
+    #rec2223205941 .wi-calendar-slide {
+      flex: 0 0 calc(100% - 92px);
+      height: 100%;
+      overflow: hidden;
+      transform: scale(.86);
+      opacity: .62;
+      transition: transform .55s ease, opacity .55s ease;
+      background: transparent !important;
+    }
+
+    #rec2223205941 .wi-calendar-slide.is-active {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    #rec2223205941 .wi-calendar-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: transparent !important;
+    }
+
+    @media screen and (max-width:767px) {
+      #rec2223205941 .wi-calendar-slide {
+        flex-basis: calc(100% - 88px);
+      }
+    }
+
+    @media screen and (max-width:1199px) {
+      #rec2223205941 .wi-calendar-carousel-elem {
+        left: calc(50% - 480px + 308px);
+      }
+    }
+
+    @media screen and (max-width:959px) {
+      #rec2223205941 .wi-calendar-carousel-elem {
+        top: 355px;
+        left: calc(50% - 320px + 148px);
+      }
+    }
+
+    @media screen and (max-width:639px) {
+      #rec2223205941 .wi-calendar-carousel-elem {
+        top: 330px;
+        left: calc(50% - 240px + 68px);
+      }
+    }
+
+    @media screen and (max-width:479px) {
+      #rec2223205941 .wi-calendar-carousel-elem {
+        top: 252px;
+        left: calc(50% - 160px + -12px);
+      }
+
+      /* Keep carousel and calendar separate on phones. */
+      #rec2223205941 .tn-elem[data-elem-id="1725107850060"] {
+        top: 600px !important;
+      }
+
+      /* Keep calendar, caption and countdown from overlapping. */
+      #rec2223205941 .tn-elem[data-elem-id="1768045567228000002"] {
+        top: 1080px !important;
+      }
+
+      #rec2223205941 .tn-elem[data-elem-id="1765476539309000001"] {
+        top: 1158px !important;
+      }
+    }
+
+    /* Map carousel (under map block) */
+    .wi-map-carousel-host {
+      margin-top: 65px;
+      margin-bottom: 100px;
+    }
+
+    .wi-church-card-host {
+      margin: 14px auto 24px;
+      padding: 0 12px;
+    }
+
+    .wi-church-card-host--under {
+      margin-top: 0;
+    }
+
+    .wi-church-card {
+      max-width: 430px;
+      margin: 0 auto;
+      padding: 22px 18px 20px;
+      border-radius: 0;
+      background: transparent;
+      color: #000;
+      text-align: center;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+
+    .wi-church-card__icon {
+      height: 52px;
+      width: auto;
+      max-width: 56px;
+      margin: 0 auto 10px;
+      display: block;
+      opacity: 1;
+      filter: brightness(0) saturate(100%);
+    }
+
+    .wi-hall-card__icon {
+      height: 52px;
+      max-width: none;
+    }
+
+    .wi-church-card__kind {
+      margin: 0;
+      font-family: var(--t-descr-font, Georgia, serif);
+      font-size: 14px;
+      line-height: 1.3;
+      letter-spacing: 0.02em;
+      font-weight: 400;
+      color: #6d6666;
+    }
+
+    .wi-church-card__name {
+      margin: 8px 0 16px;
+      font-family: var(--t-title-font, Georgia, serif);
+      font-size: 20px;
+      line-height: 1.15;
+      font-weight: 400;
+      color: #6d6666;
+      text-shadow: none;
+    }
+
+    .wi-church-card__photo {
+      width: 80%;
+      max-width: 360px;
+      margin: 0 auto;
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .wi-church-card__photo img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .wi-church-card__address {
+      margin: 12px 0 18px;
+      font-family: var(--t-text-font, Arial, sans-serif);
+      font-size: 22px;
+      line-height: 1.25;
+      font-weight: 400;
+      color: #6d6666;
+    }
+
+    .wi-church-card__btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      min-width: 189px;
+      height: 61px;
+      border-radius: 0;
+      border: 1px solid #000;
+      color: #000;
+      text-decoration: none;
+      background: transparent;
+      font-family: var(--t-text-font, Arial, sans-serif);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1;
+      transition: background-color .2s ease, color .2s ease;
+    }
+
+    .wi-church-card__btn .tn-atom__button-text,
+    .wi-church-card__btn .wi-church-card__btn-arrow {
+      color: #000 !important;
+    }
+
+    .wi-church-card__btn .wi-church-card__btn-arrow {
+      font-size: 18px;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    .wi-church-card__btn:hover {
+      background: transparent;
+      color: #000;
+    }
+
+    @media screen and (max-width: 479px) {
+      .wi-church-card-host {
+        margin-top: 8px;
+        margin-bottom: 16px;
+        padding: 0 10px;
+      }
+
+      .wi-church-card {
+        padding: 18px 14px 18px;
+      }
+
+      .wi-church-card__name {
+        font-size: 24px;
+      }
+
+      .wi-church-card__photo {
+        width: 80%;
+      }
+
+      .wi-church-card__address {
+        font-size: 20px;
+      }
+    }
+
+    .wi-map-carousel-frame {
+      position: relative;
+      width: 344px;
+      height: 236px;
+      margin: 0 auto;
+      background: transparent !important;
+    }
+
+    .wi-map-carousel-frame::before,
+    .wi-map-carousel-frame::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 44px;
+      z-index: 6;
+      pointer-events: none;
+      -webkit-backdrop-filter: blur(2px);
+      backdrop-filter: blur(2px);
+    }
+
+    .wi-map-carousel-frame::before {
+      left: 0;
+      background: linear-gradient(to right,
+          rgba(255, 255, 255, 0.20) 0%,
+          rgba(255, 255, 255, 0.10) 45%,
+          rgba(255, 255, 255, 0) 100%);
+    }
+
+    .wi-map-carousel-frame::after {
+      right: 0;
+      background: linear-gradient(to left,
+          rgba(255, 255, 255, 0.20) 0%,
+          rgba(255, 255, 255, 0.10) 45%,
+          rgba(255, 255, 255, 0) 100%);
+    }
+
+    .wi-map-carousel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent !important;
+      touch-action: pan-y;
+    }
+
+    .wi-map-track {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      height: 100%;
+      transition: transform .55s cubic-bezier(.22, .61, .36, 1);
+      will-change: transform;
+      background: transparent !important;
+    }
+
+    .wi-map-track.is-no-anim,
+    .wi-map-track.is-no-anim .wi-map-slide {
+      transition: none !important;
+    }
+
+    .wi-map-slide {
+      flex: 0 0 calc(100% - 92px);
+      height: 100%;
+      overflow: hidden;
+      transform: scale(.86);
+      opacity: .62;
+      transition: transform .55s ease, opacity .55s ease;
+      background: transparent !important;
+    }
+
+    .wi-map-slide.is-active {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .wi-map-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: transparent !important;
+    }
+
+    @media screen and (max-width: 767px) {
+      .wi-map-carousel-frame {
+        width: 344px;
+        height: 236px;
+      }
+
+      .wi-map-slide {
+        flex-basis: calc(100% - 88px);
+      }
+    }
+
+    /* Form carousel (above questionnaire) */
+    .wi-form-carousel-host {
+      margin-top: 16px;
+      margin-bottom: 20px;
+    }
+
+    .wi-form-carousel-frame {
+      position: relative;
+      width: 344px;
+      height: 236px;
+      margin: 0 auto;
+      background: transparent !important;
+    }
+
+    .wi-form-carousel-frame::before,
+    .wi-form-carousel-frame::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 44px;
+      z-index: 6;
+      pointer-events: none;
+      -webkit-backdrop-filter: blur(2px);
+      backdrop-filter: blur(2px);
+    }
+
+    .wi-form-carousel-frame::before {
+      left: 0;
+      background: linear-gradient(to right,
+          rgba(255, 255, 255, 0.20) 0%,
+          rgba(255, 255, 255, 0.10) 45%,
+          rgba(255, 255, 255, 0) 100%);
+    }
+
+    .wi-form-carousel-frame::after {
+      right: 0;
+      background: linear-gradient(to left,
+          rgba(255, 255, 255, 0.20) 0%,
+          rgba(255, 255, 255, 0.10) 45%,
+          rgba(255, 255, 255, 0) 100%);
+    }
+
+    .wi-form-carousel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent !important;
+      touch-action: pan-y;
+    }
+
+    .wi-form-track {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      height: 100%;
+      transition: transform .55s cubic-bezier(.22, .61, .36, 1);
+      will-change: transform;
+      background: transparent !important;
+    }
+
+    .wi-form-track.is-no-anim,
+    .wi-form-track.is-no-anim .wi-form-slide {
+      transition: none !important;
+    }
+
+    .wi-form-slide {
+      flex: 0 0 calc(100% - 92px);
+      height: 100%;
+      overflow: hidden;
+      transform: scale(.86);
+      opacity: .62;
+      transition: transform .55s ease, opacity .55s ease;
+      background: transparent !important;
+    }
+
+    .wi-form-slide.is-active {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .wi-form-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: transparent !important;
+    }
+
+    @media screen and (max-width: 767px) {
+      .wi-form-carousel-frame {
+        width: 344px;
+        height: 236px;
+      }
+
+      .wi-form-slide {
+        flex-basis: calc(100% - 88px);
+      }
+    }
   </style>
 </head>
 
@@ -315,7 +1142,7 @@
     data-tilda-page-id="103227036" data-tilda-page-alias="step_future"
     data-tilda-formskey="964abc0db04004466a7e437410222619" data-tilda-cookie="no" data-tilda-lazy="yes"
     data-tilda-root-zone="com" data-tilda-project-headcode="yes" data-tilda-project-country="RU">
-    <div id="rec1888570951" class="r t-rec" style=" " data-animationappear="off" data-record-type="131"> <!-- T123 -->
+    <div id="rec1888570951" class="r t-rec" data-animationappear="off" data-record-type="131"> <!-- T123 -->
       <div class="t123">
         <div class="t-container_100 ">
           <div class="t-width t-width_100 "> <!-- nominify begin -->
@@ -329,7 +1156,7 @@
         </div>
       </div>
     </div>
-    <div id="rec1889578351" class="r t-rec" style=" " data-animationappear="off" data-record-type="131"> <!-- T123 -->
+    <div id="rec1889578351" class="r t-rec" data-animationappear="off" data-record-type="131"> <!-- T123 -->
       <div class="t123">
         <div class="t-container_100 ">
           <div class="t-width t-width_100 "> <!-- nominify begin -->
@@ -373,11 +1200,6 @@
                     clearTimeout(scrollTimerId);
                     scrollTimerId = null;
                   }
-
-                  // если вдруг уже шёл наш скролл — просто помечаем, чтобы дальше не продолжать
-                  // (requestAnimationFrame сам остановится по флагу isScrolling/aborted)
-                  // reason можно логировать при отладке:
-                  // console.log('[ndt] aborted:', reason);
                 }
 
                 // ====== HIGH-HZ SCROLL ENGINE ======
@@ -546,7 +1368,7 @@
         </div>
       </div>
     </div>
-    <div id="rec1889460601" class="r t-rec" style=" " data-animationappear="off" data-record-type="131"> <!-- T123 -->
+    <div id="rec1889460601" class="r t-rec" data-animationappear="off" data-record-type="131"> <!-- T123 -->
       <div class="t123">
         <div class="t-container_100 ">
           <div class="t-width t-width_100 "> <!-- nominify begin -->
@@ -703,8 +1525,6 @@
             </style>
             <script>
               $(document).ready(function () {
-
-                /* BLOCK VERTICAL SCROLL ON LOAD */
                 document.body.classList.add('ndt-no-scroll-y');
 
                 let preloaderBlock = document.querySelector('.uc-ndt-preloader');
@@ -804,7 +1624,7 @@
         </div>
       </div>
     </div>
-    <div id="rec1888577641" class="r t-rec uc-ndt-preloader" style=" " data-animationappear="off"
+    <div id="rec1888577641" class="r t-rec uc-ndt-preloader" data-animationappear="off"
       data-record-type="396"> <!-- T396 -->
       <style>
         #rec1888577641 .t396__artboard {
@@ -837,38 +1657,18 @@
 
         @media screen and (max-width:1199px) {
 
-          #rec1888577641 .t396__artboard,
-          #rec1888577641 .t396__filter,
-          #rec1888577641 .t396__carrier {}
-
-          #rec1888577641 .t396__filter {}
-
           #rec1888577641 .t396__carrier {
             background-attachment: scroll;
           }
         }
 
         @media screen and (max-width:959px) {
-
-          #rec1888577641 .t396__artboard,
-          #rec1888577641 .t396__filter,
-          #rec1888577641 .t396__carrier {}
-
-          #rec1888577641 .t396__filter {}
-
           #rec1888577641 .t396__carrier {
             background-attachment: scroll;
           }
         }
 
         @media screen and (max-width:639px) {
-
-          #rec1888577641 .t396__artboard,
-          #rec1888577641 .t396__filter,
-          #rec1888577641 .t396__carrier {}
-
-          #rec1888577641 .t396__filter {}
-
           #rec1888577641 .t396__carrier {
             background-attachment: scroll;
           }
@@ -881,8 +1681,6 @@
           #rec1888577641 .t396__carrier {
             min-height: 650px;
           }
-
-          #rec1888577641 .t396__filter {}
 
           #rec1888577641 .t396__carrier {
             background-attachment: scroll;
@@ -1316,13 +2114,6 @@
         }
 
         @media screen and (max-width:1199px) {
-
-          #rec1681119891 .t396__artboard,
-          #rec1681119891 .t396__filter,
-          #rec1681119891 .t396__carrier {}
-
-          #rec1681119891 .t396__filter {}
-
           #rec1681119891 .t396__carrier {
             background-attachment: scroll;
           }
@@ -1330,25 +2121,12 @@
 
         @media screen and (max-width:959px) {
 
-          #rec1681119891 .t396__artboard,
-          #rec1681119891 .t396__filter,
-          #rec1681119891 .t396__carrier {}
-
-          #rec1681119891 .t396__filter {}
-
           #rec1681119891 .t396__carrier {
             background-attachment: scroll;
           }
         }
 
         @media screen and (max-width:639px) {
-
-          #rec1681119891 .t396__artboard,
-          #rec1681119891 .t396__filter,
-          #rec1681119891 .t396__carrier {}
-
-          #rec1681119891 .t396__filter {}
-
           #rec1681119891 .t396__carrier {
             background-attachment: scroll;
           }
@@ -1361,8 +2139,6 @@
           #rec1681119891 .t396__carrier {
             height: 780px;
           }
-
-          #rec1681119891 .t396__filter {}
 
           #rec1681119891 .t396__carrier {
             background-attachment: scroll;
@@ -1456,13 +2232,12 @@
       <script>t_onReady(function () { t_onFuncLoad('t396_init', function () { t396_init('1681119891'); }); });</script>
       <!-- /T396 -->
     </div>
-    <div id="rec1681120321" class="r t-rec" style=" " data-animationappear="off" data-record-type="131"> <!-- T123 -->
+    <div id="rec1681120321" class="r t-rec" data-animationappear="off" data-record-type="131">
       <div class="t123">
         <div class="t-container_100 ">
-          <div class="t-width t-width_100 "> <!-- nominify begin -->
+          <div class="t-width t-width_100 "> 
             <style>
               #rec1681119891 {
-                /* поменять на id zero блока с картинкой */
                 position: absolute;
                 overflow: hidden;
                 width: 0px !important;
@@ -1490,11 +2265,11 @@
                 width: 100vw;
                 height: 100vh;
                 z-index: -1;
-                background-color: #fff;
-                /* цвет фильтра */
+                background-color: #f3e2ce;
+                /* теплый фильтр поверх фона */
                 backdrop-filter: blur(0px);
                 /* сила размытия фона (только при непрозрачности 1 */
-                opacity: 0;
+                opacity: 0.35;
                 /* непрозрачность фильтра */
               }
             </style>
@@ -1518,7 +2293,7 @@
         </div>
       </div>
     </div>
-    <div id="rec1681080071" class="r t-rec" style=" " data-animationappear="off" data-record-type="396"> <!-- T396 -->
+    <div id="rec1681080071" class="r t-rec" data-animationappear="off" data-record-type="396">
       <style>
         #rec1681080071 .t396__artboard {
           height: 980px;
@@ -1537,39 +2312,18 @@
         }
 
         @media screen and (max-width:1199px) {
-
-          #rec1681080071 .t396__artboard,
-          #rec1681080071 .t396__filter,
-          #rec1681080071 .t396__carrier {}
-
-          #rec1681080071 .t396__filter {}
-
           #rec1681080071 .t396__carrier {
             background-attachment: scroll;
           }
         }
 
         @media screen and (max-width:959px) {
-
-          #rec1681080071 .t396__artboard,
-          #rec1681080071 .t396__filter,
-          #rec1681080071 .t396__carrier {}
-
-          #rec1681080071 .t396__filter {}
-
           #rec1681080071 .t396__carrier {
             background-attachment: scroll;
           }
         }
 
         @media screen and (max-width:639px) {
-
-          #rec1681080071 .t396__artboard,
-          #rec1681080071 .t396__filter,
-          #rec1681080071 .t396__carrier {}
-
-          #rec1681080071 .t396__filter {}
-
           #rec1681080071 .t396__carrier {
             background-attachment: scroll;
           }
@@ -1582,8 +2336,6 @@
           #rec1681080071 .t396__carrier {
             height: 669px;
           }
-
-          #rec1681080071 .t396__filter {}
 
           #rec1681080071 .t396__carrier {
             background-attachment: scroll;
@@ -1656,9 +2408,9 @@
             display: table;
             top: 90px;
             ;
-            left: calc(50% - 160px + 6px);
+            left: calc(50% - 160px + -3px);
             ;
-            width: 309px;
+            width: 326px;
             height: 457px;
           }
         }
@@ -1666,17 +2418,11 @@
         #rec1681080071 .tn-elem[data-elem-id="1765476817967"] {
           z-index: 3;
           top: -24px;
-          ;
           left: calc(50% - 600px + 480px);
-          ;
           width: 291px;
           height: 291px;
           -webkit-filter: blur(50px);
-          : filter:blur(50px);
-          ;
           filter: blur(50px);
-          : filter:blur(50px);
-          ;
           border-radius: 3000px 3000px 3000px 3000px;
         }
 
@@ -1738,17 +2484,11 @@
         #rec1681080071 .tn-elem[data-elem-id="1765476914675000002"] {
           z-index: 3;
           top: 626px;
-          ;
           left: calc(50% - 600px + 1080px);
-          ;
           width: 291px;
           height: 291px;
           -webkit-filter: blur(50px);
-          : filter:blur(50px);
-          ;
           filter: blur(50px);
-          : filter:blur(50px);
-          ;
           border-radius: 3000px 3000px 3000px 3000px;
         }
 
@@ -2139,21 +2879,18 @@
           <div class="t396__carrier" data-artboard-recid="1681080071"></div>
           <div class="t396__filter" data-artboard-recid="1681080071"></div>
           <div class='t396__elem tn-elem tn-elem__16810800711765475895929' data-elem-id='1765475895929'
-            data-elem-type='video' data-field-top-value="101" data-field-left-value="638" data-field-height-value="746"
+            data-elem-type='image' data-field-top-value="101" data-field-left-value="638" data-field-height-value="746"
             data-field-width-value="590" data-field-axisy-value="top" data-field-axisx-value="left"
             data-field-container-value="grid" data-field-topunits-value="px" data-field-leftunits-value="px"
-            data-field-heightunits-value="px" data-field-widthunits-value="px" data-field-autoplay-value="y"
-            data-field-loop-value="y" data-field-mute-value="y" data-field-top-res-320-value="90"
-            data-field-left-res-320-value="6" data-field-height-res-320-value="457" data-field-width-res-320-value="309"
+            data-field-heightunits-value="px" data-field-widthunits-value="px" data-field-filewidth-value="768"
+            data-field-fileheight-value="1024" data-field-heightmode-value="hug" data-field-top-res-320-value="90"
+            data-field-left-res-320-value="-3" data-field-height-res-320-value="457" data-field-width-res-320-value="326"
             data-field-top-res-480-value="182" data-field-left-res-480-value="-5" data-field-height-res-480-value="627"
             data-field-width-res-480-value="495" data-field-top-res-640-value="159" data-field-left-res-640-value="59"
             data-field-height-res-640-value="670" data-field-width-res-640-value="529"
             data-field-left-res-960-value="189">
-            <div class='tn-atom' style="height:100%;">
-              <div class='tn-atom__videoiframe'
-                data-mp4video="https://static.tildacdn.com/vide3637-6366-4632-b136-653330653831/_.mp4"
-                data-video-object-fit="cover" data-video-controls="hidden" style="width:100%; height:100%;"></div>
-            </div>
+            <div class='tn-atom'> <img class='tn-atom__img t-img' data-original='/img/couple1.png'
+                src='/img/couple1.png' alt='' imgfield='tn_img_1765475895929' /> </div>
           </div>
           <div class='t396__elem tn-elem tn-elem__16810800711765476817967' data-elem-id='1765476817967'
             data-elem-type='shape' data-field-top-value="-24" data-field-left-value="480" data-field-height-value="291"
@@ -2184,7 +2921,7 @@
             data-field-width-value="385" data-field-axisy-value="top" data-field-axisx-value="left"
             data-field-container-value="grid" data-field-topunits-value="px" data-field-leftunits-value="px"
             data-field-heightunits-value="px" data-field-widthunits-value="px" data-field-filewidth-value="1680"
-            data-field-fileheight-value="1680" data-field-heightmode-value="hug" data-field-top-res-320-value="431"
+            data-field-fileheight-value="1680" data-field-heightmode-value="hug" data-field-top-res-320-value="415"
             data-field-left-res-320-value="193" data-field-height-res-320-value="225"
             data-field-width-res-320-value="225" data-field-widthmode-res-320-value="fixed"
             data-field-top-res-480-value="583" data-field-left-res-480-value="332" data-field-height-res-480-value="323"
@@ -2199,7 +2936,7 @@
             data-field-width-value="385" data-field-axisy-value="top" data-field-axisx-value="left"
             data-field-container-value="grid" data-field-topunits-value="px" data-field-leftunits-value="px"
             data-field-heightunits-value="px" data-field-widthunits-value="px" data-field-filewidth-value="1680"
-            data-field-fileheight-value="1680" data-field-heightmode-value="hug" data-field-top-res-320-value="-31"
+            data-field-fileheight-value="1680" data-field-heightmode-value="hug" data-field-top-res-320-value="-15"
             data-field-left-res-320-value="-101" data-field-height-res-320-value="225"
             data-field-width-res-320-value="225" data-field-top-res-480-value="40" data-field-left-res-480-value="-175"
             data-field-height-res-480-value="323" data-field-width-res-480-value="323" data-field-top-res-640-value="7"
@@ -2264,8 +3001,6 @@
             height: 1470px;
           }
 
-          #rec2223205941 .t396__filter {}
-
           #rec2223205941 .t396__carrier {
             background-attachment: scroll;
           }
@@ -2278,8 +3013,6 @@
           #rec2223205941 .t396__carrier {
             height: 1470px;
           }
-
-          #rec2223205941 .t396__filter {}
 
           #rec2223205941 .t396__carrier {
             background-attachment: scroll;
@@ -2294,8 +3027,6 @@
             height: 1480px;
           }
 
-          #rec2223205941 .t396__filter {}
-
           #rec2223205941 .t396__carrier {
             background-attachment: scroll;
           }
@@ -2308,8 +3039,6 @@
           #rec2223205941 .t396__carrier {
             height: 1340px;
           }
-
-          #rec2223205941 .t396__filter {}
 
           #rec2223205941 .t396__carrier {
             background-attachment: scroll;
@@ -3422,40 +4151,12 @@
             data-field-top-res-960-value="990" data-field-left-res-960-value="570">
             <div class='tn-atom' field='tn_text_1768045567228000002'>через...</div>
           </div>
-          <div class='t396__elem tn-elem tn-elem__22232059411769686788763000001 t-animate'
-            data-elem-id='1769686788763000001' data-elem-type='text' data-field-top-value="182"
-            data-field-left-value="498" data-field-height-value="30" data-field-width-value="204"
-            data-field-axisy-value="top" data-field-axisx-value="left" data-field-container-value="grid"
-            data-field-topunits-value="px" data-field-leftunits-value="px" data-field-heightunits-value="px"
-            data-field-widthunits-value="px" data-animate-style="fadeinup" data-animate-duration="2"
-            data-animate-delay="0.4" data-animate-distance="100" data-animate-mobile="y"
-            data-field-textfit-value="autoheight" data-field-fontsize-value="15" data-field-top-res-320-value="149"
-            data-field-left-res-320-value="77" data-field-width-res-320-value="166"
-            data-field-fontsize-res-320-value="12" data-field-left-res-480-value="138"
-            data-field-left-res-640-value="218" data-field-left-res-960-value="378">
-            <div class='tn-atom' field='tn_text_1769686788763000001'><strong></strong><strong>Если Вас отвлекает музыка,
-                ее можно выключить</strong><strong></strong><strong></strong></div>
-          </div>
-          <div class='t396__elem tn-elem ndt-pause-btn tn-elem__22232059411769686788763000002 t-animate'
-            data-elem-id='1769686788763000002' data-elem-type='shape' data-field-top-value="129"
-            data-field-left-value="576" data-field-height-value="44" data-field-width-value="49"
-            data-field-axisy-value="top" data-field-axisx-value="left" data-field-container-value="grid"
-            data-field-topunits-value="px" data-field-leftunits-value="px" data-field-heightunits-value="px"
-            data-field-widthunits-value="px" data-animate-style="fadeinup" data-animate-duration="2"
-            data-animate-delay="0.4" data-animate-distance="100" data-animate-mobile="y"
-            data-field-top-res-320-value="109" data-field-left-res-320-value="145" data-field-height-res-320-value="30"
-            data-field-width-res-320-value="30" data-field-left-res-480-value="216" data-field-left-res-640-value="296"
-            data-field-left-res-960-value="456">
-            <div class='tn-atom t-bgimg'
-              data-original="https://static.tildacdn.com/tild3131-6666-4236-b432-613061386465/photo.png" aria-label=''
-              role="img"> </div>
-          </div>
         </div>
       </div>
       <script>t_onReady(function () { t_onFuncLoad('t396_init', function () { t396_init('2223205941'); }); });</script>
       <!-- /T396 -->
     </div>
-    <div id="rec2215004051" class="r t-rec" style=" " data-animationappear="off" data-record-type="396"> <!-- T396 -->
+    <div id="rec2215004051" class="r t-rec" data-animationappear="off" data-record-type="396"> <!-- T396 -->
       <style>
         #rec2215004051 .t396__artboard {
           height: 770px;
@@ -3481,21 +4182,12 @@
             height: 720px;
           }
 
-          #rec2215004051 .t396__filter {}
-
           #rec2215004051 .t396__carrier {
             background-attachment: scroll;
           }
         }
 
         @media screen and (max-width:959px) {
-
-          #rec2215004051 .t396__artboard,
-          #rec2215004051 .t396__filter,
-          #rec2215004051 .t396__carrier {}
-
-          #rec2215004051 .t396__filter {}
-
           #rec2215004051 .t396__carrier {
             background-attachment: scroll;
           }
@@ -3509,8 +4201,6 @@
             height: 750px;
           }
 
-          #rec2215004051 .t396__filter {}
-
           #rec2215004051 .t396__carrier {
             background-attachment: scroll;
           }
@@ -3523,8 +4213,6 @@
           #rec2215004051 .t396__carrier {
             height: 720px;
           }
-
-          #rec2215004051 .t396__filter {}
 
           #rec2215004051 .t396__carrier {
             background-attachment: scroll;
@@ -3540,11 +4228,7 @@
           width: 200px;
           height: auto;
           -webkit-filter: brightness(0%);
-          : filter:brightness(0%);
-          ;
           filter: brightness(0%);
-          : filter:brightness(0%);
-          ;
           border-radius: 0px 0px 0px 0px;
         }
 
@@ -3628,7 +4312,6 @@
           #rec2215004051 .tn-elem[data-elem-id="1751212556300"] {
             display: table;
             left: calc(50% - 480px + 266px);
-            ;
             height: auto;
           }
         }
@@ -4764,7 +5447,7 @@
       <script>t_onReady(function () { t_onFuncLoad('t396_init', function () { t396_init('2215004051'); }); });</script>
       <!-- /T396 -->
     </div>
-    <div id="rec1681034421" class="r t-rec" style=" " data-animationappear="off" data-record-type="396"> <!-- T396 -->
+    <div id="rec1681034421" class="r t-rec" data-animationappear="off" data-record-type="396">
       <style>
         #rec1681034421 .t396__artboard {
           height: 430px;
@@ -4783,13 +5466,6 @@
         }
 
         @media screen and (max-width:1199px) {
-
-          #rec1681034421 .t396__artboard,
-          #rec1681034421 .t396__filter,
-          #rec1681034421 .t396__carrier {}
-
-          #rec1681034421 .t396__filter {}
-
           #rec1681034421 .t396__carrier {
             background-attachment: scroll;
           }
@@ -4802,8 +5478,6 @@
           #rec1681034421 .t396__carrier {
             height: 410px;
           }
-
-          #rec1681034421 .t396__filter {}
 
           #rec1681034421 .t396__carrier {
             background-attachment: scroll;
@@ -4818,8 +5492,6 @@
             height: 340px;
           }
 
-          #rec1681034421 .t396__filter {}
-
           #rec1681034421 .t396__carrier {
             background-attachment: scroll;
           }
@@ -4830,10 +5502,8 @@
           #rec1681034421 .t396__artboard,
           #rec1681034421 .t396__filter,
           #rec1681034421 .t396__carrier {
-            height: 370px;
+            height: 100px;
           }
-
-          #rec1681034421 .t396__filter {}
 
           #rec1681034421 .t396__carrier {
             background-attachment: scroll;
@@ -5306,8 +5976,6 @@
         <div class="t396__artboard" data-artboard-recid="1681034421" data-artboard-screens="320,480,640,960,1200"
           data-artboard-height="430" data-artboard-valign="center" data-artboard-upscale="grid"
           data-artboard-height-res-320="370" data-artboard-height-res-480="340" data-artboard-height-res-640="410">
-          <div class="t396__carrier" data-artboard-recid="1681034421"></div>
-          <div class="t396__filter" data-artboard-recid="1681034421"></div>
           <div class='t396__elem tn-elem tn-elem__16810344211684927318816 t-animate' data-elem-id='1684927318816'
             data-elem-type='image' data-field-top-value="-120" data-field-left-value="384" data-field-height-value="432"
             data-field-width-value="432" data-field-axisy-value="top" data-field-axisx-value="left"
@@ -5326,38 +5994,54 @@
                 src='https://static.tildacdn.com/tild6230-3938-4633-b538-393238316234/_1.svg' alt=''
                 imgfield='tn_img_1684927318816' /> </div>
           </div>
-          <div class='t396__elem tn-elem tn-elem__16810344211684927346397 t-animate' data-elem-id='1684927346397'
-            data-elem-type='text' data-field-top-value="205" data-field-left-value="456" data-field-height-value="78"
-            data-field-width-value="289" data-field-axisy-value="top" data-field-axisx-value="left"
-            data-field-container-value="grid" data-field-topunits-value="px" data-field-leftunits-value="px"
-            data-field-heightunits-value="px" data-field-widthunits-value="px" data-animate-style="zoomin"
-            data-animate-duration="2" data-animate-delay="0.6" data-animate-scale="0.9" data-animate-mobile="y"
-            data-field-textfit-value="autoheight" data-field-fontsize-value="20" data-field-top-res-320-value="148"
-            data-field-left-res-320-value="31" data-field-width-res-320-value="259"
-            data-field-fontsize-res-320-value="18" data-field-top-res-480-value="132" data-field-left-res-480-value="96"
-            data-field-top-res-640-value="170" data-field-left-res-640-value="175" data-field-left-res-960-value="335">
-            <div class='tn-atom' field='tn_text_1684927346397'><strong style="font-weight: 700;">Банкетный зал
-                "Лацио Холл"</strong><br /><strong>Котайкская область, 19/18</strong></div>
-          </div>
-          <div class='t396__elem tn-elem tn-elem__16810344211766357717881000001' data-elem-id='1766357717881000001'
-            data-elem-type='button' data-field-top-value="334" data-field-left-value="506" data-field-height-value="61"
-            data-field-width-value="189" data-field-axisy-value="top" data-field-axisx-value="left"
-            data-field-container-value="grid" data-field-topunits-value="px" data-field-leftunits-value="px"
-            data-field-heightunits-value="px" data-field-widthunits-value="px" data-field-textfit-value="fixedsize"
-            data-field-fontsize-value="14" data-field-top-res-320-value="260" data-field-left-res-320-value="66"
-            data-field-top-res-480-value="244" data-field-left-res-480-value="146" data-field-top-res-640-value="294"
-            data-field-left-res-640-value="225" data-field-left-res-960-value="385"> <a class='tn-atom'
-              href="https://yandex.com/maps/org/latsio_hol/215251153533/?ll=44.591922%2C40.193585&z=17" target="_blank"
-              rel="noopener">
-              <div class='tn-atom__button-content'> <span
-                  class='tn-atom__button-icon tn-atom__button-icon-no-hover tn-atom__button-icon-arrow-default '></span>
-                <span class="tn-atom__button-text">КАРТА</span>
-              </div> <span class="tn-atom__button-border"></span>
-            </a> </div>
         </div>
       </div>
       <script>t_onReady(function () { t_onFuncLoad('t396_init', function () { t396_init('1681034421'); }); });</script>
       <!-- /T396 -->
+    </div>
+    <div class="wi-church-card-host">
+      <div class="wi-church-card">
+        <img class="wi-church-card__icon" src="/img/church-icon-white.png" alt="" loading="lazy">
+        <p class="wi-church-card__kind" field="tn_text_wi_church_kind">Պսակադրություն</p>
+        <p class="wi-church-card__name" field="tn_text_wi_church_name">Սաղմոսավանք</p>
+        <figure class="wi-church-card__photo">
+          <img src="/img/saghmosavank.png" alt="Սաղմոսավանք" loading="lazy">
+        </figure>
+        <p class="wi-church-card__address" field="tn_text_wi_church_address">գ. Սաղմոսավան</p>
+        <a class="wi-church-card__btn" href="https://maps.google.com/?q=%D5%8D%D5%A1%D5%B2%D5%B4%D5%B8%D5%BD%D5%A1%D5%BE%D5%A1%D5%B6%D6%84"
+          target="_blank" rel="noopener">
+          <span class="tn-atom__button-text">КАРТА</span>
+          <span class="wi-church-card__btn-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="wi-church-card-host wi-church-card-host--under">
+      <div class="wi-church-card">
+        <img class="wi-church-card__icon wi-hall-card__icon" src="/img/hall-icon.png" alt="" loading="lazy">
+        <p class="wi-church-card__kind" field="tn_text_wi_hall_kind">Հարսանյաց հանդիսություն</p>
+        <p class="wi-church-card__name" field="tn_text_wi_hall_name">Lazio Hall Restaurant</p>
+        <figure class="wi-church-card__photo">
+          <img src="/img/hall-card-photo.png" alt="Lazio Hall Restaurant" loading="lazy">
+        </figure>
+        <p class="wi-church-card__address" field="tn_text_wi_hall_address">Կոտայքի մարզ, Ջրվեժ 19/18</p>
+        <a class="wi-church-card__btn"
+          href="https://yandex.com/maps/org/latsio_hol/215251153533/?ll=44.591922%2C40.193585&z=17" target="_blank"
+          rel="noopener">
+          <span class="tn-atom__button-text">КАРТА</span>
+          <span class="wi-church-card__btn-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="wi-map-carousel-host">
+      <div class="wi-map-carousel-frame">
+        <div id="wi-map-carousel" class="wi-map-carousel">
+          <div class="wi-map-track">
+            <div class="wi-map-slide"><img src="/img/map-carousel-1.png" alt=""></div>
+            <div class="wi-map-slide"><img src="/img/map-carousel-2.png" alt=""></div>
+            <div class="wi-map-slide"><img src="/img/map-carousel-3.png" alt=""></div>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="rec1681034441" class="r t-rec t-rec_pt_45 t-rec_pb_45 uc-ndt-block"
       style="padding-top:45px;padding-bottom:45px; " data-record-type="125"> <!-- T117 -->
@@ -5374,7 +6058,7 @@
         </div>
       </div>
     </div>
-    <div id="rec1681034451" class="r t-rec" style=" " data-animationappear="off" data-record-type="131"> <!-- T123 -->
+    <div id="rec1681034451" class="r t-rec" data-animationappear="off" data-record-type="131"> <!-- T123 -->
       <div class="t123">
         <div class="t-container_100 ">
           <div class="t-width t-width_100 "> <!-- nominify begin --> <!-- код для появления/исчезания блока -->
@@ -5403,7 +6087,7 @@
         </div>
       </div>
     </div>
-    <div id="rec2223254351" class="r t-rec" style=" " data-animationappear="off" data-record-type="396"> <!-- T396 -->
+    <div id="rec2223254351" class="r t-rec" data-animationappear="off" data-record-type="396"> <!-- T396 -->
       <style>
         #rec2223254351 .t396__artboard {
           height: 1000px;
@@ -5422,39 +6106,18 @@
         }
 
         @media screen and (max-width:1199px) {
-
-          #rec2223254351 .t396__artboard,
-          #rec2223254351 .t396__filter,
-          #rec2223254351 .t396__carrier {}
-
-          #rec2223254351 .t396__filter {}
-
           #rec2223254351 .t396__carrier {
             background-attachment: scroll;
           }
         }
 
         @media screen and (max-width:959px) {
-
-          #rec2223254351 .t396__artboard,
-          #rec2223254351 .t396__filter,
-          #rec2223254351 .t396__carrier {}
-
-          #rec2223254351 .t396__filter {}
-
           #rec2223254351 .t396__carrier {
             background-attachment: scroll;
           }
         }
 
         @media screen and (max-width:639px) {
-
-          #rec2223254351 .t396__artboard,
-          #rec2223254351 .t396__filter,
-          #rec2223254351 .t396__carrier {}
-
-          #rec2223254351 .t396__filter {}
-
           #rec2223254351 .t396__carrier {
             background-attachment: scroll;
           }
@@ -5467,8 +6130,6 @@
           #rec2223254351 .t396__carrier {
             height: 850px;
           }
-
-          #rec2223254351 .t396__filter {}
 
           #rec2223254351 .t396__carrier {
             background-attachment: scroll;
@@ -6355,8 +7016,6 @@
         @media screen and (max-width:959px) {
           #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] {
             display: table;
-            top: 744px;
-            ;
             left: calc(50% - 320px + 130px);
             ;
             height: auto;
@@ -6621,7 +7280,7 @@
       <script>t_onReady(function () { t_onFuncLoad('t396_init', function () { t396_init('2223254351'); }); });</script>
       <!-- /T396 -->
     </div>
-    <div id="rec1706275211" class="r t-rec" style=" " data-animationappear="off" data-record-type="396"> <!-- T396 -->
+    <div id="rec1706275211" class="r t-rec" data-animationappear="off" data-record-type="396"> <!-- T396 -->
       <style>
         #rec1706275211 .t396__artboard {
           height: 790px;
@@ -6640,39 +7299,18 @@
         }
 
         @media screen and (max-width:1199px) {
-
-          #rec1706275211 .t396__artboard,
-          #rec1706275211 .t396__filter,
-          #rec1706275211 .t396__carrier {}
-
-          #rec1706275211 .t396__filter {}
-
           #rec1706275211 .t396__carrier {
             background-attachment: scroll;
           }
         }
 
         @media screen and (max-width:959px) {
-
-          #rec1706275211 .t396__artboard,
-          #rec1706275211 .t396__filter,
-          #rec1706275211 .t396__carrier {}
-
-          #rec1706275211 .t396__filter {}
-
           #rec1706275211 .t396__carrier {
             background-attachment: scroll;
           }
         }
 
         @media screen and (max-width:639px) {
-
-          #rec1706275211 .t396__artboard,
-          #rec1706275211 .t396__filter,
-          #rec1706275211 .t396__carrier {}
-
-          #rec1706275211 .t396__filter {}
-
           #rec1706275211 .t396__carrier {
             background-attachment: scroll;
           }
@@ -6685,8 +7323,6 @@
           #rec1706275211 .t396__carrier {
             height: 710px;
           }
-
-          #rec1706275211 .t396__filter {}
 
           #rec1706275211 .t396__carrier {
             background-attachment: scroll;
@@ -7384,163 +8020,64 @@
             data-field-left-res-480-value="66" data-field-left-res-640-value="146" data-field-top-res-960-value="274"
             data-field-left-res-960-value="306" data-field-height-res-960-value="87"
             data-field-width-res-960-value="347" data-field-container-res-960-value="grid">
-            <div class='tn-atom t-bgimg'
-              style="background-image:url('https://static.tildacdn.com/tild6637-3363-4135-b737-373933316232/__-_2026-01-10T22063.jpeg');"
-              aria-label='' role="img"> </div>
-          </div>
-          <div class='t396__elem tn-elem tn-elem__17062752111768071945727000002 t-animate'
-            data-elem-id='1768071945727000002' data-elem-type='shape' data-field-top-value="361"
-            data-field-left-value="427" data-field-height-value="87" data-field-width-value="347"
-            data-field-axisy-value="top" data-field-axisx-value="left" data-field-container-value="grid"
-            data-field-topunits-value="px" data-field-leftunits-value="px" data-field-heightunits-value="px"
-            data-field-widthunits-value="px" data-animate-style="fadeinright" data-animate-duration="3"
-            data-animate-delay="0.6" data-animate-distance="100" data-animate-mobile="y"
-            data-field-top-res-320-value="315" data-field-left-res-320-value="20" data-field-height-res-320-value="75"
-            data-field-width-res-320-value="280" data-field-container-res-320-value="grid"
-            data-field-heightmode-res-320-value="fixed" data-field-left-res-480-value="66"
-            data-field-left-res-640-value="146" data-field-top-res-960-value="361" data-field-left-res-960-value="306"
-            data-field-height-res-960-value="87" data-field-width-res-960-value="347"
-            data-field-container-res-960-value="grid">
-            <div class='tn-atom t-bgimg'
-              style="background-image:url('https://static.tildacdn.com/tild6339-3135-4061-a439-343163616438/__-_2026-01-10T22063.jpeg');"
-              aria-label='' role="img"> </div>
-          </div>
-          <div class='t396__elem tn-elem tn-elem__17062752111768071965911000003 t-animate'
-            data-elem-id='1768071965911000003' data-elem-type='shape' data-field-top-value="448"
-            data-field-left-value="427" data-field-height-value="87" data-field-width-value="347"
-            data-field-axisy-value="top" data-field-axisx-value="left" data-field-container-value="grid"
-            data-field-topunits-value="px" data-field-leftunits-value="px" data-field-heightunits-value="px"
-            data-field-widthunits-value="px" data-animate-style="fadeinleft" data-animate-duration="3"
-            data-animate-delay="0.7" data-animate-distance="100" data-animate-mobile="y"
-            data-field-top-res-320-value="390" data-field-left-res-320-value="20" data-field-height-res-320-value="75"
-            data-field-width-res-320-value="280" data-field-container-res-320-value="grid"
-            data-field-heightmode-res-320-value="fixed" data-field-left-res-480-value="66"
-            data-field-left-res-640-value="146" data-field-top-res-960-value="448" data-field-left-res-960-value="306"
-            data-field-height-res-960-value="87" data-field-width-res-960-value="347"
-            data-field-container-res-960-value="grid">
-            <div class='tn-atom t-bgimg'
-              style="background-image:url('https://static.tildacdn.com/tild3530-6335-4665-b764-393730333165/__-_2026-01-10T22063.jpeg');"
-              aria-label='' role="img"> </div>
-          </div>
-          <div class='t396__elem tn-elem tn-elem__17062752111768071978328000004 t-animate'
-            data-elem-id='1768071978328000004' data-elem-type='shape' data-field-top-value="535"
-            data-field-left-value="427" data-field-height-value="87" data-field-width-value="347"
-            data-field-axisy-value="top" data-field-axisx-value="left" data-field-container-value="grid"
-            data-field-topunits-value="px" data-field-leftunits-value="px" data-field-heightunits-value="px"
-            data-field-widthunits-value="px" data-animate-style="fadeinright" data-animate-duration="3"
-            data-animate-delay="0.8" data-animate-distance="100" data-animate-mobile="y"
-            data-field-top-res-320-value="465" data-field-left-res-320-value="20" data-field-height-res-320-value="75"
-            data-field-width-res-320-value="280" data-field-container-res-320-value="grid"
-            data-field-heightmode-res-320-value="fixed" data-field-left-res-480-value="66"
-            data-field-left-res-640-value="146" data-field-top-res-960-value="535" data-field-left-res-960-value="306"
-            data-field-height-res-960-value="87" data-field-width-res-960-value="347"
-            data-field-container-res-960-value="grid">
-            <div class='tn-atom t-bgimg'
-              style="background-image:url('https://static.tildacdn.com/tild3930-3761-4036-a366-333834363265/__-_2026-01-10T22063.jpeg');"
-              aria-label='' role="img"> </div>
-          </div>
-          <div class='t396__elem tn-elem tn-elem__17062752111768072279412000001' data-elem-id='1768072279412000001'
-            data-elem-type='shape' data-field-top-value="734" data-field-left-value="880" data-field-height-value="30"
-            data-field-width-value="129" data-field-axisy-value="top" data-field-axisx-value="left"
-            data-field-container-value="grid" data-field-topunits-value="px" data-field-leftunits-value="px"
-            data-field-heightunits-value="px" data-field-widthunits-value="px" data-field-top-res-320-value="668"
-            data-field-left-res-320-value="218" data-field-height-res-320-value="24"
-            data-field-width-res-320-value="101" data-field-top-res-480-value="749" data-field-left-res-480-value="351"
-            data-field-top-res-640-value="750" data-field-left-res-640-value="501" data-field-top-res-960-value="760"
-            data-field-left-res-960-value="820">
-            <div class='tn-atom'> </div>
-          </div>
-          <div class='t396__elem tn-elem tn-elem__17062752111768072279412000002 ' data-elem-id='1768072279412000002'
-            data-elem-type='shape' data-field-top-value="734" data-field-left-value="979" data-field-height-value="30"
-            data-field-width-value="30" data-field-axisy-value="top" data-field-axisx-value="left"
-            data-field-container-value="grid" data-field-topunits-value="px" data-field-leftunits-value="px"
-            data-field-heightunits-value="px" data-field-widthunits-value="px" data-animate-mobile="y"
-            data-animate-sbs-event="intoview" data-animate-sbs-trg="1" data-animate-sbs-trgofst="0"
-            data-animate-sbs-loop="loop"
-            data-animate-sbs-opts="[{'mx':0,'my':0,'sx':1,'sy':1,'op':1,'ro':0,'ti':0,'ea':'0','dt':0},{'mx':-99,'my':0,'sx':1,'sy':1,'op':1,'ro':0,'ti':1500,'ea':'0','dt':0}]"
-            data-field-top-res-320-value="668" data-field-left-res-320-value="295" data-field-height-res-320-value="24"
-            data-field-width-res-320-value="24"
-            data-animate-sbs-opts-res-320="[{'mx':0,'my':0,'sx':1,'sy':1,'op':1,'ro':0,'ti':0,'ea':'0','dt':0},{'mx':-77,'my':0,'sx':1,'sy':1,'op':1,'ro':0,'ti':1500,'ea':'0','dt':0}]"
-            data-field-top-res-480-value="749" data-field-left-res-480-value="450" data-field-top-res-640-value="750"
-            data-field-left-res-640-value="600" data-field-top-res-960-value="760" data-field-left-res-960-value="919">
-            <div class='tn-atom t-bgimg'
-              data-original="https://static.tildacdn.com/tild3330-3062-4231-a165-636637383633/noroot.png" aria-label=''
-              role="img"> </div>
+            
+            <div id="wi-palette-top" class="r t-rec" style="padding-top: 16px; padding-bottom: 16px; position:relative;z-index:2147480000;">
+              <style>
+                #wi-palette-top .wi-pal-wrap{max-width:760px;margin:0 auto;text-align:center;justify-content:center;}
+                #wi-palette-top .wi-pal-row{
+                  display:flex;
+                  flex-wrap:wrap;
+                  justify-content:center;
+                  align-items:center;
+                  gap:14px;
+                  margin-top:0;
+                  width:220px;
+                  margin-left:auto;
+                  margin-right:auto;
+                }
+                #wi-palette-top .wi-pal-sw{display:inline-block;width:64px;height:64px;border-radius:50%;
+                  flex:0 0 64px;box-sizing:border-box;
+                  background-size:cover;background-position:center;
+                  box-shadow:0 4px 12px rgba(0,0,0,.16);border:1px solid rgba(0,0,0,.08);}
+                @media(max-width:479px){
+                  #wi-palette-top .wi-pal-sw{width:56px;height:56px;flex:0 0 56px;}
+                  #wi-palette-top .wi-pal-row{width:188px;gap:10px;}
+                }
+              </style>
+              <div class="wi-pal-wrap">
+                <div class="wi-pal-row">
+                  <span class="wi-pal-sw" style="background-image:url('/img/dress-code/04.png');" title="Palette 01"></span>
+                  <span class="wi-pal-sw" style="background-image:url('/img/dress-code/08.png');" title="Palette 02"></span>
+                  <span class="wi-pal-sw" style="background-image:url('/img/dress-code/05.png');" title="Palette 03"></span>
+                  <span class="wi-pal-sw" style="background-image:url('/img/dress-code/07.png');" title="Palette 04"></span>
+                  <span class="wi-pal-sw" style="background-image:url('/img/dress-code/02.png');" title="Palette 05"></span>
+                  <span class="wi-pal-sw" style="background-image:url('/img/dress-code/11.png');" title="Palette 06"></span>
+                  <span class="wi-pal-sw" style="background-image:url('/img/dress-code/06.png');" title="Palette 07"></span>
+                  <span class="wi-pal-sw" style="background-image:url('/img/dress-code/10.png');" title="Palette 08"></span>
+                  <span class="wi-pal-sw" style="background-image:url('/img/dress-code/13.png');" title="Palette 09"></span>
+                  <span class="wi-pal-sw" style="background-image:url('/img/dress-code/01.png');" title="Palette 10"></span>
+                  <span class="wi-pal-sw" style="background-image:url('/img/dress-code/12.png');" title="Palette 11"></span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <script>t_onReady(function () { t_onFuncLoad('t396_init', function () { t396_init('1706275211'); }); });</script>
       <!-- /T396 -->
     </div>
-    <div id="rec1888800301" class="r t-rec t-rec_pt_15 t-rec_pb_0" style="padding-top:15px;padding-bottom:0px; "
-      data-animationappear="off" data-record-type="1148"> <!-- T1148 -->
-      <div class="t1148">
-        <div class="t1148__container_flex t-container t-container_flex">
-          <div class="t-col t-col_12 t1148__col"> </div>
-        </div>
-        <div class="t1148__gallery">
-          <div class="t1148__slider t1148__slider_width_12" id="carousel_1888800301" aria-live="polite"
-            style="gap:20px;">
-            <div class="t1148__item" role="group" aria-roledescription="slide" aria-label="1 из 6" aria-current="true">
-              <div class="t1148__img-wrapper t1148__img-wrapper_ratio t1148__img-wrapper_2_3"
-                style="--height:500px; --mob-height: 350px"> <img class="t-img t1148__img"
-                  src="https://thb.tildacdn.com/tild3837-3031-4265-b630-646238613131/-/empty/33de88bf3e2f444f11e0.jpg"
-                  data-original="https://static.tildacdn.com/tild3837-3031-4265-b630-646238613131/33de88bf3e2f444f11e0.jpg"
-                  data-index="0"
-                  data-original="https://static.tildacdn.com/tild3837-3031-4265-b630-646238613131/33de88bf3e2f444f11e0.jpg"
-                  imgfield="gi_img__0" alt="" draggable="false" /> </div>
-            </div>
-            <div class="t1148__item" role="group" aria-roledescription="slide" aria-label="2 из 6" aria-current="false">
-              <div class="t1148__img-wrapper t1148__img-wrapper_ratio t1148__img-wrapper_2_3"
-                style="--height:500px; --mob-height: 350px"> <img class="t-img t1148__img"
-                  src="https://thb.tildacdn.com/tild3936-6236-4063-b636-623932643338/-/empty/Lydia_Mocha_Cowl_Nec.jpeg"
-                  data-original="https://static.tildacdn.com/tild3936-6236-4063-b636-623932643338/Lydia_Mocha_Cowl_Nec.jpeg"
-                  data-index="1"
-                  data-original="https://static.tildacdn.com/tild3936-6236-4063-b636-623932643338/Lydia_Mocha_Cowl_Nec.jpeg"
-                  imgfield="gi_img__1" alt="" draggable="false" /> </div>
-            </div>
-            <div class="t1148__item" role="group" aria-roledescription="slide" aria-label="3 из 6" aria-current="false">
-              <div class="t1148__img-wrapper t1148__img-wrapper_ratio t1148__img-wrapper_2_3"
-                style="--height:500px; --mob-height: 350px"> <img class="t-img t1148__img"
-                  src="https://thb.tildacdn.com/tild3537-3365-4063-b936-643732633163/-/empty/34fc0b3a-e1d3-454b-9.jpg"
-                  data-original="https://static.tildacdn.com/tild3537-3365-4063-b936-643732633163/34fc0b3a-e1d3-454b-9.jpg"
-                  data-index="2"
-                  data-original="https://static.tildacdn.com/tild3537-3365-4063-b936-643732633163/34fc0b3a-e1d3-454b-9.jpg"
-                  imgfield="gi_img__2" alt="" draggable="false" /> </div>
-            </div>
-            <div class="t1148__item" role="group" aria-roledescription="slide" aria-label="4 из 6" aria-current="false">
-              <div class="t1148__img-wrapper t1148__img-wrapper_ratio t1148__img-wrapper_2_3"
-                style="--height:500px; --mob-height: 350px"> <img class="t-img t1148__img"
-                  src="https://thb.tildacdn.com/tild3962-6633-4064-a235-363031633665/-/empty/__-_2026-01-10T22195.jpeg"
-                  data-original="https://static.tildacdn.com/tild3962-6633-4064-a235-363031633665/__-_2026-01-10T22195.jpeg"
-                  data-index="3"
-                  data-original="https://static.tildacdn.com/tild3962-6633-4064-a235-363031633665/__-_2026-01-10T22195.jpeg"
-                  imgfield="gi_img__3" alt="" draggable="false" /> </div>
-            </div>
-            <div class="t1148__item" role="group" aria-roledescription="slide" aria-label="5 из 6" aria-current="false">
-              <div class="t1148__img-wrapper t1148__img-wrapper_ratio t1148__img-wrapper_2_3"
-                style="--height:500px; --mob-height: 350px"> <img class="t-img t1148__img"
-                  src="https://thb.tildacdn.com/tild6662-6336-4333-b362-363830336663/-/empty/d7420412-81bc-4feb-b.jpg"
-                  data-original="https://static.tildacdn.com/tild6662-6336-4333-b362-363830336663/d7420412-81bc-4feb-b.jpg"
-                  data-index="4"
-                  data-original="https://static.tildacdn.com/tild6662-6336-4333-b362-363830336663/d7420412-81bc-4feb-b.jpg"
-                  imgfield="gi_img__4" alt="" draggable="false" /> </div>
-            </div>
-            <div class="t1148__item" role="group" aria-roledescription="slide" aria-label="6 из 6" aria-current="false">
-              <div class="t1148__img-wrapper t1148__img-wrapper_ratio t1148__img-wrapper_2_3"
-                style="--height:500px; --mob-height: 350px"> <img class="t-img t1148__img"
-                  src="https://thb.tildacdn.com/tild3937-3262-4164-b163-386264636161/-/empty/Estilo_masculino_chi.jpeg"
-                  data-original="https://static.tildacdn.com/tild3937-3262-4164-b163-386264636161/Estilo_masculino_chi.jpeg"
-                  data-index="5"
-                  data-original="https://static.tildacdn.com/tild3937-3262-4164-b163-386264636161/Estilo_masculino_chi.jpeg"
-                  imgfield="gi_img__5" alt="" draggable="false" /> </div>
-            </div>
+    <div class="wi-form-carousel-host">
+      <div class="wi-form-carousel-frame">
+        <div id="wi-form-carousel" class="wi-form-carousel">
+          <div class="wi-form-track">
+            <div class="wi-form-slide"><img src="/img/form-carousel-1.png" alt=""></div>
+            <div class="wi-form-slide"><img src="/img/form-carousel-2.png" alt=""></div>
+            <div class="wi-form-slide"><img src="/img/form-carousel-3.png" alt=""></div>
           </div>
         </div>
       </div>
-      <script>t_onReady(function () { t_onFuncLoad('t_slider__init', function () { t_slider__init('1888800301', 't1148'); }); });</script>
     </div>
-    <div id="rec1681034491" class="r t-rec" style=" " data-animationappear="off" data-record-type="396"> <!-- T396 -->
+    <div id="rec1681034491" class="r t-rec" data-animationappear="off" data-record-type="396"> <!-- T396 -->
       <style>
         #rec1681034491 .t396__artboard {
           height: 1396px;
@@ -7566,8 +8103,6 @@
             height: 1255px;
           }
 
-          #rec1681034491 .t396__filter {}
-
           #rec1681034491 .t396__carrier {
             background-attachment: scroll;
           }
@@ -7580,8 +8115,6 @@
           #rec1681034491 .t396__carrier {
             height: 1217px;
           }
-
-          #rec1681034491 .t396__filter {}
 
           #rec1681034491 .t396__carrier {
             background-attachment: scroll;
@@ -7596,8 +8129,6 @@
             height: 1223px;
           }
 
-          #rec1681034491 .t396__filter {}
-
           #rec1681034491 .t396__carrier {
             background-attachment: scroll;
           }
@@ -7608,10 +8139,8 @@
           #rec1681034491 .t396__artboard,
           #rec1681034491 .t396__filter,
           #rec1681034491 .t396__carrier {
-            height: 1373px;
+            height: 1250px;
           }
-
-          #rec1681034491 .t396__filter {}
 
           #rec1681034491 .t396__carrier {
             background-attachment: scroll;
@@ -7621,9 +8150,7 @@
         #rec1681034491 .tn-elem[data-elem-id="1570289271162"] {
           z-index: 3;
           top: 184px;
-          ;
           left: calc(50% - 600px + 316px);
-          ;
           width: 569px;
           height: auto;
         }
@@ -7712,9 +8239,7 @@
           #rec1681034491 .tn-elem[data-elem-id="1725108883884"] {
             display: table;
             top: -134px;
-            ;
             left: calc(50% - 480px + 245px);
-            ;
             height: auto;
           }
         }
@@ -7809,8 +8334,8 @@
         @media screen and (max-width:479px) {
           #rec1681034491 .tn-elem[data-elem-id="1725127746077"] {
             display: table;
-            top: 744px;
-            ;
+            top: 650px;
+            
             left: calc(50% - 160px + -43px);
             ;
             width: 407px;
@@ -7900,7 +8425,7 @@
         @media screen and (max-width:479px) {
           #rec1681034491 .tn-elem[data-elem-id="1725127746074"] {
             display: table;
-            top: 1199px;
+            top: 1144px;
             ;
             left: calc(50% - 160px + -120px);
             ;
@@ -7996,7 +8521,7 @@
         @media screen and (max-width:479px) {
           #rec1681034491 .tn-elem[data-elem-id="1725127746069"] {
             display: table;
-            top: 1028px;
+            top: 973px;
             ;
             left: calc(50% - 160px + -120px);
             ;
@@ -8248,7 +8773,7 @@
         @media screen and (max-width:479px) {
           #rec1681034491 .tn-elem[data-elem-id="1767999260070000001"] {
             display: block;
-            top: 1089px;
+            top: 1034px;
             ;
             left: calc(50% - 160px + 66px);
             ;
@@ -8538,7 +9063,7 @@
         @media screen and (max-width:479px) {
           #rec1681034491 .tn-elem[data-elem-id="1767999311760000002"] {
             display: block;
-            top: 1260px;
+            top: 1205px;
             ;
             left: calc(50% - 160px + 66px);
             ;
@@ -8593,7 +9118,7 @@
       <div class='t396'>
         <div class="t396__artboard" data-artboard-recid="1681034491" data-artboard-screens="320,480,640,960,1200"
           data-artboard-height="1396" data-artboard-valign="center" data-artboard-upscale="grid"
-          data-artboard-height-res-320="1373" data-artboard-height-res-480="1223" data-artboard-height-res-640="1217"
+          data-artboard-height-res-320="1343" data-artboard-height-res-480="1223" data-artboard-height-res-640="1217"
           data-artboard-height-res-960="1255">
           <div class="t396__carrier" data-artboard-recid="1681034491"></div>
           <div class="t396__filter" data-artboard-recid="1681034491"></div>
@@ -8626,15 +9151,13 @@
             data-field-inputpos-res-640-value="v" data-field-inputheight-res-960-value="60"
             data-field-inputmargbottom-res-960-value="28" data-field-inputtitlefontsize-res-960-value="18"
             data-field-inputtitlemargbottom-res-960-value="8" data-field-inputelsfontsize-res-960-value="14">
-            <div class='tn-atom tn-atom__form'></div> <!--googleoff: all--> <!--noindex-->
+            <div class='tn-atom tn-atom__form'></div>
             <div data-nosnippet="true" class="tn-atom__inputs-wrapp" style="display:none;">
               <div class="tn-atom__inputs-data"
-                data-value="[{&quot;lid&quot;:&quot;1531306243545&quot;,&quot;ls&quot;:&quot;10&quot;,&quot;loff&quot;:&quot;&quot;,&quot;li_type&quot;:&quot;in&quot;,&quot;li_title&quot;:&quot;\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e&quot;,&quot;li_ph&quot;:&quot;\u0412\u0430\u0448\u0438 \u0424\u0418\u041e&quot;,&quot;li_req&quot;:&quot;y&quot;,&quot;li_nm&quot;:&quot;\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e&quot;},{&quot;lid&quot;:&quot;1570290149233&quot;,&quot;ls&quot;:&quot;20&quot;,&quot;loff&quot;:&quot;&quot;,&quot;li_type&quot;:&quot;rd&quot;,&quot;li_title&quot;:&quot;\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?&quot;,&quot;li_req&quot;:&quot;y&quot;,&quot;li_variants&quot;:&quot;\u042f \u0441 \u0443\u0434\u043e\u0432\u043e\u043b\u044c\u0441\u0442\u0432\u0438\u0435\u043c \u043f\u0440\u0438\u0434\u0443\n\u0411\u0443\u0434\u0443 \u0441\u043e \u0441\u0432\u043e\u0435\u0439 \u043f\u0430\u0440\u043e\u0439\n\u041a \u0441\u043e\u0436\u0430\u043b\u0435\u043d\u0438\u044e, \u043d\u0435 \u0441\u043c\u043e\u0433\u0443 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c\n\u0421\u043e\u043e\u0431\u0449\u0443 \u043f\u043e\u0437\u0436\u0435&quot;,&quot;li_defselitem&quot;:&quot;1&quot;,&quot;li_radcb&quot;:&quot;rb&quot;,&quot;li_nm&quot;:&quot;\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?&quot;}]">
+                data-value="[{&quot;lid&quot;:&quot;1531306243545&quot;,&quot;ls&quot;:&quot;10&quot;,&quot;loff&quot;:&quot;&quot;,&quot;li_type&quot;:&quot;in&quot;,&quot;li_title&quot;:&quot;\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e&quot;,&quot;li_ph&quot;:&quot;\u0412\u0430\u0448\u0438 \u0424\u0418\u041e&quot;,&quot;li_req&quot;:&quot;y&quot;,&quot;li_nm&quot;:&quot;\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e&quot;},{&quot;lid&quot;:&quot;1570290149233&quot;,&quot;ls&quot;:&quot;20&quot;,&quot;loff&quot;:&quot;&quot;,&quot;li_type&quot;:&quot;rd&quot;,&quot;li_title&quot;:&quot;\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?&quot;,&quot;li_req&quot;:&quot;y&quot;,&quot;li_variants&quot;:&quot;\u042f \u0441 \u0443\u0434\u043e\u0432\u043e\u043b\u044c\u0441\u0442\u0432\u0438\u0435\u043c \u043f\u0440\u0438\u0434\u0443\n\u041a \u0441\u043e\u0436\u0430\u043b\u0435\u043d\u0438\u044e, \u043d\u0435 \u0441\u043c\u043e\u0433\u0443 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c&quot;,&quot;li_defselitem&quot;:&quot;1&quot;,&quot;li_radcb&quot;:&quot;rb&quot;,&quot;li_nm&quot;:&quot;\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?&quot;}]">
               </div> <textarea
-                class="tn-atom__inputs-textarea">[{"lid":"1531306243545","ls":"10","loff":"","li_type":"in","li_title":"\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e","li_ph":"\u0412\u0430\u0448\u0438 \u0424\u0418\u041e","li_req":"y","li_nm":"\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e"},{"lid":"1570290149233","ls":"20","loff":"","li_type":"rd","li_title":"\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?","li_req":"y","li_variants":"\u042f \u0441 \u0443\u0434\u043e\u0432\u043e\u043b\u044c\u0441\u0442\u0432\u0438\u0435\u043c \u043f\u0440\u0438\u0434\u0443\n\u0411\u0443\u0434\u0443 \u0441\u043e \u0441\u0432\u043e\u0435\u0439 \u043f\u0430\u0440\u043e\u0439\n\u041a \u0441\u043e\u0436\u0430\u043b\u0435\u043d\u0438\u044e, \u043d\u0435 \u0441\u043c\u043e\u0433\u0443 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c\n\u0421\u043e\u043e\u0431\u0449\u0443 \u043f\u043e\u0437\u0436\u0435","li_defselitem":"1","li_radcb":"rb","li_nm":"\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?"}]</textarea>
+                class="tn-atom__inputs-textarea">[{"lid":"1531306243545","ls":"10","loff":"","li_type":"in","li_title":"\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e","li_ph":"\u0412\u0430\u0448\u0438 \u0424\u0418\u041e","li_req":"y","li_nm":"\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e"},{"lid":"1570290149233","ls":"20","loff":"","li_type":"rd","li_title":"\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?","li_req":"y","li_variants":"\u042f \u0441 \u0443\u0434\u043e\u0432\u043e\u043b\u044c\u0441\u0442\u0432\u0438\u0435\u043c \u043f\u0440\u0438\u0434\u0443\n\u041a \u0441\u043e\u0436\u0430\u043b\u0435\u043d\u0438\u044e, \u043d\u0435 \u0441\u043c\u043e\u0433\u0443 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c","li_defselitem":"1","li_radcb":"rb","li_nm":"\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?"}]</textarea>
             </div>
-            <!-- Form export deps: https://static.tildacdn.com/css/tilda-zero-form-errorbox.min.css https://static.tildacdn.com/css/tilda-zero-form-horizontal.min.css https://static.tildacdn.com/js/tilda-phone-mask-1.1.min.js https://static.tildacdn.com/css/tilda-date-picker-1.0.min.css https://static.tildacdn.com/js/tilda-date-picker-1.0.min.js https://static.tildacdn.com/js/tilda-calc-1.0.min.js https://static.tildacdn.com/js/tilda-upwidget-1.1.min.js https://static.tildacdn.com/js/uploadcare-3.x.full.min.js https://static.tildacdn.com/js/uploadcare-3.x.min.js https://static.tildacdn.com/js/tilda-range-1.0.min.js https://static.tildacdn.com/css/tilda-range-1.0.min.css https://static.tildacdn.com/js/tilda-img-select-1.0.min.js https://static.tildacdn.com/css/tilda-img-select-1.0.min.css -->
-            <!--/noindex--> <!--googleon: all-->
           </div>
           <div class='t396__elem tn-elem tn-elem__16810344911725108883884 t-animate' data-elem-id='1725108883884'
             data-elem-type='image' data-field-top-value="-150" data-field-left-value="365" data-field-height-value="470"
@@ -8658,8 +9181,8 @@
             data-field-heightunits-value="px" data-field-widthunits-value="px" data-animate-style="zoomin"
             data-animate-duration="2" data-animate-delay="0.5" data-animate-scale="0.9" data-animate-mobile="y"
             data-field-filewidth-value="1772" data-field-fileheight-value="1772" data-field-heightmode-value="hug"
-            data-field-top-res-320-value="744" data-field-left-res-320-value="-43" data-field-height-res-320-value="407"
-            data-field-width-res-320-value="407" data-field-top-res-480-value="689" data-field-left-res-480-value="33"
+            data-field-top-res-320-value="600" data-field-left-res-320-value="-43" data-field-height-res-320-value="407"
+            data-field-width-res-320-value="407" data-field-top-res-480-value="600" data-field-left-res-480-value="33"
             data-field-top-res-640-value="703" data-field-left-res-640-value="113" data-field-top-res-960-value="721"
             data-field-left-res-960-value="273">
             <div class='tn-atom'> <img class='tn-atom__img t-img'
@@ -8673,11 +9196,11 @@
             data-field-container-value="grid" data-field-topunits-value="px" data-field-leftunits-value="px"
             data-field-heightunits-value="px" data-field-widthunits-value="px" data-animate-style="zoomin"
             data-animate-duration="2" data-animate-delay="0.9" data-animate-scale="0.9" data-animate-mobile="y"
-            data-field-textfit-value="autoheight" data-field-fontsize-value="20" data-field-top-res-320-value="1199"
-            data-field-left-res-320-value="-120" data-field-top-res-480-value="1096" data-field-left-res-480-value="-40"
+            data-field-textfit-value="autoheight" data-field-fontsize-value="20" data-field-top-res-320-value="1044"
+            data-field-left-res-320-value="-120" data-field-top-res-480-value="1000" data-field-left-res-480-value="-40"
             data-field-top-res-640-value="1104" data-field-left-res-640-value="40" data-field-top-res-960-value="1124"
             data-field-left-res-960-value="200">
-            <div class='tn-atom' field='tn_text_1725127746074'><strong>Невеста: +374 98 27 21 71</strong></div>
+            <div class='tn-atom' field='tn_text_1725127746074'><strong>Невеста: +374 95 33 93 63</strong></div>
           </div>
           <div class='t396__elem tn-elem tn-elem__16810344911725127746069 t-animate' data-elem-id='1725127746069'
             data-elem-type='text' data-field-top-value="1054" data-field-left-value="320" data-field-height-value="31"
@@ -8685,8 +9208,8 @@
             data-field-container-value="grid" data-field-topunits-value="px" data-field-leftunits-value="px"
             data-field-heightunits-value="px" data-field-widthunits-value="px" data-animate-style="zoomin"
             data-animate-duration="2" data-animate-delay="0.8" data-animate-scale="0.9" data-animate-mobile="y"
-            data-field-textfit-value="autoheight" data-field-fontsize-value="20" data-field-top-res-320-value="1028"
-            data-field-left-res-320-value="-120" data-field-top-res-480-value="978" data-field-left-res-480-value="-40"
+            data-field-textfit-value="autoheight" data-field-fontsize-value="20" data-field-top-res-320-value="873"
+            data-field-left-res-320-value="-120" data-field-top-res-480-value="878" data-field-left-res-480-value="-40"
             data-field-top-res-640-value="992" data-field-left-res-640-value="40" data-field-top-res-960-value="1012"
             data-field-left-res-960-value="200">
             <div class='tn-atom' field='tn_text_1725127746069'><strong>Жених: +374 77 76 83 13</strong></div>
@@ -8698,7 +9221,7 @@
             data-field-topunits-value="px" data-field-leftunits-value="px" data-field-heightunits-value="px"
             data-field-widthunits-value="px" data-animate-style="zoomin" data-animate-duration="2"
             data-animate-delay="0.8" data-animate-scale="0.9" data-animate-mobile="y"
-            data-field-textfit-value="fixedsize" data-field-fontsize-value="14" data-field-top-res-320-value="1089"
+            data-field-textfit-value="fixedsize" data-field-fontsize-value="14" data-field-top-res-320-value="934"
             data-field-left-res-320-value="66"> <a class='tn-atom' href="https://t.me/Hovakimyannn">
               <div class='tn-atom__button-content'> <span
                   class='tn-atom__button-icon tn-atom__button-icon-no-hover tn-atom__button-icon-arrow-default '></span>
@@ -8712,7 +9235,7 @@
             data-field-topunits-value="px" data-field-leftunits-value="px" data-field-heightunits-value="px"
             data-field-widthunits-value="px" data-animate-style="zoomin" data-animate-duration="2"
             data-animate-delay="0.9" data-animate-scale="0.9" data-animate-mobile="y"
-            data-field-textfit-value="fixedsize" data-field-fontsize-value="14" data-field-top-res-320-value="1260"
+            data-field-textfit-value="fixedsize" data-field-fontsize-value="14" data-field-top-res-320-value="1105"
             data-field-left-res-320-value="66"> <a class='tn-atom' href="https://t.me/marine_manucharyan">
               <div class='tn-atom__button-content'> <span
                   class='tn-atom__button-icon tn-atom__button-icon-no-hover tn-atom__button-icon-arrow-default '></span>
@@ -8722,35 +9245,27 @@
         </div>
       </div>
       <script>t_onReady(function () { t_onFuncLoad('t396_init', function () { t396_init('1681034491'); }); });</script>
-      <!-- /T396 -->
-      <!-- Footer credits -->
+
       <div
         style="position:fixed;bottom:20px;right:20px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;color:rgba(0,0,0,0.35);z-index:99998;pointer-events:none;">
         Կայքը պատրաստեց փեսան 😉
       </div>
     </div>
-  </div> <!--/allrecords--> <!-- Stat --> <!-- Yandex.Metrika counter 97970177 -->
+  </div>
   <script type="text/javascript"
     data-tilda-cookie-type="analytics">setTimeout(function () { (function (m, e, t, r, i, k, a) { m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) }; m[i].l = 1 * new Date(); k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a) })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); window.mainMetrikaId = '97970177'; ym(window.mainMetrikaId, "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true, params: { __ym: { "ymCms": { "cms": "tilda", "cmsVersion": "1.0" } } }, ecommerce: "dataLayer" }); }, 2000);</script>
   <noscript>
     <div><img src="https://mc.yandex.ru/watch/97970177" style="position:absolute; left:-9999px;" alt="" /></div>
-  </noscript> <!-- /Yandex.Metrika counter -->
+  </noscript>
   <script
     type="text/javascript">if (!window.mainTracker) { window.mainTracker = 'tilda'; }
       window.tildastatcookie = 'no'; setTimeout(function () { (function (d, w, k, o, g) { var n = d.getElementsByTagName(o)[0], s = d.createElement(o), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.key = k; s.id = "tildastatscript"; s.src = g; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, 'e9649aa3bdff21b08fe12e20fc4f1420', 'script', 'https://static.tildacdn.com/js/tilda-stat-1.0.min.js'); }, 2000);</script>
   <script>
-    /* RSVP: intercept the form at the document level in the CAPTURE phase.
-       Tilda's zero-form JS binds its own submit pipeline to the form and
-       POSTs to forms.tildaapi.com, which rejects this domain ("domain not
-       approved"). Capturing click/submit before the event ever reaches the
-       form both suppresses that pipeline and works no matter how late
-       Tilda renders the form (the old direct binding raced it and lost). */
     (function () {
       function isRu() {
         try { return localStorage.getItem('wi_lang') === 'ru'; } catch (e) { return false; }
       }
 
-      // Styled in-page notification instead of the native alert().
       var toastTimer;
       function showToast(msg, isError) {
         var t = document.getElementById('wi-toast');
@@ -8777,7 +9292,216 @@
         toastTimer = setTimeout(function () { t.classList.remove('show'); }, 3800);
       }
 
+      function guestUiText() {
+        return isRu()
+          ? {
+            countLabel: 'Сколько гостей придет с Вами?',
+            countPlaceholder: 'Выберите количество',
+            guestNameLabel: 'Имя и фамилия гостя',
+            guestNamePlaceholder: 'Имя и фамилия гостя №',
+            countRequired: 'Пожалуйста, укажите количество гостей.',
+            countInvalid: 'Количество гостей должно быть от 1 до 10.',
+            guestNameRequired: 'Пожалуйста, заполните имя и фамилию для каждого гостя.'
+          }
+          : {
+            countLabel: 'Քանի՞ հյուր կգա Ձեզ հետ',
+            countPlaceholder: 'Ընտրեք քանակը',
+            guestNameLabel: 'Հյուրի անուն, ազգանուն',
+            guestNamePlaceholder: 'Հյուրի անուն, ազգանուն №',
+            countRequired: 'Խնդրում ենք նշել հյուրերի քանակը։',
+            countInvalid: 'Հյուրերի քանակը պետք է լինի 1-ից 10 միջակայքում։',
+            guestNameRequired: 'Խնդրում ենք լրացնել բոլոր հյուրերի անուն-ազգանունները։'
+          };
+      }
+
+      function ensureGuestFieldStyles() {
+        if (document.getElementById('wi-guest-fields-style')) return;
+        var st = document.createElement('style');
+        st.id = 'wi-guest-fields-style';
+        st.textContent =
+          '.wi-guest-fields{margin-top:20px;display:flex;flex-direction:column;align-items:stretch}' +
+          '.wi-guest-names-wrap{display:flex;flex-direction:column;align-items:stretch}' +
+          '.wi-guest-count-label,.wi-guest-name-label{' +
+          'display:block;position:static !important;float:none !important;clear:both;' +
+          'margin:0 0 9px;font-family:Georgia,serif;font-size:20px;line-height:1.35;font-weight:400;color:#000}' +
+          '.wi-guest-count-input,.wi-guest-name-input{' +
+          'display:block;position:static !important;float:none !important;clear:both;' +
+          'width:100%;height:52px;padding:0 14px;box-sizing:border-box;' +
+          'border:1px solid #9e9e9e;border-radius:8px;background:#fff;color:#000;' +
+          'font-family:Georgia,serif;font-size:16px;font-weight:400;line-height:1.2;' +
+          'box-shadow:none;margin:0 0 29px}' +
+          '.wi-guest-count-input{appearance:none;-webkit-appearance:none;padding-right:40px;' +
+          'background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath d=%27M1 1l5 5 5-5%27 fill=%27none%27 stroke=%27%23666%27 stroke-width=%271.5%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E");' +
+          'background-repeat:no-repeat;background-position:right 14px center;background-size:12px 8px}' +
+          '.wi-guest-count-input:focus,.wi-guest-name-input:focus{outline:none;box-shadow:none;border-color:#666}' +
+          '@media screen and (max-width:639px){' +
+          '.wi-guest-count-label,.wi-guest-name-label{font-size:16px;line-height:1.45}' +
+          '.wi-guest-count-input,.wi-guest-name-input{height:50px;font-size:15px;margin-bottom:22px}}';
+        document.head.appendChild(st);
+      }
+
+      function initGuestLayoutState(root) {
+        if (!root || root._wiGuestLayout) return;
+        var artboard = root.closest('.t396__artboard');
+        if (!artboard) return;
+        var block = artboard.closest('.t396');
+        var record = artboard.closest('.t-rec');
+        var filter = artboard.querySelector('.t396__filter');
+        var carrier = artboard.querySelector('.t396__carrier');
+
+        var threshold = root.offsetTop + root.offsetHeight - 4;
+        var targets = [];
+        var nodes = artboard.querySelectorAll('.tn-elem');
+        for (var i = 0; i < nodes.length; i++) {
+          var el = nodes[i];
+          if (el === root) continue;
+          if (el.offsetTop >= threshold) targets.push(el);
+        }
+
+        var baseMargins = [];
+        var baseTops = [];
+        for (var j = 0; j < targets.length; j++) {
+          var target = targets[j];
+          baseMargins.push(parseFloat(target.style.marginTop || '0') || 0);
+          var topVal = parseFloat(target.style.top || '');
+          if (!Number.isFinite(topVal)) {
+            topVal = parseFloat(window.getComputedStyle(target).top || '');
+          }
+          if (!Number.isFinite(topVal)) topVal = target.offsetTop || 0;
+          baseTops.push(topVal);
+        }
+
+        var initialFormHeight = Math.max(root.offsetHeight || 0, root.scrollHeight || 0);
+        root._wiGuestLayout = {
+          baseFormHeight: initialFormHeight,
+          artboard: artboard,
+          block: block,
+          record: record,
+          filter: filter,
+          carrier: carrier,
+          baseArtboardHeight: artboard.offsetHeight,
+          baseBlockHeight: block ? block.offsetHeight : 0,
+          baseRecordHeight: record ? record.offsetHeight : 0,
+          baseFilterHeight: filter ? filter.offsetHeight : 0,
+          baseCarrierHeight: carrier ? carrier.offsetHeight : 0,
+          targets: targets,
+          baseMargins: baseMargins,
+          baseTops: baseTops
+        };
+      }
+
+      function updateGuestLayout(root) {
+        if (!root) return;
+        initGuestLayoutState(root);
+        var st = root._wiGuestLayout;
+        if (!st) return;
+
+        var currentFormHeight = Math.max(root.offsetHeight || 0, root.scrollHeight || 0);
+        var extra = currentFormHeight - st.baseFormHeight;
+        if (!Number.isFinite(extra) || extra < 0) extra = 0;
+
+        for (var i = 0; i < st.targets.length; i++) {
+          st.targets[i].style.marginTop = st.baseMargins[i] + 'px';
+          st.targets[i].style.top = (st.baseTops[i] + extra) + 'px';
+        }
+
+        st.artboard.style.height = (st.baseArtboardHeight + extra) + 'px';
+        if (st.block && st.baseBlockHeight) st.block.style.height = (st.baseBlockHeight + extra) + 'px';
+        if (st.record && st.baseRecordHeight) st.record.style.height = (st.baseRecordHeight + extra) + 'px';
+        if (st.filter) st.filter.style.height = (st.baseFilterHeight + extra) + 'px';
+        if (st.carrier) st.carrier.style.height = (st.baseCarrierHeight + extra) + 'px';
+      }
+
+      function ensureGuestFields(root) {
+        if (!root || root.querySelector('.wi-guest-fields')) return;
+        ensureGuestFieldStyles();
+        var nameInput = root.querySelector(
+          "input:not([type='radio']):not([type='checkbox']):not([type='submit']):not([type='hidden'])"
+        );
+        if (!nameInput || !nameInput.parentNode) return;
+
+        var txt = guestUiText();
+        var wrap = document.createElement('div');
+        wrap.className = 'wi-guest-fields';
+
+        var countLabel = document.createElement('div');
+        countLabel.className = 'wi-guest-count-label';
+        countLabel.textContent = txt.countLabel;
+        wrap.appendChild(countLabel);
+
+        var countInput = document.createElement('select');
+        countInput.className = 'wi-guest-count-input';
+        var placeholderOpt = document.createElement('option');
+        placeholderOpt.value = '';
+        placeholderOpt.textContent = txt.countPlaceholder;
+        countInput.appendChild(placeholderOpt);
+        for (var c = 1; c <= 10; c++) {
+          var opt = document.createElement('option');
+          opt.value = String(c);
+          opt.textContent = String(c);
+          countInput.appendChild(opt);
+        }
+        countInput.value = '';
+        wrap.appendChild(countInput);
+
+        var namesWrap = document.createElement('div');
+        namesWrap.className = 'wi-guest-names-wrap';
+        wrap.appendChild(namesWrap);
+
+        nameInput.parentNode.insertBefore(wrap, nameInput.nextSibling);
+        initGuestLayoutState(root);
+        renderGuestNameFields(root);
+
+        countInput.addEventListener('input', function () {
+          renderGuestNameFields(root);
+        });
+      }
+
+      function renderGuestNameFields(root) {
+        if (!root) return;
+        var txt = guestUiText();
+        var countInput = root.querySelector('.wi-guest-count-input');
+        var namesWrap = root.querySelector('.wi-guest-names-wrap');
+        var countLabel = root.querySelector('.wi-guest-count-label');
+        if (!countInput || !namesWrap || !countLabel) return;
+
+        countLabel.textContent = txt.countLabel;
+        if (countInput.options && countInput.options.length) countInput.options[0].textContent = txt.countPlaceholder;
+        var rawCount = Number.parseInt(countInput.value, 10);
+        var count = Number.isFinite(rawCount) ? Math.min(Math.max(rawCount, 1), 10) : 0;
+
+        namesWrap.innerHTML = '';
+        for (var i = 0; i < count; i++) {
+          var label = document.createElement('div');
+          label.className = 'wi-guest-name-label';
+          label.textContent = txt.guestNameLabel + ' ' + (i + 1);
+          namesWrap.appendChild(label);
+
+          var input = document.createElement('input');
+          input.type = 'text';
+          input.className = 'wi-guest-name-input';
+          input.placeholder = txt.guestNamePlaceholder + (i + 1);
+          input.maxLength = 120;
+          namesWrap.appendChild(input);
+        }
+        updateGuestLayout(root);
+        requestAnimationFrame(function () { updateGuestLayout(root); });
+        setTimeout(function () { updateGuestLayout(root); }, 80);
+        document.dispatchEvent(new Event('wi:layout'));
+      }
+
+      function initGuestFields() {
+        var forms = document.querySelectorAll("[data-elem-type='form']");
+        for (var i = 0; i < forms.length; i++) ensureGuestFields(forms[i]);
+      }
+
+      function refreshGuestLayouts() {
+        var forms = document.querySelectorAll("[data-elem-type='form']");
+        for (var i = 0; i < forms.length; i++) updateGuestLayout(forms[i]);
+      }
+
       function sendRsvp(root) {
+        ensureGuestFields(root);
         var nameInput = root.querySelector(
           "input:not([type='radio']):not([type='checkbox']):not([type='submit']):not([type='hidden'])"
         );
@@ -8788,8 +9512,33 @@
           return;
         }
 
-        // The rendered option values may be Russian or Armenian (js/i18n.js
-        // translates the form in place), so match both.
+        var txt = guestUiText();
+        var guestCountInput = root.querySelector('.wi-guest-count-input');
+        var guestCountRaw = guestCountInput ? (guestCountInput.value || '').trim() : '';
+        if (!guestCountRaw) {
+          showToast(txt.countRequired, true);
+          if (guestCountInput) guestCountInput.focus();
+          return;
+        }
+        var guestCountNum = Number.parseInt(guestCountRaw, 10);
+        if (!Number.isFinite(guestCountNum) || guestCountNum < 1 || guestCountNum > 10) {
+          showToast(txt.countInvalid, true);
+          if (guestCountInput) guestCountInput.focus();
+          return;
+        }
+
+        var guestNameInputs = root.querySelectorAll('.wi-guest-name-input');
+        var guestNames = [];
+        for (var gi = 0; gi < guestNameInputs.length; gi++) {
+          var guestName = (guestNameInputs[gi].value || '').trim();
+          if (!guestName) {
+            showToast(txt.guestNameRequired, true);
+            guestNameInputs[gi].focus();
+            return;
+          }
+          guestNames.push(guestName);
+        }
+
         var checked = root.querySelector("input[type='radio']:checked");
         var raw = checked ? (checked.value || '') : '';
         var attending = 'later';
@@ -8800,13 +9549,20 @@
         fetch('/api/rsvp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: name, attending: attending })
+          body: JSON.stringify({
+            name: name,
+            attending: attending,
+            guests: guestCountNum,
+            guestNames: guestNames
+          })
         })
           .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
           .then(function (res) {
             if (res.ok) {
               showToast(isRu() ? 'Спасибо! Ваш ответ принят 🤍' : 'Շնորհակալություն, Ձեր պատասխանն ընդունված է 🤍');
               if (nameInput) nameInput.value = '';
+              if (guestCountInput) guestCountInput.value = '';
+              renderGuestNameFields(root);
             } else {
               throw new Error((res.data && res.data.error) || '');
             }
@@ -8832,7 +9588,6 @@
         sendRsvp(root);
       }, true);
 
-      // Enter key inside the name field submits the form natively.
       document.addEventListener('submit', function (e) {
         var root = formRoot(e.target);
         if (!root) return;
@@ -8840,6 +9595,92 @@
         e.stopPropagation();
         sendRsvp(root);
       }, true);
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initGuestFields);
+      } else {
+        initGuestFields();
+      }
+      setTimeout(initGuestFields, 700);
+      setTimeout(initGuestFields, 2000);
+      setTimeout(refreshGuestLayouts, 300);
+      setTimeout(refreshGuestLayouts, 1200);
+      window.addEventListener('resize', refreshGuestLayouts);
+      window.addEventListener('orientationchange', refreshGuestLayouts);
+      if (window.visualViewport && window.visualViewport.addEventListener) {
+        window.visualViewport.addEventListener('resize', refreshGuestLayouts);
+      }
+      document.addEventListener('wi:lang', function () {
+        initGuestFields();
+        var forms = document.querySelectorAll("[data-elem-type='form']");
+        for (var i = 0; i < forms.length; i++) renderGuestNameFields(forms[i]);
+      });
+    })();
+
+    (function relayoutContactsSection() {
+      var timer = null;
+
+      function isShown(el) {
+        if (!el) return false;
+        var st = window.getComputedStyle(el);
+        return st.display !== 'none' && st.visibility !== 'hidden' && st.opacity !== '0';
+      }
+
+      function elemBottom(el, artboardRect) {
+        var rect = el.getBoundingClientRect();
+        if (rect.width <= 0 || rect.height <= 0) return 0;
+        return rect.bottom - artboardRect.top;
+      }
+
+      function apply() {
+        var rec = document.getElementById('rec1681034491');
+        if (!rec) return;
+        var artboard = rec.querySelector('.t396__artboard');
+        if (!artboard) return;
+        var filter = artboard.querySelector('.t396__filter');
+        var carrier = artboard.querySelector('.t396__carrier');
+        var block = artboard.closest('.t396');
+
+        var elems = artboard.querySelectorAll('.tn-elem');
+        if (!elems.length) return;
+
+        var maxBottom = 0;
+        var artboardRect = artboard.getBoundingClientRect();
+        for (var i = 0; i < elems.length; i++) {
+          var el = elems[i];
+          if (!isShown(el)) continue;
+          maxBottom = Math.max(maxBottom, elemBottom(el, artboardRect));
+        }
+        if (!maxBottom) return;
+
+        var nextHeight = Math.ceil(maxBottom + 28);
+        artboard.style.height = nextHeight + 'px';
+        if (filter) filter.style.height = nextHeight + 'px';
+        if (carrier) carrier.style.height = nextHeight + 'px';
+        if (block) block.style.height = nextHeight + 'px';
+        rec.style.height = nextHeight + 'px';
+      }
+
+      function schedule() {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          requestAnimationFrame(apply);
+        }, 40);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', schedule);
+      } else {
+        schedule();
+      }
+      window.addEventListener('load', schedule);
+      window.addEventListener('resize', schedule);
+      window.addEventListener('orientationchange', schedule);
+      document.addEventListener('wi:lang', schedule);
+      document.addEventListener('wi:layout', schedule);
+      setTimeout(schedule, 300);
+      setTimeout(schedule, 1200);
+      setTimeout(schedule, 2200);
     })();
 
     /* Dress carousel (t1148): the template ships it swipe-only; advance it
@@ -8874,6 +9715,425 @@
   </script>
   <script src="/js/countdown.js" defer></script>
   <script src="/js/i18n.js?v=2" defer></script>
+  <script>
+    (function initCalendarCarousel() {
+      var recSelector = "#rec2223205941 .t396__artboard";
+      var wrapperId = "wi-calendar-carousel-wrapper";
+      var images = [
+        "/img/calendar-carousel-1.png",
+        "/img/calendar-carousel-2.png",
+        "/img/calendar-carousel-3.png"
+      ];
+
+      function mount() {
+        var artboard = document.querySelector(recSelector);
+        if (!artboard || document.getElementById(wrapperId)) return;
+
+        var wrapper = document.createElement("div");
+        wrapper.id = wrapperId;
+        wrapper.className = "t396__elem tn-elem wi-calendar-carousel-elem";
+
+        var trackHtml = '<div class="wi-calendar-track">' +
+          images.map(function (src, idx) {
+            return '<div class="wi-calendar-slide" data-real-index="' + idx + '"><img src="' + src + '" alt=""></div>';
+          }).join("") +
+          "</div>";
+
+        wrapper.innerHTML =
+          '<div class="tn-atom">' +
+          '  <div class="wi-calendar-carousel" id="wi-calendar-carousel">' +
+          trackHtml +
+          "  </div>" +
+          "</div>";
+
+        artboard.appendChild(wrapper);
+        activate(wrapper);
+      }
+
+      function activate(root) {
+        var carousel = root.querySelector(".wi-calendar-carousel");
+        var track = root.querySelector(".wi-calendar-track");
+        if (!carousel || !track) return;
+        var realSlides = [].slice.call(track.querySelectorAll(".wi-calendar-slide"));
+        if (!realSlides.length) return;
+
+        var realCount = realSlides.length;
+        var pos = 1; // index in rendered track [lastClone, real..., firstClone]
+        var timer = null;
+        var touchStartX = 0;
+        var touchDeltaX = 0;
+        var touchActive = false;
+        var lastUserAction = Date.now();
+        var USER_PAUSE_MS = 7000;
+        var AUTO_INTERVAL_MS = 3500;
+
+        // Infinite-loop look: [lastClone, real1, real2, ..., realN, firstClone]
+        if (realCount > 1) {
+          var firstClone = realSlides[0].cloneNode(true);
+          var lastClone = realSlides[realCount - 1].cloneNode(true);
+          firstClone.setAttribute("data-clone", "first");
+          lastClone.setAttribute("data-clone", "last");
+          track.insertBefore(lastClone, realSlides[0]);
+          track.appendChild(firstClone);
+        }
+
+        var allSlides = [].slice.call(track.querySelectorAll(".wi-calendar-slide"));
+
+        function slideStep() {
+          if (!allSlides.length) return 0;
+          var gapPx = Number.parseFloat(window.getComputedStyle(track).gap || "0") || 0;
+          return allSlides[0].offsetWidth + gapPx;
+        }
+
+        function paintActive() {
+          for (var i = 0; i < allSlides.length; i++) allSlides[i].classList.remove("is-active");
+          if (allSlides[pos]) allSlides[pos].classList.add("is-active");
+        }
+
+        function setTrackPosition(nextPos, animate) {
+          pos = nextPos;
+          var centeredSlide = allSlides[pos];
+          if (!centeredSlide) return;
+          if (animate) track.classList.remove("is-no-anim");
+          else track.classList.add("is-no-anim");
+          var x = (carousel.clientWidth - centeredSlide.offsetWidth) / 2 - pos * slideStep();
+          track.style.transform = "translate3d(" + x + "px,0,0)";
+          paintActive();
+        }
+
+        function start() {
+          stop();
+          timer = setInterval(function () {
+            if (Date.now() - lastUserAction < USER_PAUSE_MS) return;
+            setTrackPosition(pos + 1, true);
+          }, AUTO_INTERVAL_MS);
+        }
+
+        function stop() {
+          if (timer) {
+            clearInterval(timer);
+            timer = null;
+          }
+        }
+
+        function jumpIfCloneEdge() {
+          if (realCount <= 1) return;
+          if (pos === allSlides.length - 1) {
+            setTrackPosition(1, false);
+          } else if (pos === 0) {
+            setTrackPosition(realCount, false);
+          }
+        }
+
+        track.addEventListener("transitionend", function (e) {
+          if (e.propertyName !== "transform") return;
+          jumpIfCloneEdge();
+        });
+
+        root.addEventListener("touchstart", function (event) {
+          touchActive = true;
+          touchDeltaX = 0;
+          touchStartX = event && event.touches && event.touches[0] ? event.touches[0].clientX : 0;
+          lastUserAction = Date.now();
+          stop();
+        }, { passive: true });
+
+        root.addEventListener("touchmove", function (event) {
+          if (!touchActive || !event.touches || !event.touches.length) return;
+          touchDeltaX = event.touches[0].clientX - touchStartX;
+        }, { passive: true });
+
+        root.addEventListener("touchend", function () {
+          if (!touchActive) return;
+          touchActive = false;
+          if (Math.abs(touchDeltaX) > 36) {
+            setTrackPosition(touchDeltaX < 0 ? pos + 1 : pos - 1, true);
+          }
+          start();
+        }, { passive: true });
+
+        root.addEventListener("mousedown", function () {
+          lastUserAction = Date.now();
+        }, true);
+
+        window.addEventListener("resize", function () {
+          setTrackPosition(pos, false);
+        });
+
+        root.addEventListener("mouseenter", stop);
+        root.addEventListener("mouseleave", start);
+        setTrackPosition(1, false);
+        start();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", mount);
+      } else {
+        mount();
+      }
+      window.addEventListener("load", mount);
+    })();
+  </script>
+  <script>
+    (function initMapCarousel() {
+      var root = document.getElementById("wi-map-carousel");
+      if (!root || root.dataset.ready === "1") return;
+
+      function boot() {
+        if (!root || root.dataset.ready === "1") return true;
+        if (root.clientWidth < 10) return false;
+
+        var track = root.querySelector(".wi-map-track");
+        if (!track) return false;
+        var realSlides = [].slice.call(track.querySelectorAll(".wi-map-slide"));
+        if (!realSlides.length) return false;
+
+        var realCount = realSlides.length;
+        var pos = 1;
+        var timer = null;
+        var touchStartX = 0;
+        var touchDeltaX = 0;
+        var touchActive = false;
+        var lastUserAction = Date.now();
+        var USER_PAUSE_MS = 7000;
+        var AUTO_INTERVAL_MS = 3600;
+
+        if (realCount > 1) {
+          var firstClone = realSlides[0].cloneNode(true);
+          var lastClone = realSlides[realCount - 1].cloneNode(true);
+          firstClone.setAttribute("data-clone", "first");
+          lastClone.setAttribute("data-clone", "last");
+          track.insertBefore(lastClone, realSlides[0]);
+          track.appendChild(firstClone);
+        }
+
+        var allSlides = [].slice.call(track.querySelectorAll(".wi-map-slide"));
+
+        function slideStep() {
+          if (!allSlides.length) return 0;
+          var gapPx = Number.parseFloat(window.getComputedStyle(track).gap || "0") || 0;
+          return allSlides[0].offsetWidth + gapPx;
+        }
+
+        function paintActive() {
+          for (var i = 0; i < allSlides.length; i++) allSlides[i].classList.remove("is-active");
+          if (allSlides[pos]) allSlides[pos].classList.add("is-active");
+        }
+
+        function setTrackPosition(nextPos, animate) {
+          pos = nextPos;
+          var centeredSlide = allSlides[pos];
+          if (!centeredSlide) return;
+          if (animate) track.classList.remove("is-no-anim");
+          else track.classList.add("is-no-anim");
+          var x = (root.clientWidth - centeredSlide.offsetWidth) / 2 - pos * slideStep();
+          track.style.transform = "translate3d(" + x + "px,0,0)";
+          paintActive();
+        }
+
+        function jumpIfCloneEdge() {
+          if (realCount <= 1) return;
+          if (pos === allSlides.length - 1) {
+            setTrackPosition(1, false);
+          } else if (pos === 0) {
+            setTrackPosition(realCount, false);
+          }
+        }
+
+        function start() {
+          stop();
+          timer = setInterval(function () {
+            if (Date.now() - lastUserAction < USER_PAUSE_MS) return;
+            setTrackPosition(pos + 1, true);
+          }, AUTO_INTERVAL_MS);
+        }
+
+        function stop() {
+          if (timer) {
+            clearInterval(timer);
+            timer = null;
+          }
+        }
+
+        track.addEventListener("transitionend", function (e) {
+          if (e.propertyName !== "transform") return;
+          jumpIfCloneEdge();
+        });
+
+        root.addEventListener("touchstart", function (event) {
+          touchActive = true;
+          touchDeltaX = 0;
+          touchStartX = event && event.touches && event.touches[0] ? event.touches[0].clientX : 0;
+          lastUserAction = Date.now();
+          stop();
+        }, { passive: true });
+
+        root.addEventListener("touchmove", function (event) {
+          if (!touchActive || !event.touches || !event.touches.length) return;
+          touchDeltaX = event.touches[0].clientX - touchStartX;
+        }, { passive: true });
+
+        root.addEventListener("touchend", function () {
+          if (!touchActive) return;
+          touchActive = false;
+          if (Math.abs(touchDeltaX) > 36) {
+            setTrackPosition(touchDeltaX < 0 ? pos + 1 : pos - 1, true);
+          }
+          start();
+        }, { passive: true });
+
+        root.addEventListener("mousedown", function () {
+          lastUserAction = Date.now();
+        }, true);
+
+        root.addEventListener("mouseenter", stop);
+        root.addEventListener("mouseleave", start);
+        window.addEventListener("resize", function () { setTrackPosition(pos, false); });
+
+        setTrackPosition(1, false);
+        start();
+        root.dataset.ready = "1";
+        return true;
+      }
+
+      if (boot()) return;
+      var retries = 0;
+      var watcher = setInterval(function () {
+        retries += 1;
+        if (boot() || retries > 80) clearInterval(watcher);
+      }, 250);
+    })();
+  </script>
+  <script>
+    (function initFormCarousel() {
+      var root = document.getElementById("wi-form-carousel");
+      if (!root || root.dataset.ready === "1") return;
+
+      function boot() {
+        if (!root || root.dataset.ready === "1") return true;
+        if (root.clientWidth < 10) return false;
+
+        var track = root.querySelector(".wi-form-track");
+        if (!track) return false;
+        var realSlides = [].slice.call(track.querySelectorAll(".wi-form-slide"));
+        if (!realSlides.length) return false;
+
+        var realCount = realSlides.length;
+        var pos = 1;
+        var timer = null;
+        var touchStartX = 0;
+        var touchDeltaX = 0;
+        var touchActive = false;
+        var lastUserAction = Date.now();
+        var USER_PAUSE_MS = 7000;
+        var AUTO_INTERVAL_MS = 3600;
+
+        if (realCount > 1) {
+          var firstClone = realSlides[0].cloneNode(true);
+          var lastClone = realSlides[realCount - 1].cloneNode(true);
+          firstClone.setAttribute("data-clone", "first");
+          lastClone.setAttribute("data-clone", "last");
+          track.insertBefore(lastClone, realSlides[0]);
+          track.appendChild(firstClone);
+        }
+
+        var allSlides = [].slice.call(track.querySelectorAll(".wi-form-slide"));
+
+        function slideStep() {
+          if (!allSlides.length) return 0;
+          var gapPx = Number.parseFloat(window.getComputedStyle(track).gap || "0") || 0;
+          return allSlides[0].offsetWidth + gapPx;
+        }
+
+        function paintActive() {
+          for (var i = 0; i < allSlides.length; i++) allSlides[i].classList.remove("is-active");
+          if (allSlides[pos]) allSlides[pos].classList.add("is-active");
+        }
+
+        function setTrackPosition(nextPos, animate) {
+          pos = nextPos;
+          var centeredSlide = allSlides[pos];
+          if (!centeredSlide) return;
+          if (animate) track.classList.remove("is-no-anim");
+          else track.classList.add("is-no-anim");
+          var x = (root.clientWidth - centeredSlide.offsetWidth) / 2 - pos * slideStep();
+          track.style.transform = "translate3d(" + x + "px,0,0)";
+          paintActive();
+        }
+
+        function jumpIfCloneEdge() {
+          if (realCount <= 1) return;
+          if (pos === allSlides.length - 1) {
+            setTrackPosition(1, false);
+          } else if (pos === 0) {
+            setTrackPosition(realCount, false);
+          }
+        }
+
+        function start() {
+          stop();
+          timer = setInterval(function () {
+            if (Date.now() - lastUserAction < USER_PAUSE_MS) return;
+            setTrackPosition(pos + 1, true);
+          }, AUTO_INTERVAL_MS);
+        }
+
+        function stop() {
+          if (timer) {
+            clearInterval(timer);
+            timer = null;
+          }
+        }
+
+        track.addEventListener("transitionend", function (e) {
+          if (e.propertyName !== "transform") return;
+          jumpIfCloneEdge();
+        });
+
+        root.addEventListener("touchstart", function (event) {
+          touchActive = true;
+          touchDeltaX = 0;
+          touchStartX = event && event.touches && event.touches[0] ? event.touches[0].clientX : 0;
+          lastUserAction = Date.now();
+          stop();
+        }, { passive: true });
+
+        root.addEventListener("touchmove", function (event) {
+          if (!touchActive || !event.touches || !event.touches.length) return;
+          touchDeltaX = event.touches[0].clientX - touchStartX;
+        }, { passive: true });
+
+        root.addEventListener("touchend", function () {
+          if (!touchActive) return;
+          touchActive = false;
+          if (Math.abs(touchDeltaX) > 36) {
+            setTrackPosition(touchDeltaX < 0 ? pos + 1 : pos - 1, true);
+          }
+          start();
+        }, { passive: true });
+
+        root.addEventListener("mousedown", function () {
+          lastUserAction = Date.now();
+        }, true);
+
+        root.addEventListener("mouseenter", stop);
+        root.addEventListener("mouseleave", start);
+        window.addEventListener("resize", function () { setTrackPosition(pos, false); });
+
+        setTrackPosition(1, false);
+        start();
+        root.dataset.ready = "1";
+        return true;
+      }
+
+      if (boot()) return;
+      var retries = 0;
+      var watcher = setInterval(function () {
+        retries += 1;
+        if (boot() || retries > 80) clearInterval(watcher);
+      }, 250);
+    })();
+  </script>
   <script>
     (function ensureTimelineHeartImage() {
       var HEART_FIELD = "tn_img_1765478996595000001";

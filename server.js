@@ -111,7 +111,7 @@ function appendRsvp(entry) {
 
 // Save a guest's RSVP.
 app.post("/api/rsvp", async (req, res) => {
-  const { name, attending, guests, message, drinks } = req.body || {};
+  const { name, attending, guests, guestNames, message, drinks } = req.body || {};
 
   if (!name || typeof name !== "string" || !name.trim()) {
     return res.status(400).json({ ok: false, error: "Անունը պարտադիր է" });
@@ -122,12 +122,26 @@ app.post("/api/rsvp", async (req, res) => {
   }
 
   const guestCount = Number.parseInt(guests, 10);
+  if (!Number.isFinite(guestCount) || guestCount < 0 || guestCount > 20) {
+    return res.status(400).json({ ok: false, error: "Հյուրերի քանակը պետք է լինի 0-ից 20 միջակայքում" });
+  }
+
+  const normalizedGuestNames = Array.isArray(guestNames)
+    ? guestNames
+      .filter((n) => typeof n === "string")
+      .map((n) => n.trim().slice(0, 120))
+      .filter(Boolean)
+    : [];
+  if (normalizedGuestNames.length !== guestCount) {
+    return res.status(400).json({ ok: false, error: "Լրացրեք բոլոր հյուրերի անուն-ազգանունները" });
+  }
 
   const entry = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     name: name.trim().slice(0, 120),
     attending,
-    guests: Number.isFinite(guestCount) ? Math.min(Math.max(guestCount, 0), 20) : 0,
+    guests: guestCount,
+    guestNames: normalizedGuestNames,
     message: typeof message === "string" ? message.trim().slice(0, 500) : "",
     drinks: Array.isArray(drinks)
       ? drinks.filter((d) => typeof d === "string").map((d) => d.slice(0, 40)).slice(0, 10)

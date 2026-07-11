@@ -660,6 +660,7 @@
           <thead>
             <tr>
               <th>Անուն</th>
+              <th>Լրացուցիչ հյուրեր</th>
               <th>Ներկայություն</th>
               <th>Ամսաթիվ</th>
               <th></th>
@@ -786,12 +787,16 @@
       var guests = 0, yes = 0, no = 0, later = 0, html = "";
       list.forEach(function (r) {
         var att = ATT[r.attending] || ATT.later;
+        var extraGuests = Array.isArray(r.guestNames) ? r.guestNames : [];
         guests += att.seats + (r.attending === "yes" ? (r.guests || 0) : 0);
         if (r.attending === "yes" || r.attending === "pair") yes++;
         else if (r.attending === "no") no++;
         else later++;
         html += '<tr data-id="' + esc(r.id || "") + '">' +
           '<td class="c-name">' + esc(r.name || "") + "</td>" +
+          '<td class="c-guest-names">' + (extraGuests.length
+            ? extraGuests.map(function (n) { return '<div>' + esc(n) + '</div>'; }).join("")
+            : '<span style="color:#8a8378">—</span>') + '</td>' +
           '<td class="c-att" data-att="' + esc(r.attending || "later") + '"><span class="badge ' + att.cls + '">' + att.label + "</span></td>" +
           '<td class="date">' + fmtDate(r.createdAt) + "</td>" +
           '<td class="acts">' +
