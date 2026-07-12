@@ -475,9 +475,7 @@
       .catch(function () { });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", start);
-  } else {
-    start();
-  }
+  // Execute immediately since the script is placed at the bottom of the body.
+  // This prevents waiting for deferred Tilda scripts to download before showing the page.
+  start();
 })();
