@@ -651,37 +651,7 @@
       text-align: center !important;
     }
 
-    /* Reveal each section only when it enters viewport */
-    .wi-scroll-reveal .t-rec.wi-rec-reveal:not(.uc-ndt-preloader),
-    .wi-scroll-reveal .wi-church-card-host.wi-rec-reveal,
-    .wi-scroll-reveal .wi-map-carousel-host.wi-rec-reveal,
-    .wi-scroll-reveal .wi-form-carousel-host.wi-rec-reveal,
-    .wi-scroll-reveal .wi-calendar-carousel-elem.wi-rec-reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .55s ease, transform .55s ease;
-      will-change: opacity, transform;
-    }
-
-    .wi-scroll-reveal .t-rec.wi-rec-reveal.wi-rec-visible:not(.uc-ndt-preloader),
-    .wi-scroll-reveal .wi-church-card-host.wi-rec-reveal.wi-rec-visible,
-    .wi-scroll-reveal .wi-map-carousel-host.wi-rec-reveal.wi-rec-visible,
-    .wi-scroll-reveal .wi-form-carousel-host.wi-rec-reveal.wi-rec-visible,
-    .wi-scroll-reveal .wi-calendar-carousel-elem.wi-rec-reveal.wi-rec-visible {
-      opacity: 1;
-      transform: none;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .wi-scroll-reveal .t-rec.wi-rec-reveal:not(.uc-ndt-preloader),
-      .wi-scroll-reveal .wi-church-card-host.wi-rec-reveal,
-      .wi-scroll-reveal .wi-map-carousel-host.wi-rec-reveal,
-      .wi-scroll-reveal .wi-form-carousel-host.wi-rec-reveal,
-      .wi-scroll-reveal .wi-calendar-carousel-elem.wi-rec-reveal {
-        transform: none;
-        transition: opacity .2s ease;
-      }
-    }
+    /* Reveal animations removed per request to prevent breaking contacts layout */
 
     /* Calendar carousel (rec2223205941): show engagement photos above
        the month label inside the calendar section. */
