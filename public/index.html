@@ -835,26 +835,26 @@
     }
 
     @media screen and (max-width: 479px) {
-      /* Place carousel below text. Width 290px, slide = 202px, height 269 = perfect 3:4 ratio */
+      /* Slightly larger on mobile so images read better */
       #rec2223205941 .wi-calendar-carousel-elem {
         top: 300px;
-        left: calc(50% - 145px);
-        width: 290px;
-        height: 269px !important;
+        left: calc(50% - 155px);
+        width: 310px;
+        height: 287px !important;
       }
 
-      /* Place calendar safely below the carousel (300 + 269 = 569px) */
+      /* Keep spacing after larger carousel */
       #rec2223205941 .tn-elem[data-elem-id="1725107850060"] {
-        top: 610px !important;
+        top: 632px !important;
       }
 
       /* Keep calendar, caption and countdown from overlapping. */
       #rec2223205941 .tn-elem[data-elem-id="1768045567228000002"] {
-        top: 1100px !important;
+        top: 1122px !important;
       }
 
       #rec2223205941 .tn-elem[data-elem-id="1765476539309000001"] {
-        top: 1180px !important;
+        top: 1202px !important;
       }
 
       /* Increase artboard height to fit the pushed down elements */
@@ -1112,8 +1112,8 @@
 
     .wi-map-carousel-frame {
       position: relative;
-      width: 344px;
-      height: 236px;
+      width: 360px;
+      height: 250px;
       margin: 0 auto;
       background: transparent !important;
     }
@@ -1175,9 +1175,6 @@
       flex: 0 0 calc(100% - 92px);
       height: 100%;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       transform: scale(.86);
       opacity: .62;
       transition: transform .55s ease, opacity .55s ease;
@@ -1190,11 +1187,9 @@
     }
 
     .wi-map-slide img {
-      width: auto;
-      height: auto;
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       object-position: center center;
       display: block;
       background: transparent !important;
@@ -1202,8 +1197,8 @@
 
     @media screen and (max-width: 767px) {
       .wi-map-carousel-frame {
-        width: 344px;
-        height: 236px;
+        width: 360px;
+        height: 250px;
       }
 
       .wi-map-slide {
@@ -1219,8 +1214,8 @@
 
     .wi-form-carousel-frame {
       position: relative;
-      width: 344px;
-      height: 336px;
+      width: 360px;
+      height: 352px;
       margin: 0 auto;
       background: transparent !important;
     }
@@ -1282,9 +1277,6 @@
       flex: 0 0 calc(100% - 92px);
       height: 100%;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       transform: scale(.86);
       opacity: .62;
       transition: transform .55s ease, opacity .55s ease;
@@ -1297,11 +1289,9 @@
     }
 
     .wi-form-slide img {
-      width: auto;
-      height: auto;
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       object-position: center center;
       display: block;
       background: transparent !important;
@@ -1309,8 +1299,8 @@
 
     @media screen and (max-width: 767px) {
       .wi-form-carousel-frame {
-        width: 344px;
-        height: 336px;
+        width: 360px;
+        height: 352px;
       }
 
       .wi-form-slide {
