@@ -775,6 +775,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center 15%;
       display: block;
       background: transparent !important;
     }
@@ -864,18 +865,33 @@
     }
 
     @media screen and (max-width: 479px) {
+      /* Make carousel portrait and smaller on mobile so heads are visible */
+      #rec2223205941 .wi-calendar-carousel-elem {
+        top: 150px;
+        left: calc(50% - 140px); /* Centers a 280px wide element */
+        width: 280px;
+        height: 380px !important;
+      }
+
       /* Keep carousel and calendar separate on phones. */
       #rec2223205941 .tn-elem[data-elem-id="1725107850060"] {
-        top: 600px !important;
+        top: 570px !important;
       }
 
       /* Keep calendar, caption and countdown from overlapping. */
       #rec2223205941 .tn-elem[data-elem-id="1768045567228000002"] {
-        top: 1080px !important;
+        top: 1100px !important;
       }
 
       #rec2223205941 .tn-elem[data-elem-id="1765476539309000001"] {
-        top: 1158px !important;
+        top: 1180px !important;
+      }
+
+      /* Increase artboard height to fit the pushed down elements */
+      #rec2223205941 .t396__artboard,
+      #rec2223205941 .t396__filter,
+      #rec2223205941 .t396__carrier {
+        height: 1675px;
       }
     }
 
