@@ -10172,11 +10172,27 @@
           paintActive();
         }
 
+        function goNext(animate) {
+          if (realCount <= 1) return;
+          if (pos >= allSlides.length - 1) {
+            setTrackPosition(1, false);
+          }
+          setTrackPosition(pos + 1, animate !== false);
+        }
+
+        function goPrev(animate) {
+          if (realCount <= 1) return;
+          if (pos <= 0) {
+            setTrackPosition(realCount, false);
+          }
+          setTrackPosition(pos - 1, animate !== false);
+        }
+
         function start() {
           stop();
           timer = setInterval(function () {
             if (Date.now() - lastUserAction < USER_PAUSE_MS) return;
-            setTrackPosition(pos + 1, true);
+            goNext(true);
           }, AUTO_INTERVAL_MS);
         }
 
@@ -10218,7 +10234,8 @@
           if (!touchActive) return;
           touchActive = false;
           if (Math.abs(touchDeltaX) > 36) {
-            setTrackPosition(touchDeltaX < 0 ? pos + 1 : pos - 1, true);
+            if (touchDeltaX < 0) goNext(true);
+            else goPrev(true);
           }
           start();
         }, { passive: true });
@@ -10302,6 +10319,22 @@
           paintActive();
         }
 
+        function goNext(animate) {
+          if (realCount <= 1) return;
+          if (pos >= allSlides.length - 1) {
+            setTrackPosition(1, false);
+          }
+          setTrackPosition(pos + 1, animate !== false);
+        }
+
+        function goPrev(animate) {
+          if (realCount <= 1) return;
+          if (pos <= 0) {
+            setTrackPosition(realCount, false);
+          }
+          setTrackPosition(pos - 1, animate !== false);
+        }
+
         function jumpIfCloneEdge() {
           if (realCount <= 1) return;
           if (pos === allSlides.length - 1) {
@@ -10315,7 +10348,7 @@
           stop();
           timer = setInterval(function () {
             if (Date.now() - lastUserAction < USER_PAUSE_MS) return;
-            setTrackPosition(pos + 1, true);
+            goNext(true);
           }, AUTO_INTERVAL_MS);
         }
 
@@ -10348,7 +10381,8 @@
           if (!touchActive) return;
           touchActive = false;
           if (Math.abs(touchDeltaX) > 36) {
-            setTrackPosition(touchDeltaX < 0 ? pos + 1 : pos - 1, true);
+            if (touchDeltaX < 0) goNext(true);
+            else goPrev(true);
           }
           start();
         }, { passive: true });
@@ -10432,6 +10466,22 @@
           paintActive();
         }
 
+        function goNext(animate) {
+          if (realCount <= 1) return;
+          if (pos >= allSlides.length - 1) {
+            setTrackPosition(1, false);
+          }
+          setTrackPosition(pos + 1, animate !== false);
+        }
+
+        function goPrev(animate) {
+          if (realCount <= 1) return;
+          if (pos <= 0) {
+            setTrackPosition(realCount, false);
+          }
+          setTrackPosition(pos - 1, animate !== false);
+        }
+
         function jumpIfCloneEdge() {
           if (realCount <= 1) return;
           if (pos === allSlides.length - 1) {
@@ -10445,7 +10495,7 @@
           stop();
           timer = setInterval(function () {
             if (Date.now() - lastUserAction < USER_PAUSE_MS) return;
-            setTrackPosition(pos + 1, true);
+            goNext(true);
           }, AUTO_INTERVAL_MS);
         }
 
@@ -10478,7 +10528,8 @@
           if (!touchActive) return;
           touchActive = false;
           if (Math.abs(touchDeltaX) > 36) {
-            setTrackPosition(touchDeltaX < 0 ? pos + 1 : pos - 1, true);
+            if (touchDeltaX < 0) goNext(true);
+            else goPrev(true);
           }
           start();
         }, { passive: true });
