@@ -688,9 +688,9 @@
     #rec2223205941 .wi-calendar-carousel-elem {
       z-index: 7;
       top: 370px;
-      left: calc(50% - 600px + 428px);
-      width: 344px;
-      height: 236px !important;
+      left: calc(50% - 600px + 472px); /* Centered relative to its old position */
+      width: 255px;
+      height: 340px !important;
       overflow: hidden;
       background: transparent !important;
     }
@@ -787,35 +787,30 @@
 
     @media screen and (max-width:1199px) {
       #rec2223205941 .wi-calendar-carousel-elem {
-        left: calc(50% - 480px + 308px);
+        left: calc(50% - 480px + 352px);
       }
     }
 
     @media screen and (max-width:959px) {
       #rec2223205941 .wi-calendar-carousel-elem {
         top: 335px;
-        left: calc(50% - 320px + 148px);
+        left: calc(50% - 320px + 192px);
       }
     }
 
     @media screen and (max-width:639px) {
       #rec2223205941 .wi-calendar-carousel-elem {
         top: 310px;
-        left: calc(50% - 240px + 68px);
+        left: calc(50% - 240px + 112px);
       }
     }
 
-    @media screen and (max-width:479px) {
-      #rec2223205941 .wi-calendar-carousel-elem {
-        top: 252px;
-        left: calc(50% - 160px + -12px);
-      }
-    }
+    /* Base mobile rule is defined in the block below */
 
     /* Keep carousel above the calendar on tablet/desktop (same stacking as mobile). */
     @media screen and (min-width: 480px) {
       #rec2223205941 .tn-elem[data-elem-id="1725107850060"] {
-        top: 700px !important;
+        top: 740px !important;
       }
 
       #rec2223205941 .tn-elem[data-elem-id="1768045567228000002"] {
@@ -864,12 +859,12 @@
     }
 
     @media screen and (max-width: 479px) {
-      /* Place carousel below the invitation text */
+      /* Place carousel below the invitation text, match 3:4 aspect ratio of photos */
       #rec2223205941 .wi-calendar-carousel-elem {
         top: 300px;
-        left: calc(50% - 172px); /* Centers a 344px wide element */
-        width: 344px;
-        height: 236px !important;
+        left: calc(50% - 127px); /* Centers a 255px wide element */
+        width: 255px;
+        height: 340px !important;
       }
 
       /* Place calendar below the carousel. */
