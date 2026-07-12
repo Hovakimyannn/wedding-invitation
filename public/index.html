@@ -1568,8 +1568,8 @@
       <div class="t123">
         <div class="t-container_100 ">
           <div class="t-width t-width_100 "> <!-- nominify begin -->
-            <!-- ===== PRELOADER + MUSIC + SOFT FADE + WAVE ===== --> <audio id="ndt-bg-sound" preload="auto">
-              <source src="/audio/bg-music.mp3">
+            <!-- ===== PRELOADER + MUSIC + SOFT FADE + WAVE ===== --> <audio id="ndt-bg-sound" preload="auto" autoplay muted loop playsinline webkit-playsinline>
+              <source src="/audio/bg-music.mp3" type="audio/mpeg">
             </audio>
             <style>
               /* ===== BLOCK ONLY VERTICAL SCROLL ===== */
@@ -1578,7 +1578,7 @@
                 /* ⛔ вертикальный скролл */
                 overflow-x: auto;
                 /* ✅ горизонтальный */
-                touch-action: pan-x;
+                touch-action: none;
               }
 
               /* ===== МЯГКОЕ ИСЧЕЗНОВЕНИЕ ПРЕЛОАДЕРА ===== */
@@ -1732,24 +1732,106 @@
                 if (!myAudio) return;
 
                 myAudio.volume = 0.4;
+                myAudio.setAttribute('playsinline', '');
+                myAudio.setAttribute('webkit-playsinline', '');
+                myAudio.load();
 
                 let envelopeOpened = false;
+                var touchStartY = null;
+                var touchMovedPx = 0;
+                var touchIsScroll = false;
+                var suppressClick = false;
+                var deferredMusicStartBound = false;
+                var musicPrimed = false;
+                var musicStartedFromBeginning = false;
 
                 function isPreloaderActive() {
                   return !!(preloaderBlock && !preloaderBlock.classList.contains('activated'));
                 }
 
-                function openEnvelope() {
-                  if (envelopeOpened) return;
-                  if (preloaderBlock && preloaderBlock.classList.contains('activated')) return;
-                  envelopeOpened = true;
+                function syncWave(playing) {
+                  if (!wave) return;
+                  wave.classList.toggle('is-playing', playing);
+                  wave.classList.toggle('is-paused', !playing);
+                }
 
-                  myAudio.play();
-
-                  if (wave) {
-                    wave.classList.add('is-playing');
-                    wave.classList.remove('is-paused');
+                function bindDeferredMusicStart() {
+                  if (deferredMusicStartBound) return;
+                  deferredMusicStartBound = true;
+                  var unlockEvents = ['pointerdown', 'touchstart', 'click', 'keydown', 'wheel'];
+                  function resumeMusic() {
+                    deferredMusicStartBound = false;
+                    unlockEvents.forEach(function (eventName) {
+                      window.removeEventListener(eventName, resumeMusic, true);
+                    });
+                    startMusicSync();
                   }
+                  unlockEvents.forEach(function (eventName) {
+                    window.addEventListener(eventName, resumeMusic, { capture: true, once: true, passive: true });
+                  });
+                }
+
+                function ensureMutedPlaybackPrimed() {
+                  myAudio.volume = 0.4;
+                  myAudio.muted = true;
+                  try {
+                    var p = myAudio.play();
+                    if (p && p.then) {
+                      return p.then(function () {
+                        musicPrimed = true;
+                        return true;
+                      }).catch(function () {
+                        return false;
+                      });
+                    } else if (!myAudio.paused) {
+                      musicPrimed = true;
+                      return Promise.resolve(true);
+                    }
+                  } catch (err) { }
+                  return Promise.resolve(!myAudio.paused);
+                }
+
+                function startMusicSync() {
+                  if (!musicStartedFromBeginning) {
+                    try {
+                      myAudio.currentTime = 0;
+                    } catch (err) { }
+                    musicStartedFromBeginning = true;
+                  }
+
+                  if (musicPrimed && !myAudio.paused) {
+                    myAudio.muted = false;
+                    myAudio.volume = 0.4;
+                    syncWave(true);
+                    return;
+                  }
+                  myAudio.muted = false;
+                  myAudio.volume = 0.4;
+                  try {
+                    var p = myAudio.play();
+                    syncWave(!myAudio.paused);
+                    if (p && p.catch) {
+                      p.catch(function () {
+                        syncWave(false);
+                        bindDeferredMusicStart();
+                      });
+                    } else if (!myAudio.paused) {
+                      musicPrimed = true;
+                    }
+                  } catch (err) {
+                    syncWave(false);
+                    bindDeferredMusicStart();
+                  }
+                }
+
+                function primeMusicOnTouch() {
+                  ensureMutedPlaybackPrimed();
+                }
+
+                function revealEnvelope() {
+                  if (envelopeOpened) return false;
+                  if (preloaderBlock && preloaderBlock.classList.contains('activated')) return false;
+                  envelopeOpened = true;
 
                   if (preloaderBlock) {
                     setTimeout(function () {
@@ -1759,36 +1841,81 @@
                   }
 
                   document.dispatchEvent(new CustomEvent('ndt:envelope-open'));
+                  return true;
                 }
 
-                /* START — click or scroll */
-                if (startBtn) {
-                  startBtn.addEventListener('click', openEnvelope);
+                function openWithMusic() {
+                  revealEnvelope();
+                  startMusicSync();
                 }
+
+                ensureMutedPlaybackPrimed();
+
+                ['pointerdown', 'touchstart', 'wheel', 'keydown'].forEach(function (eventName) {
+                  window.addEventListener(eventName, ensureMutedPlaybackPrimed, { capture: true, once: true, passive: true });
+                });
+
+                function onPreloaderTouchStart(e) {
+                  if (!isPreloaderActive()) return;
+                  if (!e.touches || !e.touches.length) return;
+                  touchStartY = e.touches[0].clientY;
+                  touchMovedPx = 0;
+                  touchIsScroll = false;
+                  suppressClick = false;
+                  primeMusicOnTouch();
+                }
+
+                function onPreloaderTouchMove(e) {
+                  if (!isPreloaderActive() || touchStartY == null) return;
+                  if (!e.touches || !e.touches.length) return;
+                  var dy = Math.abs(e.touches[0].clientY - touchStartY);
+                  if (dy > touchMovedPx) touchMovedPx = dy;
+                  if (dy >= 12) {
+                    touchIsScroll = true;
+                    openWithMusic();
+                  }
+                }
+
+                function onPreloaderTouchEnd() {
+                  if (touchIsScroll) {
+                    if (!envelopeOpened) {
+                      openWithMusic();
+                    } else if (myAudio.paused) {
+                      startMusicSync();
+                    }
+                    suppressClick = true;
+                    setTimeout(function () { suppressClick = false; }, 400);
+                  }
+                  touchStartY = null;
+                  touchMovedPx = 0;
+                  touchIsScroll = false;
+                }
+
+                if (startBtn) {
+                  startBtn.addEventListener('click', function () {
+                    if (suppressClick) return;
+                    openWithMusic();
+                  });
+                }
+
+                var touchTarget = preloaderBlock || document;
+                touchTarget.addEventListener('touchstart', onPreloaderTouchStart, { passive: true });
+                touchTarget.addEventListener('touchmove', onPreloaderTouchMove, { passive: true });
+                touchTarget.addEventListener('touchend', onPreloaderTouchEnd, { passive: true });
+                touchTarget.addEventListener('touchcancel', onPreloaderTouchEnd, { passive: true });
 
                 window.addEventListener('wheel', function (e) {
                   if (!isPreloaderActive()) return;
-                  if (Math.abs(e.deltaY) < 8) return;
-                  openEnvelope();
-                }, { passive: true });
-
-                var touchScrollStartY = null;
-                window.addEventListener('touchstart', function (e) {
-                  if (!e.touches || !e.touches.length) return;
-                  touchScrollStartY = e.touches[0].clientY;
-                }, { passive: true });
-
-                window.addEventListener('touchmove', function (e) {
-                  if (!isPreloaderActive() || touchScrollStartY == null) return;
-                  if (!e.touches || !e.touches.length) return;
-                  if (Math.abs(e.touches[0].clientY - touchScrollStartY) < 12) return;
-                  openEnvelope();
+                  if (!Number.isFinite(e.deltaY) || e.deltaY === 0) return;
+                  primeMusicOnTouch();
+                  openWithMusic();
                 }, { passive: true });
 
                 window.addEventListener('keydown', function (e) {
                   if (!isPreloaderActive()) return;
                   if (['ArrowDown', 'PageDown', ' ', 'Spacebar'].indexOf(e.key) === -1) return;
-                  openEnvelope();
+                  primeMusicOnTouch();
+                  openWithMusic();
                 });
 
                 /* LOOP */
