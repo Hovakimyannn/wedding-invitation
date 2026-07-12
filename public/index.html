@@ -97,7 +97,6 @@
          որպեսզի աջ եզրը մնա իդեալական ուղիղ գծի վրա */
       #rec2215004051 .tn-elem[data-elem-id="1737672913661"] {
         width: 250px !important;
-        transform: translateX(-49px) !important;
       }
 
       /* --- ՁԱԽ ԿՈՂՄ (15:20 և 00:00 բլոկներ) --- */
@@ -114,6 +113,19 @@
       /* Սահմանափակում ենք ներքևի երկար տեքստի լայնությունը */
       #rec2215004051 .tn-elem[data-elem-id="1737672954009"] {
         max-width: 250px !important;
+      }
+    }
+
+    /* «17:30 / Հանդիսություն» բլոկ — 30px վեր */
+    #rec2215004051 .tn-elem[data-elem-id="1737672913657"],
+    #rec2215004051 .tn-elem[data-elem-id="1737672913664"],
+    #rec2215004051 .tn-elem[data-elem-id="1737672913661"] {
+      transform: translateY(-30px) !important;
+    }
+
+    @media screen and (min-width: 960px) {
+      #rec2215004051 .tn-elem[data-elem-id="1737672913661"] {
+        transform: translate(-49px, -30px) !important;
       }
     }
 
@@ -541,7 +553,7 @@
     }
 
     /* "Details" tooltip bubbles are clickable; add visual affordance
-       (cursor + soft pulse ring + press feedback). */
+       (cursor + pulse rings + press feedback). */
     #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin,
     #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin,
     #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin {
@@ -549,7 +561,18 @@
       cursor: pointer;
       border-radius: 999px;
       transition: transform .2s ease, box-shadow .25s ease, filter .25s ease;
-      animation: wiTipBreath 2.6s ease-in-out infinite;
+      animation: wiTipBreath 2.2s ease-in-out infinite;
+    }
+
+    #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin::before,
+    #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin::before,
+    #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      pointer-events: none;
+      animation: wiTipGlow 2.2s ease-out infinite;
     }
 
     #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin::after,
@@ -557,53 +580,57 @@
     #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin::after {
       content: "";
       position: absolute;
-      inset: -8px;
+      inset: -10px;
       border-radius: 999px;
-      border: 2px solid rgba(105, 105, 105, 0.28);
+      border: 2.5px solid rgba(88, 72, 56, 0.42);
       opacity: 0;
-      transform: scale(.92);
+      transform: scale(.86);
       pointer-events: none;
-      animation: wiTipPulse 2.6s ease-out infinite;
-    }
-
-    #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin,
-    #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin::after {
-      animation-delay: .35s;
-    }
-
-    #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin,
-    #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin::after {
-      animation-delay: .7s;
+      animation: wiTipPulse 2.2s ease-out infinite;
     }
 
     #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin:hover,
     #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin:hover,
     #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin:hover {
-      transform: scale(1.05);
-      filter: brightness(1.03);
-      box-shadow: 0 0 24px rgba(0, 0, 0, .24);
+      transform: scale(1.06);
+      filter: brightness(1.04);
+      box-shadow: 0 0 28px rgba(0, 0, 0, .28);
     }
 
     #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin:active,
     #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin:active,
     #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin:active {
-      transform: scale(.97);
+      transform: scale(.96);
     }
 
     @keyframes wiTipPulse {
       0% {
-        opacity: .55;
-        transform: scale(.9);
+        opacity: .75;
+        transform: scale(.86);
       }
 
-      75% {
+      70% {
         opacity: 0;
-        transform: scale(1.16);
+        transform: scale(1.42);
       }
 
       100% {
         opacity: 0;
-        transform: scale(1.16);
+        transform: scale(1.42);
+      }
+    }
+
+    @keyframes wiTipGlow {
+      0% {
+        box-shadow: 0 0 0 0 rgba(100, 82, 64, 0.38);
+      }
+
+      70% {
+        box-shadow: 0 0 0 16px rgba(100, 82, 64, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 16px rgba(100, 82, 64, 0);
       }
     }
 
@@ -611,10 +638,12 @@
       0%,
       100% {
         transform: scale(1);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, .1);
       }
 
       50% {
-        transform: scale(1.02);
+        transform: scale(1.045);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, .16);
       }
     }
 
@@ -622,6 +651,9 @@
       #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin,
       #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin,
       #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin,
+      #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin::before,
+      #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin::before,
+      #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin::before,
       #rec2223254351 .tn-elem[data-elem-id="1767999465731"] .tn-atom__pin::after,
       #rec2223254351 .tn-elem[data-elem-id="1767999569064000002"] .tn-atom__pin::after,
       #rec2223254351 .tn-elem[data-elem-id="1767999594147000003"] .tn-atom__pin::after {
@@ -649,6 +681,12 @@
 
     [data-elem-id='1768045567228000002'] .tn-atom {
       text-align: center !important;
+    }
+
+    /* Countdown digits must sit above the satin ribbon (same z-index in
+       the template, but the ribbon comes later in the DOM). */
+    #rec2223205941 .tn-elem[data-elem-id="1765476539309000001"] {
+      z-index: 6 !important;
     }
 
     /* Reveal animations removed per request to prevent breaking contacts layout */
@@ -770,7 +808,7 @@
     @media screen and (max-width:959px) {
       #rec2223205941 .wi-calendar-carousel-elem {
         top: 335px;
-        left: calc(50% - 320px + 192px);
+        left: calc(50% - 360px + 192px);
       }
     }
 
@@ -6336,8 +6374,8 @@
             data-field-height-res-640-value="432" data-field-left-res-960-value="264"
             data-field-height-res-960-value="432">
             <div class='tn-atom'> <img class='tn-atom__img t-img'
-                data-original='https://static.tildacdn.com/tild6230-3938-4633-b538-393238316234/_1.svg'
-                src='https://static.tildacdn.com/tild6230-3938-4633-b538-393238316234/_1.svg' alt=''
+                data-original='/img/headers/tild6230.svg'
+                src='/img/headers/tild6230.svg' alt=''
                 imgfield='tn_img_1684927318816' /> </div>
           </div>
         </div>
@@ -6354,7 +6392,7 @@
           <img src="/img/saghmosavank.png" alt="Սաղմոսավանք" loading="lazy">
         </figure>
         <p class="wi-church-card__address" field="tn_text_wi_church_address">գ. Սաղմոսավան</p>
-        <a class="wi-church-card__btn" href="https://maps.google.com/?q=%D5%8D%D5%A1%D5%B2%D5%B4%D5%B8%D5%BD%D5%A1%D5%BE%D5%A1%D5%B6%D6%84"
+        <a class="wi-church-card__btn" href="https://yandex.com/maps/?text=%D5%8D%D5%A1%D5%B2%D5%B4%D5%B8%D5%BD%D5%A1%D5%BE%D5%A1%D5%B6%D6%84&ll=44.392778%2C40.377778&z=16"
           target="_blank" rel="noopener">
           <span class="tn-atom__button-text">КАРТА</span>
           <span class="wi-church-card__btn-arrow" aria-hidden="true">→</span>
@@ -7437,8 +7475,8 @@
             data-field-height-res-640-value="454" data-field-top-res-960-value="28" data-field-left-res-960-value="253"
             data-field-height-res-960-value="454">
             <div class='tn-atom'> <img class='tn-atom__img t-img'
-                data-original='https://static.tildacdn.com/tild3930-3263-4261-b966-613130313235/_1.svg'
-                src='https://static.tildacdn.com/tild3930-3263-4261-b966-613130313235/_1.svg' alt=''
+                data-original='/img/headers/tild3930.svg'
+                src='/img/headers/tild3930.svg' alt=''
                 imgfield='tn_img_1684927318816' /> </div>
           </div>
           <div class='t396__elem tn-elem tn-elem__22232543511768070416799000001 t-animate'
@@ -7558,8 +7596,8 @@
             data-field-top-res-960-value="654" data-field-left-res-960-value="428"
             data-field-height-res-960-value="339">
             <div class='tn-atom'> <img class='tn-atom__img t-img'
-                data-original='https://static.tildacdn.com/tild3630-6163-4535-a537-653535636537/photo.svg'
-                src='https://static.tildacdn.com/tild3630-6163-4535-a537-653535636537/photo.svg' alt=''
+                data-original='/img/headers/tild3630.svg'
+                src='/img/headers/tild3630.svg' alt=''
                 imgfield='tn_img_1768070759720000003' /> </div>
           </div>
           <div class='t396__elem tn-elem tn-elem__22232543511767999465731' data-elem-id='1767999465731'
@@ -7616,8 +7654,8 @@
               data-original="https://static.tildacdn.com/tild6331-3938-4532-b361-303665323233/photo.png"
               style="background-image:url('https://thb.tildacdn.com/tild6331-3938-4532-b361-303665323233/-/resize/20x/photo.png');">
               <div class='tn-atom__tip'>
-                <div class='tn-atom__tip-text'><strong>Не стесняйтесь кричать «Горько!» — мы только за и с радостью
-                    поддержим эту традицию.</strong></div>
+                <div class='tn-atom__tip-text'><strong>Подготовьте самые теплые пожелания для нашего важного дня
+                    🤍</strong></div>
               </div>
             </div>
           </div>
@@ -9592,7 +9630,7 @@
       </div>
       <script>t_onReady(function () { t_onFuncLoad('t396_init', function () { t396_init('1681034491'); }); });</script>
 
-      <div
+      <div id="wi-site-credit"
         style="position:fixed;bottom:20px;right:20px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;color:rgba(0,0,0,0.35);z-index:99998;pointer-events:none;">
         Կայքը պատրաստեցինք մենք 😉
       </div>

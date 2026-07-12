@@ -37,19 +37,13 @@
       hy: "Մի գեղեցիկ օր ինչ-որ բան տեղի կունենա։ Միանգամից և ընդմիշտ...",
     },
     tn_text_1765478263076000001: {
-      // names + date — identical in both languages. Written with a literal
-      // «ԵՎ»: the block is CSS-uppercased and text-transform would render
-      // «և» as the classical-orthography «ԵՒ».
-      ru: "Հարություն ԵՎ Մարինե<br />26.08.26",
+      // Names + date in the hero block.
+      ru: "Арутюн И Марине<br />26.08.26",
       hy: "Հարություն ԵՎ Մարինե<br />26.08.26",
     },
     tn_text_1684928557161: {
-      ru: "<div style='text-align:center; margin-top:-40px;'>В нашей жизни произойдет очень важное событие – наша свадьба!<br>Мы верим и надеемся, что этот день станет красивым началом<br>долгой и счастливой жизни.</div>",
-      hy: "<div style='text-align:center; margin-top:-40px;'>Մեր կյանքում տեղի կունենա շատ կարևոր իրադարձություն՝ մեր հարսանիքը։<br>Հավատում ենք և հույս ունենք, որ այս օրը կդառնա<br>երկար ու երջանիկ կյանքի գեղեցիկ սկիզբ։</div>",
-    },
-    tn_text_1768045554126000001: {
-      ru: "Мы скажем",
-      hy: "Մենք կասենք",
+      ru: "<div style='text-align:center;'>В нашей жизни произойдет очень важное событие – наша свадьба!<br>Мы верим и надеемся, что этот день станет красивым началом<br>долгой и счастливой жизни.</div>",
+      hy: "<div style='text-align:center;'>Մեր կյանքում տեղի կունենա շատ կարևոր իրադարձություն՝ մեր հարսանիքը։<br>Հավատում ենք և հույս ունենք, որ այս օրը կդառնա<br>երկար ու երջանիկ կյանքի գեղեցիկ սկիզբ։</div>",
     },
     tn_text_1768045567228000002: {
       ru: "До мероприятия осталось",
@@ -145,13 +139,17 @@
       hy: "<strong>Շնորհակալ կլինենք հարսանիքի կարևոր պահերին երեխաների լռությունն ապահովելու համար 🤍</strong>",
     },
     __tip_2: {
-      ru: "<strong>Приготовьте самые теплые слова и пожелания для нашего важного дня 🤍</strong>",
+      ru: "<strong>Подготовьте самые теплые пожелания для нашего важного дня 🤍</strong>",
       hy: "<strong>Պատրաստեք ձեր ամենաջերմ խոսքերն ու մաղթանքները մեր գլխավոր օրվա համար 🤍</strong>",
     },
     // "КАРТА" button — matched by its current text.
     __btn_map: {
       ru: "КАРТА",
       hy: "ՔԱՐՏԵԶ",
+    },
+    __site_credit: {
+      ru: "Сайт подготовили мы 😉",
+      hy: "Կայքը պատրաստեցինք մենք 😉",
     },
   };
 
@@ -248,7 +246,7 @@
     ["tild3933-3739-4734-a436-633664386264", "/img/headers/tild3933.svg", TCDN + "tild3933-3739-4734-a436-633664386264/-.svg"],
     ["tild3934-3731-4439-a237-306461346431", "/img/headers/tild3934.svg", TCDN + "tild3934-3731-4439-a237-306461346431/photo.svg"],
     ["tild6135-6534-4366-a462-323430316335", "/img/headers/tild6135.svg", TCDN + "tild6135-6534-4366-a462-323430316335/photo.svg"],
-    ["tild3630-6163-4535-a537-653535636537", "/img/headers/tild3630.svg", TCDN + "tild3630-6163-4535-a537-653535636537/photo.svg"],
+    ["tild3630-6163-4535-a537-653535636537", "/img/headers/tild3630.svg", "/img/headers/tild3630-ru.svg"],
     ["tild6665-3663-4163-a362-383961323137", "/img/headers/tild6665.svg", TCDN + "tild6665-3663-4163-a362-383961323137/_3.svg"],
     ["tild6534-6634-4565-a431-346264343935", "/img/headers/tild6534.svg", TCDN + "tild6534-6634-4565-a431-346264343935/_1.svg"],
     ["tild3531-6436-4363-b462-373030393463", "/img/headers/tild3531.svg", TCDN + "tild3531-6436-4363-b462-373030393463/_1.svg"],
@@ -258,18 +256,49 @@
     IMG_BY[r[0]] = { hy: r[1], ru: r[2] };
   });
 
+  function headerBasename(url) {
+    if (!url) return "";
+    var q = url.indexOf("?");
+    if (q >= 0) url = url.slice(0, q);
+    var slash = url.lastIndexOf("/");
+    return slash >= 0 ? url.slice(slash + 1) : url;
+  }
+
   function tagHeaderImages() {
     var imgs = document.querySelectorAll("img:not([data-wi-hdr])");
     for (var i = 0; i < imgs.length; i++) {
       var s = imgs[i].getAttribute("src") || "";
       var d = imgs[i].getAttribute("data-original") || "";
+      var srcBase = headerBasename(s);
+      var dataBase = headerBasename(d);
+      // Pass 1: match by unique tildacdn folder id. Basename matching
+      // must NOT run before all folder ids are checked: the remote ru
+      // files share generic names ("_1.svg"), so a basename hit on the
+      // wrong row would mis-tag the image.
+      var folder = null;
       for (var k = 0; k < IMG.length; k++) {
-        var folder = IMG[k][0];
-        if (s.indexOf(folder) >= 0 || d.indexOf(folder) >= 0) {
-          imgs[i].setAttribute("data-wi-hdr", folder);
+        if (s.indexOf(IMG[k][0]) >= 0 || d.indexOf(IMG[k][0]) >= 0) {
+          folder = IMG[k][0];
           break;
         }
       }
+      // Pass 2: match by local filename (hy files and local ru files
+      // have unique basenames; remote ru names are ambiguous — skip).
+      if (!folder) {
+        for (k = 0; k < IMG.length; k++) {
+          var hyFile = headerBasename(IMG[k][1]);
+          var ruFile =
+            IMG[k][2].indexOf(TCDN) === 0 ? "" : headerBasename(IMG[k][2]);
+          if (
+            (hyFile && (srcBase === hyFile || dataBase === hyFile)) ||
+            (ruFile && (srcBase === ruFile || dataBase === ruFile))
+          ) {
+            folder = IMG[k][0];
+            break;
+          }
+        }
+      }
+      if (folder) imgs[i].setAttribute("data-wi-hdr", folder);
     }
   }
 
@@ -358,6 +387,9 @@
         btns[j].textContent = T.__btn_map[lang];
       }
     }
+
+    // Footer credit line ("Сайт подготовили мы / Կայքը պատրաստեցինք մենք")
+    setHTML(document.getElementById("wi-site-credit"), T.__site_credit[lang]);
 
     translateForm(lang);
     translateImages(lang);
