@@ -183,7 +183,9 @@
     .wi-church-card__name,
     .wi-church-card__address,
     .wi-guest-count-label,
-    .wi-guest-name-label {
+    .wi-guest-name-label,
+    .wi-partner-name-label,
+    .wi-rsvp-deadline {
       color: var(--wi-text-soft) !important;
     }
 
@@ -198,7 +200,8 @@
     .t-records .t-input-group input,
     .t-records .t-input-group select,
     .wi-guest-count-input,
-    .wi-guest-name-input {
+    .wi-guest-name-input,
+    .wi-partner-name-input {
       background-color: var(--wi-surface-soft) !important;
     }
 
@@ -208,13 +211,15 @@
     }
 
     .wi-guest-count-input,
-    .wi-guest-name-input {
+    .wi-guest-name-input,
+    .wi-partner-name-input {
       color: var(--wi-text-soft) !important;
       border-color: #9e948a !important;
     }
 
     .wi-guest-count-input::placeholder,
-    .wi-guest-name-input::placeholder {
+    .wi-guest-name-input::placeholder,
+    .wi-partner-name-input::placeholder {
       color: var(--wi-text-soft-muted) !important;
     }
 
@@ -4497,10 +4502,7 @@
             data-elem-type='image' data-field-top-value="675" data-field-left-value="561" data-field-height-value="81"
             data-field-width-value="81" data-field-axisy-value="top" data-field-axisx-value="left"
             data-field-container-value="grid" data-field-topunits-value="px" data-field-leftunits-value="px"
-            data-field-heightunits-value="px" data-field-widthunits-value="px" data-animate-mobile="y"
-            data-animate-sbs-event="intoview" data-animate-sbs-trg="1" data-animate-sbs-trgofst="0"
-            data-animate-sbs-loop="loop"
-            data-animate-sbs-opts="[{'mx':0,'my':0,'sx':1,'sy':1,'op':1,'ro':0,'ti':0,'ea':'0','dt':0},{'mx':0,'my':0,'sx':1.18,'sy':1.18,'op':1,'ro':0,'ti':1000,'ea':'0','dt':0},{'mx':0,'my':0,'sx':0.96,'sy':0.96,'op':1,'ro':0,'ti':1000,'ea':'0','dt':0}]"
+            data-field-heightunits-value="px" data-field-widthunits-value="px"
             data-field-filewidth-value="1680" data-field-fileheight-value="1680" data-field-heightmode-value="hug"
             data-field-top-res-320-value="535" data-field-left-res-320-value="123" data-field-height-res-320-value="74"
             data-field-width-res-320-value="74" data-field-top-res-480-value="560" data-field-left-res-480-value="200"
@@ -9543,9 +9545,9 @@
             <div class='tn-atom tn-atom__form'></div>
             <div data-nosnippet="true" class="tn-atom__inputs-wrapp" style="display:none;">
               <div class="tn-atom__inputs-data"
-                data-value="[{&quot;lid&quot;:&quot;1531306243545&quot;,&quot;ls&quot;:&quot;10&quot;,&quot;loff&quot;:&quot;&quot;,&quot;li_type&quot;:&quot;in&quot;,&quot;li_title&quot;:&quot;\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e&quot;,&quot;li_ph&quot;:&quot;\u0412\u0430\u0448\u0438 \u0424\u0418\u041e&quot;,&quot;li_req&quot;:&quot;y&quot;,&quot;li_nm&quot;:&quot;\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e&quot;},{&quot;lid&quot;:&quot;1570290149233&quot;,&quot;ls&quot;:&quot;20&quot;,&quot;loff&quot;:&quot;&quot;,&quot;li_type&quot;:&quot;rd&quot;,&quot;li_title&quot;:&quot;\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?&quot;,&quot;li_req&quot;:&quot;y&quot;,&quot;li_variants&quot;:&quot;\u042f \u0441 \u0443\u0434\u043e\u0432\u043e\u043b\u044c\u0441\u0442\u0432\u0438\u0435\u043c \u043f\u0440\u0438\u0434\u0443\n\u041a \u0441\u043e\u0436\u0430\u043b\u0435\u043d\u0438\u044e, \u043d\u0435 \u0441\u043c\u043e\u0433\u0443 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c&quot;,&quot;li_defselitem&quot;:&quot;1&quot;,&quot;li_radcb&quot;:&quot;rb&quot;,&quot;li_nm&quot;:&quot;\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?&quot;}]">
+                data-value="[{&quot;lid&quot;:&quot;1531306243545&quot;,&quot;ls&quot;:&quot;10&quot;,&quot;loff&quot;:&quot;&quot;,&quot;li_type&quot;:&quot;in&quot;,&quot;li_title&quot;:&quot;\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e&quot;,&quot;li_ph&quot;:&quot;\u0412\u0430\u0448\u0438 \u0424\u0418\u041e&quot;,&quot;li_req&quot;:&quot;y&quot;,&quot;li_nm&quot;:&quot;\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e&quot;},{&quot;lid&quot;:&quot;1570290149233&quot;,&quot;ls&quot;:&quot;20&quot;,&quot;loff&quot;:&quot;&quot;,&quot;li_type&quot;:&quot;rd&quot;,&quot;li_title&quot;:&quot;\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?&quot;,&quot;li_req&quot;:&quot;y&quot;,&quot;li_variants&quot;:&quot;\u042f \u0441 \u0443\u0434\u043e\u0432\u043e\u043b\u044c\u0441\u0442\u0432\u0438\u0435\u043c \u043f\u0440\u0438\u0434\u0443\n\u042f \u043f\u0440\u0438\u0434\u0443 \u0441\u043e \u0441\u0432\u043e\u0435\u0439 \u043f\u0430\u0440\u043e\u0439\n\u041a \u0441\u043e\u0436\u0430\u043b\u0435\u043d\u0438\u044e, \u043d\u0435 \u0441\u043c\u043e\u0433\u0443 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c&quot;,&quot;li_defselitem&quot;:&quot;1&quot;,&quot;li_radcb&quot;:&quot;rb&quot;,&quot;li_nm&quot;:&quot;\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?&quot;}]">
               </div> <textarea
-                class="tn-atom__inputs-textarea">[{"lid":"1531306243545","ls":"10","loff":"","li_type":"in","li_title":"\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e","li_ph":"\u0412\u0430\u0448\u0438 \u0424\u0418\u041e","li_req":"y","li_nm":"\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e"},{"lid":"1570290149233","ls":"20","loff":"","li_type":"rd","li_title":"\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?","li_req":"y","li_variants":"\u042f \u0441 \u0443\u0434\u043e\u0432\u043e\u043b\u044c\u0441\u0442\u0432\u0438\u0435\u043c \u043f\u0440\u0438\u0434\u0443\n\u041a \u0441\u043e\u0436\u0430\u043b\u0435\u043d\u0438\u044e, \u043d\u0435 \u0441\u043c\u043e\u0433\u0443 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c","li_defselitem":"1","li_radcb":"rb","li_nm":"\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?"}]</textarea>
+                class="tn-atom__inputs-textarea">[{"lid":"1531306243545","ls":"10","loff":"","li_type":"in","li_title":"\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e","li_ph":"\u0412\u0430\u0448\u0438 \u0424\u0418\u041e","li_req":"y","li_nm":"\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0412\u0430\u0448\u0438 \u0424\u0418\u041e"},{"lid":"1570290149233","ls":"20","loff":"","li_type":"rd","li_title":"\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?","li_req":"y","li_variants":"\u042f \u0441 \u0443\u0434\u043e\u0432\u043e\u043b\u044c\u0441\u0442\u0432\u0438\u0435\u043c \u043f\u0440\u0438\u0434\u0443\n\u042f \u043f\u0440\u0438\u0434\u0443 \u0441\u043e \u0441\u0432\u043e\u0435\u0439 \u043f\u0430\u0440\u043e\u0439\n\u041a \u0441\u043e\u0436\u0430\u043b\u0435\u043d\u0438\u044e, \u043d\u0435 \u0441\u043c\u043e\u0433\u0443 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c","li_defselitem":"1","li_radcb":"rb","li_nm":"\u0421\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u0438 \u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u043d\u0430\u0448\u0435\u043c \u0442\u043e\u0440\u0436\u0435\u0441\u0442\u0432\u0435?"}]</textarea>
             </div>
           </div>
           <div class='t396__elem tn-elem tn-elem__16810344911725108883884 t-animate' data-elem-id='1725108883884'
@@ -9570,7 +9572,7 @@
             data-field-heightunits-value="px" data-field-widthunits-value="px" data-animate-style="zoomin"
             data-animate-duration="2" data-animate-delay="0.5" data-animate-scale="0.9" data-animate-mobile="y"
             data-field-filewidth-value="1772" data-field-fileheight-value="1772" data-field-heightmode-value="hug"
-            data-field-top-res-320-value="600" data-field-left-res-320-value="-43" data-field-height-res-320-value="407"
+            data-field-top-res-320-value="680" data-field-left-res-320-value="-43" data-field-height-res-320-value="407"
             data-field-width-res-320-value="407" data-field-top-res-480-value="600" data-field-left-res-480-value="33"
             data-field-top-res-640-value="703" data-field-left-res-640-value="113" data-field-top-res-960-value="721"
             data-field-left-res-960-value="273">
@@ -9681,63 +9683,99 @@
         toastTimer = setTimeout(function () { t.classList.remove('show'); }, 3800);
       }
 
-      function guestUiText() {
+      function deadlineText() {
+        return isRu()
+          ? 'Просим ответить до 15 августа'
+          : 'Խնդրում ենք պատասխանել մինչև օգոստոսի 15-ը';
+      }
+
+      function partnerUiText() {
         return isRu()
           ? {
-            countLabel: 'Сколько гостей придет с Вами?',
-            countPlaceholder: 'Выберите количество',
-            guestNameLabel: 'Имя и фамилия гостя',
-            guestNamePlaceholder: 'Имя и фамилия гостя №',
-            countRequired: 'Пожалуйста, укажите количество гостей.',
-            countInvalid: 'Количество гостей должно быть от 1 до 10.',
-            guestNameRequired: 'Пожалуйста, заполните имя и фамилию для каждого гостя.'
+            label: 'Имя и фамилия вашей пары',
+            placeholder: 'Имя и фамилия вашей пары',
+            required: 'Пожалуйста, укажите имя и фамилию вашей пары.'
           }
           : {
-            countLabel: 'Քանի՞ հյուր կգա Ձեզ հետ',
-            countPlaceholder: 'Ընտրեք քանակը',
-            guestNameLabel: 'Հյուրի անուն, ազգանուն',
-            guestNamePlaceholder: 'Հյուրի անուն, ազգանուն №',
-            countRequired: 'Խնդրում ենք նշել հյուրերի քանակը։',
-            countInvalid: 'Հյուրերի քանակը պետք է լինի 1-ից 10 միջակայքում։',
-            guestNameRequired: 'Խնդրում ենք լրացնել բոլոր հյուրերի անուն-ազգանունները։'
+            label: 'Զույգի անուն-ազգանունը',
+            placeholder: 'Զույգի անուն-ազգանունը',
+            required: 'Խնդրում ենք նշել զույգի անուն-ազգանունը։'
           };
       }
 
-      function ensureGuestFieldStyles() {
-        if (document.getElementById('wi-guest-fields-style')) return;
+      function attendingFromChecked(root) {
+        var checked = root.querySelector("input[type='radio']:checked");
+        var raw = checked ? (checked.value || '') : '';
+        if (raw.indexOf('удовольствием приду') >= 0 || raw.indexOf('Հաճույքով') >= 0) return 'yes';
+        if (raw.indexOf('своей парой') >= 0 || raw.indexOf('զույգով') >= 0) return 'pair';
+        if (raw.indexOf('не смогу') >= 0 || raw.indexOf('չեմ կարողանա') >= 0) return 'no';
+        return 'later';
+      }
+
+      function primaryNameInput(root) {
+        return root.querySelector(
+          "input:not([type='radio']):not([type='checkbox']):not([type='submit']):not([type='hidden']):not(.wi-partner-name-input)"
+        );
+      }
+
+      function ensureDeadlineNote(root) {
+        if (!root) return;
+        var note = root.querySelector('.wi-rsvp-deadline');
+        var text = deadlineText();
+        if (!note) {
+          if (!document.getElementById('wi-rsvp-deadline-style')) {
+            var st = document.createElement('style');
+            st.id = 'wi-rsvp-deadline-style';
+            st.textContent =
+              '.wi-rsvp-deadline{display:block;width:100%;box-sizing:border-box;' +
+              'margin:0 0 22px;padding:0;text-align:center;' +
+              'font-family:Georgia,serif;font-size:16px;line-height:1.45;font-weight:400;' +
+              'color:#5d554e}' +
+              '@media screen and (max-width:639px){.wi-rsvp-deadline{font-size:14px;margin-bottom:18px}}';
+            document.head.appendChild(st);
+          }
+          note = document.createElement('div');
+          note.className = 'wi-rsvp-deadline';
+          note.textContent = text;
+          var formAtom = root.querySelector('.tn-atom__form');
+          if (formAtom) {
+            if (formAtom.firstChild) formAtom.insertBefore(note, formAtom.firstChild);
+            else formAtom.appendChild(note);
+          } else {
+            root.insertBefore(note, root.firstChild);
+          }
+        } else if (note.textContent !== text) {
+          note.textContent = text;
+        }
+      }
+
+      function ensurePartnerFieldStyles() {
+        if (document.getElementById('wi-partner-field-style')) return;
         var st = document.createElement('style');
-        st.id = 'wi-guest-fields-style';
+        st.id = 'wi-partner-field-style';
         st.textContent =
-          '.wi-guest-fields{margin-top:20px;display:flex;flex-direction:column;align-items:stretch}' +
-          '.wi-guest-names-wrap{display:flex;flex-direction:column;align-items:stretch}' +
-          '.wi-guest-count-label,.wi-guest-name-label{' +
-          'display:block;position:static !important;float:none !important;clear:both;' +
-          'margin:0 0 9px;font-family:Georgia,serif;font-size:20px;line-height:1.35;font-weight:400;color:#000}' +
-          '.wi-guest-count-input,.wi-guest-name-input{' +
-          'display:block;position:static !important;float:none !important;clear:both;' +
-          'width:100%;height:52px;padding:0 14px;box-sizing:border-box;' +
-          'border:1px solid #9e9e9e;border-radius:8px;background:#fff;color:#000;' +
-          'font-family:Georgia,serif;font-size:16px;font-weight:400;line-height:1.2;' +
-          'box-shadow:none;margin:0 0 29px}' +
-          '.wi-guest-count-input{appearance:none;-webkit-appearance:none;padding-right:40px;' +
-          'background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath d=%27M1 1l5 5 5-5%27 fill=%27none%27 stroke=%27%23666%27 stroke-width=%271.5%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E");' +
-          'background-repeat:no-repeat;background-position:right 14px center;background-size:12px 8px}' +
-          '.wi-guest-count-input:focus,.wi-guest-name-input:focus{outline:none;box-shadow:none;border-color:#666}' +
+          '.wi-partner-fields{display:none;margin:8px 0 22px;flex-direction:column;align-items:stretch}' +
+          '.wi-partner-fields.is-open{display:flex}' +
+          '.wi-partner-name-label{display:block;margin:0 0 9px;font-family:Georgia,serif;' +
+          'font-size:20px;line-height:1.35;font-weight:400;color:#5d554e}' +
+          '.wi-partner-name-input{display:block;width:100%;height:52px;padding:0 14px;box-sizing:border-box;' +
+          'border:1px solid #9e948a;border-radius:8px;background:#f6f2ec;color:#5d554e;' +
+          'font-family:Georgia,serif;font-size:16px;font-weight:400;line-height:1.2;box-shadow:none;margin:0}' +
+          '.wi-partner-name-input:focus{outline:none;box-shadow:none;border-color:#666}' +
           '@media screen and (max-width:639px){' +
-          '.wi-guest-count-label,.wi-guest-name-label{font-size:16px;line-height:1.45}' +
-          '.wi-guest-count-input,.wi-guest-name-input{height:50px;font-size:15px;margin-bottom:22px}}';
+          '.wi-partner-name-label{font-size:16px;line-height:1.45}' +
+          '.wi-partner-name-input{height:50px;font-size:15px}}';
         document.head.appendChild(st);
       }
 
-      function initGuestLayoutState(root) {
-        if (!root || root._wiGuestLayout) return;
+      function initFormLayoutState(root) {
+        if (!root || root._wiFormLayout) return;
         var artboard = root.closest('.t396__artboard');
         if (!artboard) return;
         var block = artboard.closest('.t396');
         var record = artboard.closest('.t-rec');
         var filter = artboard.querySelector('.t396__filter');
         var carrier = artboard.querySelector('.t396__carrier');
-
         var threshold = root.offsetTop + root.offsetHeight - 4;
         var targets = [];
         var nodes = artboard.querySelectorAll('.tn-elem');
@@ -9746,23 +9784,18 @@
           if (el === root) continue;
           if (el.offsetTop >= threshold) targets.push(el);
         }
-
         var baseMargins = [];
         var baseTops = [];
         for (var j = 0; j < targets.length; j++) {
           var target = targets[j];
           baseMargins.push(parseFloat(target.style.marginTop || '0') || 0);
           var topVal = parseFloat(target.style.top || '');
-          if (!Number.isFinite(topVal)) {
-            topVal = parseFloat(window.getComputedStyle(target).top || '');
-          }
+          if (!Number.isFinite(topVal)) topVal = parseFloat(window.getComputedStyle(target).top || '');
           if (!Number.isFinite(topVal)) topVal = target.offsetTop || 0;
           baseTops.push(topVal);
         }
-
-        var initialFormHeight = Math.max(root.offsetHeight || 0, root.scrollHeight || 0);
-        root._wiGuestLayout = {
-          baseFormHeight: initialFormHeight,
+        root._wiFormLayout = {
+          baseFormHeight: Math.max(root.offsetHeight || 0, root.scrollHeight || 0),
           artboard: artboard,
           block: block,
           record: record,
@@ -9779,21 +9812,18 @@
         };
       }
 
-      function updateGuestLayout(root) {
+      function updateFormLayout(root) {
         if (!root) return;
-        initGuestLayoutState(root);
-        var st = root._wiGuestLayout;
+        initFormLayoutState(root);
+        var st = root._wiFormLayout;
         if (!st) return;
-
         var currentFormHeight = Math.max(root.offsetHeight || 0, root.scrollHeight || 0);
         var extra = currentFormHeight - st.baseFormHeight;
         if (!Number.isFinite(extra) || extra < 0) extra = 0;
-
         for (var i = 0; i < st.targets.length; i++) {
           st.targets[i].style.marginTop = st.baseMargins[i] + 'px';
           st.targets[i].style.top = (st.baseTops[i] + extra) + 'px';
         }
-
         st.artboard.style.height = (st.baseArtboardHeight + extra) + 'px';
         if (st.block && st.baseBlockHeight) st.block.style.height = (st.baseBlockHeight + extra) + 'px';
         if (st.record && st.baseRecordHeight) st.record.style.height = (st.baseRecordHeight + extra) + 'px';
@@ -9801,99 +9831,96 @@
         if (st.carrier) st.carrier.style.height = (st.baseCarrierHeight + extra) + 'px';
       }
 
-      function ensureGuestFields(root) {
-        if (!root || root.querySelector('.wi-guest-fields')) return;
-        ensureGuestFieldStyles();
-        var nameInput = root.querySelector(
-          "input:not([type='radio']):not([type='checkbox']):not([type='submit']):not([type='hidden'])"
-        );
-        if (!nameInput || !nameInput.parentNode) return;
-
-        var txt = guestUiText();
-        var wrap = document.createElement('div');
-        wrap.className = 'wi-guest-fields';
-
-        var countLabel = document.createElement('div');
-        countLabel.className = 'wi-guest-count-label';
-        countLabel.textContent = txt.countLabel;
-        wrap.appendChild(countLabel);
-
-        var countInput = document.createElement('select');
-        countInput.className = 'wi-guest-count-input';
-        var placeholderOpt = document.createElement('option');
-        placeholderOpt.value = '';
-        placeholderOpt.textContent = txt.countPlaceholder;
-        countInput.appendChild(placeholderOpt);
-        for (var c = 1; c <= 10; c++) {
-          var opt = document.createElement('option');
-          opt.value = String(c);
-          opt.textContent = String(c);
-          countInput.appendChild(opt);
+      function placePartnerField(root, wrap) {
+        var nameInput = primaryNameInput(root);
+        var formAtom = root.querySelector('.tn-atom__form') || root;
+        if (nameInput) {
+          var nameGroup = nameInput.closest('.t-input-group') || nameInput;
+          if (nameGroup.parentNode) {
+            // Use element siblings — whitespace text nodes must not force re-inserts.
+            if (nameGroup.nextElementSibling === wrap) return;
+            if (nameGroup.nextSibling) {
+              nameGroup.parentNode.insertBefore(wrap, nameGroup.nextSibling);
+            } else {
+              nameGroup.parentNode.appendChild(wrap);
+            }
+            return;
+          }
         }
-        countInput.value = '';
-        wrap.appendChild(countInput);
+        var submit = formAtom.querySelector("input[type='submit'], button[type='submit']");
+        if (submit && submit.parentNode) {
+          if (wrap.nextElementSibling === submit || submit.previousElementSibling === wrap) return;
+          submit.parentNode.insertBefore(wrap, submit);
+        } else if (wrap.parentNode !== formAtom) {
+          formAtom.appendChild(wrap);
+        }
+      }
 
-        var namesWrap = document.createElement('div');
-        namesWrap.className = 'wi-guest-names-wrap';
-        wrap.appendChild(namesWrap);
+      function syncPartnerField(root) {
+        if (!root) return;
+        ensurePartnerFieldStyles();
+        var txt = partnerUiText();
+        var wrap = root.querySelector('.wi-partner-fields');
+        var created = false;
+        if (!wrap) {
+          wrap = document.createElement('div');
+          wrap.className = 'wi-partner-fields';
+          var label = document.createElement('div');
+          label.className = 'wi-partner-name-label';
+          wrap.appendChild(label);
+          var input = document.createElement('input');
+          input.type = 'text';
+          input.className = 'wi-partner-name-input';
+          input.maxLength = 120;
+          input.autocomplete = 'name';
+          wrap.appendChild(input);
+          created = true;
+        }
+        placePartnerField(root, wrap);
+        if (created) initFormLayoutState(root);
 
-        nameInput.parentNode.insertBefore(wrap, nameInput.nextSibling);
-        initGuestLayoutState(root);
-        renderGuestNameFields(root);
+        var labelEl = wrap.querySelector('.wi-partner-name-label');
+        var inputEl = wrap.querySelector('.wi-partner-name-input');
+        if (labelEl && labelEl.textContent !== txt.label) labelEl.textContent = txt.label;
+        if (inputEl && inputEl.placeholder !== txt.placeholder) inputEl.placeholder = txt.placeholder;
 
-        countInput.addEventListener('input', function () {
-          renderGuestNameFields(root);
+        var isPair = attendingFromChecked(root) === 'pair';
+        var wasOpen = wrap.classList.contains('is-open');
+        wrap.classList.toggle('is-open', isPair);
+        if (!isPair && inputEl && inputEl.value) inputEl.value = '';
+        if (created || wasOpen !== isPair) {
+          updateFormLayout(root);
+          requestAnimationFrame(function () { updateFormLayout(root); });
+          setTimeout(function () { updateFormLayout(root); }, 80);
+          document.dispatchEvent(new Event('wi:layout'));
+        }
+      }
+
+      function bindPartnerField(root) {
+        if (!root || root._wiPartnerBound) return;
+        root._wiPartnerBound = true;
+        root.addEventListener('change', function (e) {
+          if (e.target && e.target.type === 'radio') syncPartnerField(root);
         });
       }
 
-      function renderGuestNameFields(root) {
-        if (!root) return;
-        var txt = guestUiText();
-        var countInput = root.querySelector('.wi-guest-count-input');
-        var namesWrap = root.querySelector('.wi-guest-names-wrap');
-        var countLabel = root.querySelector('.wi-guest-count-label');
-        if (!countInput || !namesWrap || !countLabel) return;
-
-        countLabel.textContent = txt.countLabel;
-        if (countInput.options && countInput.options.length) countInput.options[0].textContent = txt.countPlaceholder;
-        var rawCount = Number.parseInt(countInput.value, 10);
-        var count = Number.isFinite(rawCount) ? Math.min(Math.max(rawCount, 1), 10) : 0;
-
-        namesWrap.innerHTML = '';
-        for (var i = 0; i < count; i++) {
-          var label = document.createElement('div');
-          label.className = 'wi-guest-name-label';
-          label.textContent = txt.guestNameLabel + ' ' + (i + 1);
-          namesWrap.appendChild(label);
-
-          var input = document.createElement('input');
-          input.type = 'text';
-          input.className = 'wi-guest-name-input';
-          input.placeholder = txt.guestNamePlaceholder + (i + 1);
-          input.maxLength = 120;
-          namesWrap.appendChild(input);
+      function initRsvpExtras() {
+        if (initRsvpExtras._running) return;
+        initRsvpExtras._running = true;
+        try {
+          var forms = document.querySelectorAll("[data-elem-type='form']");
+          for (var i = 0; i < forms.length; i++) {
+            ensureDeadlineNote(forms[i]);
+            bindPartnerField(forms[i]);
+            syncPartnerField(forms[i]);
+          }
+        } finally {
+          initRsvpExtras._running = false;
         }
-        updateGuestLayout(root);
-        requestAnimationFrame(function () { updateGuestLayout(root); });
-        setTimeout(function () { updateGuestLayout(root); }, 80);
-        document.dispatchEvent(new Event('wi:layout'));
-      }
-
-      function initGuestFields() {
-        var forms = document.querySelectorAll("[data-elem-type='form']");
-        for (var i = 0; i < forms.length; i++) ensureGuestFields(forms[i]);
-      }
-
-      function refreshGuestLayouts() {
-        var forms = document.querySelectorAll("[data-elem-type='form']");
-        for (var i = 0; i < forms.length; i++) updateGuestLayout(forms[i]);
       }
 
       function sendRsvp(root) {
-        ensureGuestFields(root);
-        var nameInput = root.querySelector(
-          "input:not([type='radio']):not([type='checkbox']):not([type='submit']):not([type='hidden'])"
-        );
+        var nameInput = primaryNameInput(root);
         var name = nameInput ? (nameInput.value || '').trim() : '';
         if (!name) {
           showToast(isRu() ? 'Пожалуйста, укажите ваши ФИО.' : 'Խնդրում ենք նշել Ձեր անուն-ազգանունը։', true);
@@ -9901,39 +9928,21 @@
           return;
         }
 
-        var txt = guestUiText();
-        var guestCountInput = root.querySelector('.wi-guest-count-input');
-        var guestCountRaw = guestCountInput ? (guestCountInput.value || '').trim() : '';
-        var guestCountNum = 0;
-        if (guestCountRaw) {
-          guestCountNum = Number.parseInt(guestCountRaw, 10);
-          if (!Number.isFinite(guestCountNum) || guestCountNum < 1 || guestCountNum > 10) {
-            showToast(txt.countInvalid, true);
-            if (guestCountInput) guestCountInput.focus();
+        var attending = attendingFromChecked(root);
+        var guestNames = [];
+        var guests = 0;
+        var partnerInput = root.querySelector('.wi-partner-name-input');
+        if (attending === 'pair') {
+          var partnerName = partnerInput ? (partnerInput.value || '').trim() : '';
+          if (!partnerName) {
+            showToast(partnerUiText().required, true);
+            syncPartnerField(root);
+            if (partnerInput) partnerInput.focus();
             return;
           }
+          guests = 1;
+          guestNames = [partnerName];
         }
-
-        var guestNameInputs = root.querySelectorAll('.wi-guest-name-input');
-        var guestNames = [];
-        if (guestCountNum > 0) {
-          for (var gi = 0; gi < guestNameInputs.length; gi++) {
-            var guestName = (guestNameInputs[gi].value || '').trim();
-            if (!guestName) {
-              showToast(txt.guestNameRequired, true);
-              guestNameInputs[gi].focus();
-              return;
-            }
-            guestNames.push(guestName);
-          }
-        }
-
-        var checked = root.querySelector("input[type='radio']:checked");
-        var raw = checked ? (checked.value || '') : '';
-        var attending = 'later';
-        if (raw.indexOf('удовольствием приду') >= 0 || raw.indexOf('Հաճույքով') >= 0) attending = 'yes';
-        else if (raw.indexOf('своей парой') >= 0 || raw.indexOf('զույգով') >= 0) attending = 'pair';
-        else if (raw.indexOf('не смогу') >= 0 || raw.indexOf('չեմ կարողանա') >= 0) attending = 'no';
 
         fetch('/api/rsvp', {
           method: 'POST',
@@ -9941,7 +9950,7 @@
           body: JSON.stringify({
             name: name,
             attending: attending,
-            guests: guestCountNum,
+            guests: guests,
             guestNames: guestNames
           })
         })
@@ -9950,8 +9959,8 @@
             if (res.ok) {
               showToast(isRu() ? 'Спасибо! Ваш ответ принят 🤍' : 'Շնորհակալություն, Ձեր պատասխանն ընդունված է 🤍');
               if (nameInput) nameInput.value = '';
-              if (guestCountInput) guestCountInput.value = '';
-              renderGuestNameFields(root);
+              if (partnerInput) partnerInput.value = '';
+              syncPartnerField(root);
             } else {
               throw new Error((res.data && res.data.error) || '');
             }
@@ -9986,24 +9995,50 @@
       }, true);
 
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initGuestFields);
+        document.addEventListener('DOMContentLoaded', initRsvpExtras);
       } else {
-        initGuestFields();
+        initRsvpExtras();
       }
-      setTimeout(initGuestFields, 700);
-      setTimeout(initGuestFields, 2000);
-      setTimeout(refreshGuestLayouts, 300);
-      setTimeout(refreshGuestLayouts, 1200);
-      window.addEventListener('resize', refreshGuestLayouts);
-      window.addEventListener('orientationchange', refreshGuestLayouts);
-      if (window.visualViewport && window.visualViewport.addEventListener) {
-        window.visualViewport.addEventListener('resize', refreshGuestLayouts);
-      }
-      document.addEventListener('wi:lang', function () {
-        initGuestFields();
+      setTimeout(initRsvpExtras, 700);
+      setTimeout(initRsvpExtras, 2000);
+      document.addEventListener('wi:lang', initRsvpExtras);
+      window.addEventListener('resize', function () {
         var forms = document.querySelectorAll("[data-elem-type='form']");
-        for (var i = 0; i < forms.length; i++) renderGuestNameFields(forms[i]);
+        for (var i = 0; i < forms.length; i++) updateFormLayout(forms[i]);
       });
+
+      var formEl = document.querySelector("[data-elem-type='form']");
+      if (formEl && 'MutationObserver' in window) {
+        var moTimer = null;
+        var mo = new MutationObserver(function (muts) {
+          if (initRsvpExtras._running) return;
+          var relevant = false;
+          for (var i = 0; i < muts.length; i++) {
+            var m = muts[i];
+            // Ignore mutations of our own injected nodes.
+            if (m.target && m.target.closest && m.target.closest('.wi-rsvp-deadline, .wi-partner-fields')) {
+              continue;
+            }
+            var nodes = [];
+            if (m.addedNodes) for (var a = 0; a < m.addedNodes.length; a++) nodes.push(m.addedNodes[a]);
+            if (m.removedNodes) for (var r = 0; r < m.removedNodes.length; r++) nodes.push(m.removedNodes[r]);
+            for (var n = 0; n < nodes.length; n++) {
+              var el = nodes[n];
+              if (!el || el.nodeType !== 1) continue;
+              if (el.classList && (el.classList.contains('wi-rsvp-deadline') || el.classList.contains('wi-partner-fields'))) {
+                continue;
+              }
+              relevant = true;
+              break;
+            }
+            if (relevant) break;
+          }
+          if (!relevant) return;
+          clearTimeout(moTimer);
+          moTimer = setTimeout(initRsvpExtras, 60);
+        });
+        mo.observe(formEl, { childList: true, subtree: true });
+      }
     })();
 
     (function relayoutContactsSection() {
@@ -10118,7 +10153,7 @@
     })();
   </script>
   <script src="/js/countdown.js" defer></script>
-  <script src="/js/i18n.js?v=2"></script>
+  <script src="/js/i18n.js?v=3"></script>
   <script>
     (function initCalendarCarousel() {
       var recSelector = "#rec2223205941 .t396__artboard";

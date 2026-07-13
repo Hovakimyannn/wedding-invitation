@@ -799,10 +799,15 @@
         attending: r.attending
       }];
       if (!includeExtras) return guests;
-      (Array.isArray(r.guestNames) ? r.guestNames : []).forEach(function (name, i) {
+      var extraNames = Array.isArray(r.guestNames) ? r.guestNames.slice() : [];
+      // "pair" without named extras still reserves a second seat for the partner.
+      if (r.attending === "pair" && extraNames.length === 0) {
+        extraNames = [""];
+      }
+      extraNames.forEach(function (name, i) {
         guests.push({
           id: r.id + ":g" + i,
-          name: name,
+          name: name || "Զույգ",
           rsvpId: r.id,
           hostName: r.name || "",
           isPrimary: false,

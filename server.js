@@ -18,7 +18,21 @@ if (!fs.existsSync(SEATING_FILE)) fs.writeFileSync(SEATING_FILE, "[]", "utf8");
 
 app.set("trust proxy", true);
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+
+// HTML/JS/CSS: always revalidate so docker deploys show up without guest hard-refresh.
+// Images/audio: cache a week (filenames rarely change).
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    setHeaders(res, filePath) {
+      if (/\.(html?|js|css)$/i.test(filePath)) {
+        res.setHeader("Cache-Control", "no-cache, must-revalidate");
+      } else if (/\.(png|jpe?g|gif|webp|svg|ico|mp3|woff2?|ttf|otf)$/i.test(filePath)) {
+        // Same filenames get overwritten on deploy — short cache + ETag revalidation.
+        res.setHeader("Cache-Control", "public, max-age=300, must-revalidate");
+      }
+    },
+  })
+);
 
 // Guess the visitor's language from the country of their IP address.
 // Russia -> Russian, Armenia -> Armenian, everything else -> default.

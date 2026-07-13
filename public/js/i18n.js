@@ -151,6 +151,18 @@
       ru: "Сайт подготовили мы 😉",
       hy: "Կայքը պատրաստեցինք մենք 😉",
     },
+    __rsvp_deadline: {
+      ru: "Просим ответить до 15 августа",
+      hy: "Խնդրում ենք պատասխանել մինչև օգոստոսի 15-ը",
+    },
+    __partner_label: {
+      ru: "Имя и фамилия вашей пары",
+      hy: "Զույգի անուն-ազգանունը",
+    },
+    __partner_placeholder: {
+      ru: "Имя и фамилия вашей пары",
+      hy: "Զույգի անուն-ազգանունը",
+    },
   };
 
   // --- RSVP form ----------------------------------------------------
@@ -163,6 +175,7 @@
     ["Ваши ФИО", "Ձեր անուն-ազգանունը"],
     ["Сможете ли присутствовать на нашем торжестве?", "Կկարողանա՞ք ներկա գտնվել մեր տոնակատարությանը"],
     ["Я с удовольствием приду", "Հաճույքով կգամ"],
+    ["Я приду со своей парой", "Կգամ զույգով"],
     ["К сожалению, не смогу присутствовать", "Ցավոք, չեմ կարողանա ներկա գտնվել"],
     ["Отправить", "Ուղարկել"],
   ];
@@ -320,13 +333,36 @@
   // (it used to sit on the old date). Position is derived from the live
   // calendar element so it stays correct at every screen size, in both
   // languages. Day-26 centre within the square calendar = (0.384, 0.786).
+  //
+  // Heart is re-parented inside the calendar elem so Tilda's intoview SBS
+  // animation can't snap it back to the old artboard coords (which now sit
+  // on top of the photo carousel above the pushed-down calendar).
   var CAL_IMGFIELD = "tn_img_1725107850060";
   var HEART_IMGFIELD = "tn_img_1725271378250";
   var DAY26_FX = 0.384;
   var DAY26_FY = 0.786;
+  var HEART_PINNED = false;
 
   function elemOf(img) {
     return (img && (img.closest(".t396__elem") || img.parentElement)) || null;
+  }
+
+  function pinHeartToCalendar(cal, heart) {
+    if (HEART_PINNED && heart.parentElement === cal) return;
+    // Kill Tilda step-by-step anim so scroll-into-view can't rewrite top/left.
+    [
+      "data-animate-sbs-event",
+      "data-animate-sbs-trg",
+      "data-animate-sbs-trgofst",
+      "data-animate-sbs-loop",
+      "data-animate-sbs-opts",
+      "data-animate-mobile"
+    ].forEach(function (attr) {
+      heart.removeAttribute(attr);
+    });
+    heart.classList.remove("t396__elem--anim-hidden");
+    if (heart.parentElement !== cal) cal.appendChild(heart);
+    HEART_PINNED = true;
   }
 
   function placeHeart() {
@@ -334,16 +370,23 @@
     var heartImg = document.querySelector("img[imgfield='" + HEART_IMGFIELD + "']");
     var cal = elemOf(calImg);
     var heart = elemOf(heartImg);
-    if (!cal || !heart || !cal.offsetWidth) return;
+    // Wait until the calendar has real size — otherwise day-26 Y lands near
+    // the top of the block (over the carousel) and then jumps down later.
+    if (!cal || !heart || !cal.offsetWidth || cal.offsetHeight < 80) return;
+
+    pinHeartToCalendar(cal, heart);
 
     var size = cal.offsetWidth * 0.135; // original heart ≈ 81 / 611
-    var cx = cal.offsetLeft + DAY26_FX * cal.offsetWidth;
-    var cy = cal.offsetTop + DAY26_FY * cal.offsetHeight;
-    heart.style.left = cx - size / 2 + "px";
-    heart.style.top = cy - size / 2 + "px";
-    heart.style.width = size + "px";
-    heart.style.height = size + "px";
-    heart.style.zIndex = "60"; // sit above the calendar image
+    var left = DAY26_FX * cal.offsetWidth - size / 2;
+    var top = DAY26_FY * cal.offsetHeight - size / 2;
+    heart.style.setProperty("position", "absolute", "important");
+    heart.style.setProperty("left", left + "px", "important");
+    heart.style.setProperty("top", top + "px", "important");
+    heart.style.setProperty("width", size + "px", "important");
+    heart.style.setProperty("height", size + "px", "important");
+    heart.style.setProperty("z-index", "60", "important");
+    heart.style.setProperty("transform", "none", "important");
+    heart.style.setProperty("opacity", "1", "important");
 
     // Use the full-resolution heart instead of Tilda's 20px lazyload stub.
     var orig = heartImg.getAttribute("data-original");
@@ -390,6 +433,15 @@
 
     // Footer credit line ("Сайт подготовили мы / Կայքը պատրաստեցինք մենք")
     setHTML(document.getElementById("wi-site-credit"), T.__site_credit[lang]);
+
+    // RSVP deadline under «ՀԱՐՑԱԹԵՐԹ»
+    var deadline = document.querySelector(".wi-rsvp-deadline");
+    if (deadline) deadline.textContent = T.__rsvp_deadline[lang];
+
+    var partnerLabel = document.querySelector(".wi-partner-name-label");
+    if (partnerLabel) partnerLabel.textContent = T.__partner_label[lang];
+    var partnerInput = document.querySelector(".wi-partner-name-input");
+    if (partnerInput) partnerInput.placeholder = T.__partner_placeholder[lang];
 
     translateForm(lang);
     translateImages(lang);
