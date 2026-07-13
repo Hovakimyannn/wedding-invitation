@@ -1798,6 +1798,11 @@
                 }
 
                 function ensureMutedPlaybackPrimed() {
+                  // After real (unmuted) start, never re-mute — first wheel/scroll
+                  // after a click-open used to silence the track.
+                  if (musicStartedFromBeginning) {
+                    return Promise.resolve(!myAudio.paused);
+                  }
                   myAudio.volume = 0.4;
                   myAudio.muted = true;
                   try {
